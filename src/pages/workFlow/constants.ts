@@ -1,0 +1,25 @@
+enum NODE_TYPE {
+  START_NODE = "START_NODE",
+  AGENT_NODE = "AGENT_NODE",
+}
+
+const AGENT_NODE_PREFIX = "agent-node";
+const START_NODE_Id = "start";
+
+const NODE_PREFIX_MAP: Record<NODE_TYPE, string> = {
+  [NODE_TYPE.AGENT_NODE]: AGENT_NODE_PREFIX,
+  [NODE_TYPE.START_NODE]: START_NODE_Id,
+};
+
+const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
+  [NODE_TYPE.AGENT_NODE]: "agent-handle",
+  [NODE_TYPE.START_NODE]: "start",
+};
+
+export {
+  NODE_TYPE,
+  AGENT_NODE_PREFIX,
+  START_NODE_Id,
+  NODE_PREFIX_MAP,
+  SOURCE_HANDLE_ID_MAP,
+};

@@ -1,0 +1,39 @@
+.container {
+  width: 200px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 3px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 8px;
+    }
+    .ant-tooltip-container {
+      background-color: #fff;
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+  }
+
+  .image {
+    width: 20px;
+    height: 20px;
+    vertical-align: sub;
+  }
+
+  .text {
+    color: #354052;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .hover {
+    border-radius: 8px;
+    &:hover {
+      background-color: rgb(200 206 218 / 0.4);
+    }
+  }
+}
