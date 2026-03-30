@@ -37,7 +37,7 @@ function MenuList(props: ViewProps) {
       setNodeList(nodeId, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        data: { childrenIds: [], label: currentNodeId },
+        data: { childrenIds: [], label: currentNodeId, select: false },
         type: type,
       });
       setCurrentNodeInfo({
@@ -50,7 +50,7 @@ function MenuList(props: ViewProps) {
       setNodeListByEdgesInfo(edgesInfo, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        data: { childrenIds: [], label: currentNodeId },
+        data: { childrenIds: [], label: currentNodeId, select: false },
         type: type,
       });
       setCurrentNodeInfo({

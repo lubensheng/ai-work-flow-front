@@ -17,6 +17,7 @@ export type EdgeItem = {
   data: {
     active: boolean;
     mouseIn: boolean;
+    showRelateNode: boolean;
     currentEdgeInfo: {
       source: string;
       target: string;
@@ -27,6 +28,7 @@ export type EdgeItem = {
 type NodeData = {
   childrenIds: string[];
   label: number;
+  select: boolean;
 };
 
 export type NodeItem = {
@@ -55,6 +57,9 @@ type Actions = {
     nodeInfo: NodeItem
   ) => void;
   updateNodePosition: (nodeList: NodeChange<NodeItem>[]) => void;
+  getSelectNodeInfo: () => NodeItem;
+  setSelectNode: (nodeId: string) => void;
+  updateEdgeShowRelateNode: (nodeId?: string) => void;
 };
 
 export const edgeIdPrefix = "edge-el";
@@ -69,6 +74,7 @@ const initialEdges: EdgeItem[] = [
     data: {
       active: false,
       mouseIn: false,
+      showRelateNode: false,
       currentEdgeInfo: {
         source: "start",
         target: "agent-node-1",
@@ -81,13 +87,13 @@ const initNodeList: NodeItem[] = [
   {
     id: START_NODE_Id,
     position: { x: 0, y: 0 },
-    data: { childrenIds: [`${AGENT_NODE_PREFIX}-1`], label: 1 },
+    data: { childrenIds: [`${AGENT_NODE_PREFIX}-1`], label: 1, select: true },
     type: NODE_TYPE.START_NODE,
   },
   {
     id: `${AGENT_NODE_PREFIX}-1`,
     position: { x: 240, y: 0 },
-    data: { childrenIds: [], label: 1 },
+    data: { childrenIds: [], label: 1, select: false },
     type: NODE_TYPE.AGENT_NODE,
   },
 ];
@@ -105,8 +111,10 @@ const useNodeList = create<State & Actions>()(
     (set, get) => ({
       setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => {
         set((state) => {
-          // 你的逻辑
-          const newNodeList = [...state.nodeList];
+          const newNodeList = [...state.nodeList].map((item) => ({
+            ...item,
+            data: { ...item.data, select: false },
+          }));
           const newEdgeList = [...state.edgeList];
           const parentIndex = newNodeList.findIndex(
             (item) => item.id === parentNodeId
@@ -121,6 +129,7 @@ const useNodeList = create<State & Actions>()(
             data: {
               active: false,
               mouseIn: false,
+              showRelateNode: false,
               currentEdgeInfo: {
                 source: parentNodeId,
                 target: nodeInfo.id,
@@ -128,6 +137,7 @@ const useNodeList = create<State & Actions>()(
             },
           };
           console.log(newEdgeItem);
+          nodeInfo.data.select = true;
           if (parentIndex > -1) {
             const parentNode = newNodeList[parentIndex];
             const parentNodeChildeNum = parentNode.data.childrenIds.length;
@@ -177,11 +187,14 @@ const useNodeList = create<State & Actions>()(
       },
       setNodeListByEdgesInfo(currentEdgeInfo, nodeInfo) {
         set((state) => {
-          const newNodeList = [...state.nodeList];
+          const newNodeList = [...state.nodeList].map((item) => ({
+            ...item,
+            data: { ...item.data, select: false },
+          }));
           const newEgeList = [...state.edgeList];
           const parentNodeId = currentEdgeInfo.source;
           const childrenNodeId = currentEdgeInfo.target;
-
+          nodeInfo.data.select = true;
           const parentNode = newNodeList.find(
             (item) => item.id === parentNodeId
           )!;
@@ -216,6 +229,7 @@ const useNodeList = create<State & Actions>()(
             data: {
               active: false,
               mouseIn: false,
+              showRelateNode: false,
               currentEdgeInfo: {
                 source: nodeInfo.id,
                 target: childrenNode.id,
@@ -258,6 +272,40 @@ const useNodeList = create<State & Actions>()(
             };
           });
         }
+      },
+      getSelectNodeInfo() {
+        const { nodeList } = get();
+        const nodeInfo = nodeList.find((i) => i.data.select)!;
+        return nodeInfo;
+      },
+      setSelectNode(nodeId) {
+        set((pre) => ({
+          ...pre,
+          nodeList: pre.nodeList.map((i) => ({
+            ...i,
+            data: { ...i.data, select: i.id === nodeId },
+          })),
+        }));
+      },
+      updateEdgeShowRelateNode(nodeId) {
+        set((pre) => {
+          const newEdgeList = [...pre.edgeList].map((i) => ({
+            ...i,
+            data: { ...i.data, showRelateNode: false },
+          }));
+          if (nodeId) {
+            newEdgeList.forEach((item) => {
+              if (item.source === nodeId || item.target === nodeId) {
+                item.data.showRelateNode = true;
+              }
+            });
+          }
+
+          return {
+            ...pre,
+            edgeList: newEdgeList,
+          };
+        });
       },
     })
   )

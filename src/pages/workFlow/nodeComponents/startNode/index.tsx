@@ -1,4 +1,4 @@
-import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
+import { Handle, Position, useReactFlow } from "@xyflow/react";
 import commonStyles from "../common.module.less";
 import styles from "./index.module.less";
 import addNodeSvg from "../../../../assets/addNode.svg";
@@ -7,10 +7,17 @@ import classNames from "classnames";
 import { memo, useMemo } from "react";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import { SOURCE_HANDLE_ID_MAP } from "../../constants";
+import type { NodeItem } from "../../../../store/nodeList";
+import useNodeList from "../../../../store/nodeList";
 
-function StartNode(props: NodeProps) {
+function StartNode(props: NodeItem) {
+  const { data } = props;
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
+  );
+  const setSelectNode = useNodeList((state) => state.setSelectNode);
+  const updateEdgeShowRelateNode = useNodeList(
+    (s) => s.updateEdgeShowRelateNode
   );
   const { getNode } = useReactFlow();
   const handleAbsolutePosition = useMemo(() => {
@@ -51,8 +58,20 @@ function StartNode(props: NodeProps) {
       <div
         className={classNames(
           commonStyles["common-node-container"],
-          styles["start-node-container"]
+          styles["start-node-container"],
+          data.select
+            ? commonStyles["active-node-container"]
+            : commonStyles["unActive-node-container"]
         )}
+        onClick={() => {
+          setSelectNode(props.id);
+        }}
+        onMouseLeave={() => {
+          updateEdgeShowRelateNode();
+        }}
+        onMouseEnter={() => {
+          updateEdgeShowRelateNode(props.id);
+        }}
       >
         <div style={{ cursor: "pointer" }} onClick={handleStart}>
           <img src={startNodeSvg} className={commonStyles["node-type-icon"]} />
@@ -66,15 +85,15 @@ function StartNode(props: NodeProps) {
         style={{
           background: "none",
           border: "none",
-          width: "1em",
-          height: "1em",
         }}
       >
-        <img
-          src={addNodeSvg}
-          className={commonStyles["add-node-icon"]}
-          onClick={handleAddNode}
-        />
+        <div className={commonStyles["add-node-icon-container"]}>
+          <img
+            src={addNodeSvg}
+            className={commonStyles["add-node-icon"]}
+            onClick={handleAddNode}
+          />
+        </div>
       </Handle>
     </>
   );

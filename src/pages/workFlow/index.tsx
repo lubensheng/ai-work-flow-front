@@ -8,7 +8,7 @@ import {
   useEdgesState,
   useNodesState,
   type Connection,
-  type NodeProps,
+  type NodeTypes,
 } from "@xyflow/react";
 import styles from "./index.module.less";
 import { NODE_TYPE } from "./constants";
@@ -17,12 +17,12 @@ import StartNode from "./nodeComponents/startNode";
 import AgentNode from "./nodeComponents/agentNode";
 import EdgesComponent from "./edgeComponents";
 import MenuList from "./menu";
-import useNodeList from "../../store/nodeList";
+import useNodeList, { type NodeItem } from "../../store/nodeList";
 import { useEffect, useRef } from "react";
 import LeftPanel from "./nodeComponents/mapPanel/leftPanel";
 import RightPanel from "./nodeComponents/mapPanel/rightPanel";
 
-const nodeTypes: Record<NODE_TYPE, React.FC<NodeProps>> = {
+const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
   [NODE_TYPE.AGENT_NODE]: AgentNode,
 };
@@ -92,7 +92,7 @@ function WorkFlow() {
         }}
         attributionPosition="top-right"
         className="overview"
-        nodeTypes={nodeTypes}
+        nodeTypes={nodeTypes as unknown as NodeTypes}
         edgeTypes={edgeTypes}
         onEdgeClick={(e, edge) => {
           e.stopPropagation();

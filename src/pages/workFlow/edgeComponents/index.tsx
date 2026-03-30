@@ -15,6 +15,7 @@ interface ViewProps {
     };
     active: boolean;
     mouseIn: boolean;
+    showRelateNode: boolean;
   };
 
   targetY: number;
@@ -44,7 +45,7 @@ function EdgesComponent(props: ViewProps) {
         path={edgePath}
         cursor="pointer"
         style={
-          data.active
+          data.active || data.showRelateNode
             ? { stroke: "#1296db", cursor: "pointer" }
             : { cursor: "pointer" }
         }

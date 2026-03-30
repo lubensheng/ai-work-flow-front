@@ -1,11 +1,19 @@
 .common-node-container {
-  // border: 1px solid #1296db;
+  border: 1px solid #1296db;
   // outline: 1px solid #1296db;
   outline-offset: 0; /* 可以调整 outline 位置 */
   background-color: #fff;
   border-radius: 8px;
   padding: 3px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.active-node-container {
+  border-color: #1296db;
+}
+
+.unActive-node-container {
+  border-color: transparent;
 }
 
 .node-type-icon {
@@ -22,6 +30,19 @@
 }
 
 .add-node-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.add-node-icon-container {
   width: 15px;
   height: 15px;
+  background-color: #1296db;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -5px;
+  left: -5px;
 }
