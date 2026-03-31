@@ -3,7 +3,11 @@ import styles from "./index.module.less";
 import { Tabs, Tooltip } from "antd";
 import agentIcon from "../../../assets/agentIcon.svg";
 import classNames from "classnames";
-import { NODE_PREFIX_MAP, NODE_TYPE } from "../constants";
+import {
+  NODE_PREFIX_MAP,
+  NODE_TITLE_PREFIX_MAP,
+  NODE_TYPE,
+} from "../constants";
 import useNodeList from "../../../store/nodeList";
 import useNodeIdInfo from "../../../store/nodeIdInfo";
 import useClickAddPositionInfo from "../../../store/clickAddPositionInfo";
@@ -37,7 +41,12 @@ function MenuList(props: ViewProps) {
       setNodeList(nodeId, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        data: { childrenIds: [], label: currentNodeId, select: false },
+        data: {
+          childrenIds: [],
+          label: currentNodeId,
+          select: false,
+          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+        },
         type: type,
       });
       setCurrentNodeInfo({
@@ -50,7 +59,12 @@ function MenuList(props: ViewProps) {
       setNodeListByEdgesInfo(edgesInfo, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        data: { childrenIds: [], label: currentNodeId, select: false },
+        data: {
+          childrenIds: [],
+          label: currentNodeId,
+          select: false,
+          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+        },
         type: type,
       });
       setCurrentNodeInfo({

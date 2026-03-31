@@ -11,6 +11,11 @@ const NODE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.START_NODE]: START_NODE_Id,
 };
 
+const NODE_TITLE_PREFIX_MAP: Record<NODE_TYPE, string> = {
+  [NODE_TYPE.AGENT_NODE]: "Agent",
+  [NODE_TYPE.START_NODE]: "开始",
+};
+
 const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.AGENT_NODE]: "agent-handle",
   [NODE_TYPE.START_NODE]: "start",
@@ -22,4 +27,5 @@ export {
   START_NODE_Id,
   NODE_PREFIX_MAP,
   SOURCE_HANDLE_ID_MAP,
+  NODE_TITLE_PREFIX_MAP,
 };

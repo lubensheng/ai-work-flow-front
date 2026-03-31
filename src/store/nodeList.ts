@@ -28,6 +28,7 @@ export type EdgeItem = {
 type NodeData = {
   childrenIds: string[];
   label: number;
+  title: string;
   select: boolean;
 };
 
@@ -42,6 +43,7 @@ type State = {
   edgeId: number;
   nodeList: NodeItem[];
   edgeList: EdgeItem[];
+  selectNodeInfo: NodeItem;
 };
 
 type Actions = {
@@ -87,13 +89,18 @@ const initNodeList: NodeItem[] = [
   {
     id: START_NODE_Id,
     position: { x: 0, y: 0 },
-    data: { childrenIds: [`${AGENT_NODE_PREFIX}-1`], label: 1, select: true },
+    data: {
+      childrenIds: [`${AGENT_NODE_PREFIX}-1`],
+      label: 1,
+      select: true,
+      title: "开始",
+    },
     type: NODE_TYPE.START_NODE,
   },
   {
     id: `${AGENT_NODE_PREFIX}-1`,
     position: { x: 240, y: 0 },
-    data: { childrenIds: [], label: 1, select: false },
+    data: { childrenIds: [], label: 1, select: false, title: "Agent" },
     type: NODE_TYPE.AGENT_NODE,
   },
 ];
@@ -107,7 +114,12 @@ const initialEdgeLength = 40;
 
 const useNodeList = create<State & Actions>()(
   combine(
-    { nodeList: initNodeList, edgeList: initialEdges, edgeId: 2 },
+    {
+      nodeList: initNodeList,
+      edgeList: initialEdges,
+      edgeId: 2,
+      selectNodeInfo: initNodeList[0],
+    },
     (set, get) => ({
       setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => {
         set((state) => {
@@ -281,6 +293,7 @@ const useNodeList = create<State & Actions>()(
       setSelectNode(nodeId) {
         set((pre) => ({
           ...pre,
+          selectNodeInfo: pre.nodeList.find((item) => item.id === nodeId),
           nodeList: pre.nodeList.map((i) => ({
             ...i,
             data: { ...i.data, select: i.id === nodeId },
