@@ -4,16 +4,20 @@ import commonStyles from "./styles/common.module.less";
 import type { NodeItem } from "../../../../../store/nodeList";
 import classNames from "classnames";
 import { Tabs } from "antd";
+import NextNodeList from "./nextNodeList";
 
 interface ViewProps {
   nodeInfo: NodeItem;
+  nodeList: NodeItem[];
 }
 
 function StartNodePanel(props: ViewProps) {
+  const { nodeInfo, nodeList } = props;
   const [nodeLabel, setNodeLabel] = useState("");
   useEffect(() => {
     setNodeLabel(props.nodeInfo.data.title);
   }, [props.nodeInfo]);
+
   return (
     <div>
       <div
@@ -53,11 +57,17 @@ function StartNodePanel(props: ViewProps) {
                 <div>
                   <div>
                     <div style={{ color: "#354052" }}>下一步</div>
+                  </div>
+                  <div>
                     <div style={{ color: "#676f83" }}>
                       添加此工作流程中的下一个节点{" "}
                     </div>
+                    <NextNodeList
+                      childrenIds={nodeInfo.data.childrenIds}
+                      nodeList={nodeList}
+                      nodeType={nodeInfo.type}
+                    />
                   </div>
-                  <div></div>
                 </div>
               ),
             },

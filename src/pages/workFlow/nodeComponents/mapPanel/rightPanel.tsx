@@ -7,9 +7,11 @@ import type { ReactNode } from "react";
 
 function RightPanel() {
   const selectNodeInfo = useNodeList((s) => s.selectNodeInfo);
-
+  const nodeList = useNodeList((s) => s.nodeList);
   const dom: Record<NODE_TYPE, ReactNode> = {
-    [NODE_TYPE.START_NODE]: <StartNodePanel nodeInfo={selectNodeInfo} />,
+    [NODE_TYPE.START_NODE]: (
+      <StartNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
+    ),
     [NODE_TYPE.AGENT_NODE]: <AgentNodePanel />,
   };
 
