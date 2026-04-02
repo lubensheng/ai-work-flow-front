@@ -2,6 +2,7 @@ import { ViewportPortal } from "@xyflow/react";
 import styles from "./index.module.less";
 import { Tabs, Tooltip } from "antd";
 import agentIcon from "../../../assets/agentIcon.svg";
+import endNodeIcon from "../../../assets/endFlowNode.svg";
 import classNames from "classnames";
 import {
   NODE_PREFIX_MAP,
@@ -74,7 +75,6 @@ function MenuList(props: ViewProps) {
       // 全是空的情况
     }
   };
-
   return (
     <ViewportPortal>
       <div
@@ -123,6 +123,36 @@ function MenuList(props: ViewProps) {
                     >
                       <img src={agentIcon} className={styles["image"]} />
                       <span className={styles["text"]}>Agent</span>
+                    </div>
+                  </Tooltip>
+                  <Tooltip
+                    getPopupContainer={(node) => node}
+                    arrow={false}
+                    title={
+                      <div>
+                        <img
+                          src={endNodeIcon}
+                          style={{ width: "30px", height: "30px" }}
+                        />
+                        <div>
+                          <div style={{ color: "#000", fontSize: "14px" }}>
+                            Agent
+                          </div>
+                          <div style={{ color: "#ccc", fontSize: "12px" }}>
+                            调用大型语言模型回答问题或者处理问题
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    placement="right"
+                  >
+                    <div
+                      className={classNames(styles.item, styles.hover)}
+                      style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}
+                      onClick={() => handleAddNode(NODE_TYPE.AGENT_NODE)}
+                    >
+                      <img src={endNodeIcon} className={styles["image"]} />
+                      <span className={styles["text"]}>结束</span>
                     </div>
                   </Tooltip>
                 </div>

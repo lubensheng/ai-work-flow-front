@@ -66,6 +66,7 @@ function StartNodePanel(props: ViewProps) {
                       childrenIds={nodeInfo.data.childrenIds}
                       nodeList={nodeList}
                       nodeType={nodeInfo.type}
+                      currentNodeInfo={nodeInfo}
                     />
                   </div>
                 </div>

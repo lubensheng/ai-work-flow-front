@@ -4,7 +4,7 @@ import styles from "./index.module.less";
 import addNodeSvg from "../../../../assets/addNode.svg";
 import startNodeSvg from "../../../../assets/startNode.svg";
 import classNames from "classnames";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import { SOURCE_HANDLE_ID_MAP } from "../../constants";
 import type { NodeItem } from "../../../../store/nodeList";
@@ -20,7 +20,11 @@ function StartNode(props: NodeItem) {
     (s) => s.updateEdgeShowRelateNode
   );
   const { getNode } = useReactFlow();
-  const handleAbsolutePosition = useMemo(() => {
+
+  const handleStart = () => {
+    console.log("开始整个流程");
+  };
+  const getNodePosition = () => {
     const node = getNode(props.id);
     if (!node) return null;
     const nodeX = node.position.x;
@@ -29,14 +33,10 @@ function StartNode(props: NodeItem) {
       x: nodeX + 150,
       y: nodeY + 30,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.id, getNode]);
-
-  const handleStart = () => {
-    console.log("开始整个流程");
   };
 
   const handleAddNode = () => {
+    const handleAbsolutePosition = getNodePosition();
     if (handleAbsolutePosition) {
       setCurrentNodeInfo({
         currentAddNodeInfo: {

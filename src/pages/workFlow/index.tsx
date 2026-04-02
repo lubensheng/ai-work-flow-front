@@ -21,10 +21,12 @@ import useNodeList, { type NodeItem } from "../../store/nodeList";
 import { useEffect, useRef } from "react";
 import LeftPanel from "./nodeComponents/mapPanel/leftPanel";
 import RightPanel from "./nodeComponents/mapPanel/rightPanel";
+import EndNode from "./nodeComponents/endNode";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
   [NODE_TYPE.AGENT_NODE]: AgentNode,
+  [NODE_TYPE.END_NODE]: EndNode,
 };
 
 const edgeTypes = {
@@ -64,6 +66,9 @@ function WorkFlow() {
         edges={edges}
         ref={ref}
         onNodesChange={(changes) => {
+          setCurrentNodeInfo({
+            currentAddNodeInfo: {},
+          });
           updateNodePosition(
             changes.filter((item) => item.type === "position")
           );

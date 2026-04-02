@@ -6,7 +6,7 @@ import addNodeSvg from "../../../../assets/addNode.svg";
 import agentIcon from "../../../../assets/agentIcon.svg";
 import { SOURCE_HANDLE_ID_MAP } from "../../constants";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import type { NodeItem } from "../../../../store/nodeList";
 import useNodeList from "../../../../store/nodeList";
 
@@ -20,7 +20,8 @@ function AgentNode(props: NodeItem) {
     (s) => s.updateEdgeShowRelateNode
   );
   const { getNode } = useReactFlow();
-  const handleAbsolutePosition = useMemo(() => {
+
+  const getNodePosition = () => {
     const node = getNode(props.id);
     if (!node) return null;
     const nodeX = node.position.x;
@@ -29,9 +30,10 @@ function AgentNode(props: NodeItem) {
       x: nodeX + 150,
       y: nodeY + 30,
     };
-  }, [props.id, getNode]);
+  };
 
   const handleAddNode = () => {
+    const handleAbsolutePosition = getNodePosition();
     if (handleAbsolutePosition) {
       setCurrentNodeInfo({
         currentAddNodeInfo: {

@@ -5,11 +5,13 @@ import { NODE_TYPE } from "../pages/workFlow/constants";
 type State = {
   [NODE_TYPE.AGENT_NODE]: number;
   [NODE_TYPE.START_NODE]: number;
+  [NODE_TYPE.END_NODE]: number;
 };
 
 const initState = {
   [NODE_TYPE.AGENT_NODE]: 2,
   [NODE_TYPE.START_NODE]: 2,
+  [NODE_TYPE.END_NODE]: 2,
 };
 
 type Action = {
