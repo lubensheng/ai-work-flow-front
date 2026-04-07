@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { NODE_TYPE } from "../pages/workFlow/constants";
+import { NODE_TYPE } from "../pages/createWorkFlow/constants";
 
 type State = {
   [NODE_TYPE.AGENT_NODE]: number;

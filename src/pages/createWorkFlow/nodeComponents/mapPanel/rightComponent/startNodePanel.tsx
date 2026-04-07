@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import startNodeSvg from "../../../../../assets/startNode.svg";
 import commonStyles from "./styles/common.module.less";
+import styles from "./styles/startNode.module.less";
 import type { NodeItem } from "../../../../../store/nodeList";
 import classNames from "classnames";
 import { Tabs } from "antd";
 import NextNodeList from "./nextNodeList";
+import type { Field } from "../../../type";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -14,8 +16,11 @@ interface ViewProps {
 function StartNodePanel(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
   const [nodeLabel, setNodeLabel] = useState("");
+  const [fields, setFields] = useState<Field[]>([]);
+
   useEffect(() => {
     setNodeLabel(props.nodeInfo.data.title);
+    setFields(props.nodeInfo.data.nodeConfig?.fields || []);
   }, [props.nodeInfo]);
 
   return (
@@ -56,6 +61,16 @@ function StartNodePanel(props: ViewProps) {
               children: (
                 <div>
                   <div>
+                    <div style={{ color: "#354052" }}>输入字段</div>
+                  </div>
+                  <div>
+                    {fields.map((item) => (
+                      <div key={item.key} className={styles["field-item"]}>
+                        {item.showName}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: "16px" }}>
                     <div style={{ color: "#354052" }}>下一步</div>
                   </div>
                   <div>

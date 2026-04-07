@@ -32,7 +32,8 @@ function AgentNode(props: NodeItem) {
     };
   };
 
-  const handleAddNode = () => {
+  const handleAddNode = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
     const handleAbsolutePosition = getNodePosition();
     if (handleAbsolutePosition) {
       setCurrentNodeInfo({

@@ -5,8 +5,30 @@ import {
   NODE_TYPE,
   SOURCE_HANDLE_ID_MAP,
   START_NODE_Id,
-} from "../pages/workFlow/constants";
+} from "../pages/createWorkFlow/constants";
 import type { NodeChange } from "@xyflow/react";
+import type { Field } from "../pages/createWorkFlow/type";
+
+export const initStartFields: Field[] = [
+  {
+    key: "sys.user_id",
+    fieldType: "text",
+    name: "sys.user_id",
+    showName: "sys.user_id",
+  },
+  {
+    key: "sys.app_id",
+    fieldType: "text",
+    name: "sys.app_id",
+    showName: "sys.app_id",
+  },
+  {
+    key: "sys.flow_name",
+    fieldType: "text",
+    name: "sys.flow_name",
+    showName: "sys.flow_name",
+  },
+];
 
 export type EdgeItem = {
   id: string;
@@ -30,6 +52,9 @@ type NodeData = {
   label: number;
   title: string;
   select: boolean;
+  nodeConfig?: {
+    fields: Field[];
+  };
 };
 
 export type NodeItem = {
@@ -94,6 +119,9 @@ const initNodeList: NodeItem[] = [
       label: 1,
       select: true,
       title: "开始",
+      nodeConfig: {
+        fields: initStartFields,
+      },
     },
     type: NODE_TYPE.START_NODE,
   },

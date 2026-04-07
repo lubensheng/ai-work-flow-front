@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import AiWorkFlow from "./pages";
 import Login from "./pages/login";
-import WorkFlow from "./pages/workFlow";
+import CreateWorkFlow from "./pages/createWorkFlow";
 import MyWorkFlow from "./pages/myWorkFlow";
+import WorkFlow from "./pages/workFlow";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,12 @@ const router = createBrowserRouter([
       {
         path: "workFlow",
         Component: WorkFlow,
+        children: [
+          {
+            path: "createWorkFlow",
+            Component: CreateWorkFlow,
+          },
+        ],
       },
       {
         path: "myWorkFlow",

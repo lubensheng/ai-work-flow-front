@@ -17,7 +17,7 @@ function Headers(props: ViewProps) {
   const [activePath, setActivePath] = useState<Path>();
   useEffect(() => {
     const { pathname } = location;
-    setActivePath(pathname.slice(1) as Path);
+    setActivePath(pathname.indexOf("workFlow") ? "workFlow" : "myWorkFlow");
   }, [location]);
   return (
     <div className={styles["header-container"]}>
