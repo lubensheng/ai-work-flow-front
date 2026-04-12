@@ -4,6 +4,7 @@ import Login from "./pages/login";
 import CreateWorkFlow from "./pages/createWorkFlow";
 import MyWorkFlow from "./pages/myWorkFlow";
 import WorkFlow from "./pages/workFlow";
+import WorkFlowConfigPage from "./pages/workFlowConfigPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
           {
             path: "createWorkFlow",
             Component: CreateWorkFlow,
+          },
+          {
+            path: "workFlowConfigPage",
+            Component: WorkFlowConfigPage,
           },
         ],
       },

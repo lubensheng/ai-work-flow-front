@@ -1,9 +1,44 @@
 .container {
   width: 340px;
   height: 160px;
-  padding: 16px;
+  padding-top: 16px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background-color: #fff;
+}
+
+.title {
+  color: #676f83;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+.create-item {
+  margin-top: 12px;
   cursor: pointer;
+  font-size: 14px;
+  padding: 0 16px;
+  height: 32px;
+  line-height: 32px;
+  color: #354052;
+
+  &:hover {
+    background-color: rgb(200 206 218/0.2);
+    color: #354052;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+
+  .text {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
 }
