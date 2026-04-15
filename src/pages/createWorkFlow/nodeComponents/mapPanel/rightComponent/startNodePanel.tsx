@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { Tabs } from "antd";
 import NextNodeList from "./nextNodeList";
 import type { Field } from "../../../type";
+import AddFieldModal from "./addFieldModal";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -17,6 +18,18 @@ function StartNodePanel(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
   const [nodeLabel, setNodeLabel] = useState("");
   const [fields, setFields] = useState<Field[]>([]);
+  const [addFieldModalProps, setAddFieldModalProps] = useState<{
+    isOpen: boolean;
+    type: "add" | "edit";
+    initValues?: Field;
+  }>({
+    isOpen: false,
+    type: "add",
+  });
+
+  const handleAdd = () => {
+    setAddFieldModalProps({ isOpen: true, type: "add" });
+  };
 
   useEffect(() => {
     setNodeLabel(props.nodeInfo.data.title);
@@ -60,8 +73,13 @@ function StartNodePanel(props: ViewProps) {
               key: "setting",
               children: (
                 <div>
-                  <div>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
                     <div style={{ color: "#354052" }}>输入字段</div>
+                    <div className={styles["add-field"]} onClick={handleAdd}>
+                      +
+                    </div>
                   </div>
                   <div>
                     {fields.map((item) => (
@@ -95,6 +113,17 @@ function StartNodePanel(props: ViewProps) {
           ]}
         />
       </div>
+      <AddFieldModal
+        isOpen={addFieldModalProps.isOpen}
+        type={addFieldModalProps.type}
+        onCancel={() => {
+          setAddFieldModalProps((pre) => ({ ...pre, isOpen: false }));
+        }}
+        onOk={(item) => {
+          console.log(item);
+          setAddFieldModalProps((pre) => ({ ...pre, isOpen: false }));
+        }}
+      />
     </div>
   );
 }
