@@ -8,6 +8,7 @@ import { Tabs } from "antd";
 import NextNodeList from "./nextNodeList";
 import type { Field } from "../../../type";
 import AddFieldModal from "./addFieldModal";
+import useNodeList from "../../../../../store/nodeList";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -17,6 +18,7 @@ interface ViewProps {
 function StartNodePanel(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
   const [nodeLabel, setNodeLabel] = useState("");
+  const updateNodeData = useNodeList((s) => s.updateNodeData);
   const [fields, setFields] = useState<Field[]>([]);
   const [addFieldModalProps, setAddFieldModalProps] = useState<{
     isOpen: boolean;
@@ -26,6 +28,14 @@ function StartNodePanel(props: ViewProps) {
     isOpen: false,
     type: "add",
   });
+
+  const handleAddFiledOk = (field: Field) => {
+    if (addFieldModalProps.type === "add") {
+      const newFields = [{ ...field }, ...fields];
+      updateNodeData(newFields, "nodeConfig.fields", nodeInfo.id);
+      setFields([...newFields]);
+    }
+  };
 
   const handleAdd = () => {
     setAddFieldModalProps({ isOpen: true, type: "add" });
@@ -121,6 +131,7 @@ function StartNodePanel(props: ViewProps) {
         }}
         onOk={(item) => {
           console.log(item);
+          handleAddFiledOk(item);
           setAddFieldModalProps((pre) => ({ ...pre, isOpen: false }));
         }}
       />

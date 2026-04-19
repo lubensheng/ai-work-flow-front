@@ -2,6 +2,7 @@ import useNodeList from "../../../../store/nodeList";
 import { NODE_TYPE } from "../../constants";
 import styles from "./right.module.less";
 import AgentNodePanel from "./rightComponent/agentNodePanel";
+import ConditionNodePanel from "./rightComponent/conditionNodePanel";
 import EndNodePanel from "./rightComponent/endNodePanel";
 import StartNodePanel from "./rightComponent/startNodePanel";
 import type { ReactNode } from "react";
@@ -13,8 +14,11 @@ function RightPanel() {
     [NODE_TYPE.START_NODE]: (
       <StartNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
     ),
-    [NODE_TYPE.AGENT_NODE]: <AgentNodePanel />,
+    [NODE_TYPE.AGENT_NODE]: (
+      <AgentNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
+    ),
     [NODE_TYPE.END_NODE]: <EndNodePanel />,
+    [NODE_TYPE.CONDITION_NODE]: <ConditionNodePanel />,
   };
 
   return <div className={styles["container"]}>{dom[selectNodeInfo.type]}</div>;

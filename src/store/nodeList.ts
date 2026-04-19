@@ -6,6 +6,7 @@ import {
   SOURCE_HANDLE_ID_MAP,
   START_NODE_Id,
 } from "../pages/createWorkFlow/constants";
+import _ from "lodash";
 import type { NodeChange } from "@xyflow/react";
 import type { Field } from "../pages/createWorkFlow/type";
 
@@ -57,6 +58,13 @@ type NodeData = {
   };
 };
 
+type ValueOf<T> = T[keyof T];
+type KeyOf<T> = keyof T;
+
+type NodeDataKey = KeyOf<NodeData> | string;
+
+type NodeDataValueType = ValueOf<NodeData> | Field[];
+
 export type NodeItem = {
   id: string;
   position: { x: number; y: number };
@@ -87,6 +95,11 @@ type Actions = {
   getSelectNodeInfo: () => NodeItem;
   setSelectNode: (nodeId: string) => void;
   updateEdgeShowRelateNode: (nodeId?: string) => void;
+  updateNodeData: (
+    data: NodeDataValueType,
+    type: NodeDataKey,
+    nodeId: string
+  ) => void;
 };
 
 export const edgeIdPrefix = "edge-el";
@@ -345,6 +358,21 @@ const useNodeList = create<State & Actions>()(
           return {
             ...pre,
             edgeList: newEdgeList,
+          };
+        });
+      },
+      updateNodeData(data, type, nodeId) {
+        set((state) => {
+          const newNodeList = [...state.nodeList];
+          newNodeList.forEach((item) => {
+            if (item.id === nodeId) {
+              _.set(item.data, type, data);
+            }
+          });
+
+          return {
+            ...state,
+            nodeList: newNodeList,
           };
         });
       },

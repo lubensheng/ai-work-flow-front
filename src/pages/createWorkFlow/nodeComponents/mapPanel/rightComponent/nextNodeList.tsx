@@ -5,6 +5,7 @@ import type { NodeItem } from "../../../../../store/nodeList";
 import { NODE_TYPE_ICON, type NODE_TYPE } from "../../../constants";
 import { useReactFlow } from "@xyflow/react";
 import useClickAddPositionInfo from "../../../../../store/clickAddPositionInfo";
+import useNodeList from "../../../../../store/nodeList";
 
 interface ViewProps {
   currentNodeInfo: NodeItem;
@@ -19,6 +20,11 @@ function NextNodeList(props: ViewProps) {
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (s) => s.setCurrentNodeInfo
   );
+  const setSelectNode = useNodeList((s) => s.setSelectNode);
+
+  const handleClickSubNode = (nodeInfo: NodeItem) => {
+    setSelectNode(nodeInfo.id);
+  };
 
   return (
     <div style={{ display: "flex", marginTop: "10px", position: "relative" }}>
@@ -33,7 +39,14 @@ function NextNodeList(props: ViewProps) {
       <div className={styles["right-line"]}></div>
       <div className={styles["right-content-container"]}>
         {getChildrenNodeInfo(childrenIds, nodeList).map((item) => (
-          <div key={item.id} className={styles.item}>
+          <div
+            key={item.id}
+            className={styles.item}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClickSubNode(item);
+            }}
+          >
             <img
               src={NODE_TYPE_ICON[item.type]}
               className={commonStyles["header-icon"]}
