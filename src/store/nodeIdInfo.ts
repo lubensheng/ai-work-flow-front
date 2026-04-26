@@ -7,6 +7,7 @@ type State = {
   [NODE_TYPE.START_NODE]: number;
   [NODE_TYPE.END_NODE]: number;
   [NODE_TYPE.CONDITION_NODE]: number;
+  [NODE_TYPE.ANNOTATION_NODE]: number;
 };
 
 const initState = {
@@ -14,6 +15,7 @@ const initState = {
   [NODE_TYPE.START_NODE]: 2,
   [NODE_TYPE.END_NODE]: 2,
   [NODE_TYPE.CONDITION_NODE]: 2,
+  [NODE_TYPE.ANNOTATION_NODE]: 2,
 };
 
 type Action = {

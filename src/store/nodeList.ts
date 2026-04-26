@@ -80,6 +80,7 @@ type State = {
   nodeList: NodeItem[];
   edgeList: EdgeItem[];
   selectNodeInfo: NodeItem;
+  currentPanelAddNode?: NodeItem;
 };
 
 type Actions = {
@@ -102,6 +103,12 @@ type Actions = {
     data: NodeDataValueType,
     type: NodeDataKey,
     nodeId: string
+  ) => void;
+  setCurrentPanelAddNode: (node: NodeItem) => void;
+  clearCurrentPanelAddNode: () => void;
+  updateNodePostionByNodeId: (
+    nodeId: string,
+    position: { x: number; y: number }
   ) => void;
 };
 
@@ -378,6 +385,37 @@ const useNodeList = create<State & Actions>()(
             nodeList: newNodeList,
           };
         });
+      },
+      setCurrentPanelAddNode(node) {
+        set((s) => {
+          const { nodeList } = s;
+          const newNodeList = [...nodeList, node];
+          return {
+            ...s,
+            nodeList: newNodeList,
+            currentPanelAddNode: node,
+          };
+        });
+      },
+      updateNodePostionByNodeId(nodeId, position) {
+        set((pre) => {
+          const newNodeList = [...pre.nodeList].map((item) => {
+            return {
+              ...item,
+              position: item.id === nodeId ? { ...position } : item.position,
+            };
+          });
+          return {
+            ...pre,
+            nodeList: newNodeList,
+          };
+        });
+      },
+      clearCurrentPanelAddNode() {
+        set((pre) => ({
+          ...pre,
+          currentPanelAddNode: undefined,
+        }));
       },
     })
   )

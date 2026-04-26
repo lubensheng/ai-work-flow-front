@@ -8,18 +8,21 @@ enum NODE_TYPE {
   AGENT_NODE = "AGENT_NODE",
   END_NODE = "END_NODE",
   CONDITION_NODE = "CONDITION_NODE",
+  ANNOTATION_NODE = "ANNOTATION_NODE",
 }
 
 const AGENT_NODE_PREFIX = "agent-node";
 const START_NODE_Id = "start";
 const END_NODE_ID = "end";
 const CONDITION_NODE_PREFIX = "condition-node";
+const ANNOTATION_NODE_PREFIX = "annotation-node";
 
 const NODE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.AGENT_NODE]: AGENT_NODE_PREFIX,
   [NODE_TYPE.START_NODE]: START_NODE_Id,
   [NODE_TYPE.END_NODE]: END_NODE_ID,
   [NODE_TYPE.CONDITION_NODE]: CONDITION_NODE_PREFIX,
+  [NODE_TYPE.ANNOTATION_NODE]: ANNOTATION_NODE_PREFIX,
 };
 
 const NODE_TITLE_PREFIX_MAP: Record<NODE_TYPE, string> = {
@@ -27,6 +30,7 @@ const NODE_TITLE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.START_NODE]: "开始",
   [NODE_TYPE.END_NODE]: "结束",
   [NODE_TYPE.CONDITION_NODE]: "",
+  [NODE_TYPE.ANNOTATION_NODE]: "",
 };
 
 const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
@@ -34,6 +38,7 @@ const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.START_NODE]: "start",
   [NODE_TYPE.END_NODE]: "end",
   [NODE_TYPE.CONDITION_NODE]: "condition-handle",
+  [NODE_TYPE.ANNOTATION_NODE]: "annotation-handle",
 };
 
 const NODE_TYPE_ICON: Record<NODE_TYPE, string> = {
@@ -41,6 +46,7 @@ const NODE_TYPE_ICON: Record<NODE_TYPE, string> = {
   [NODE_TYPE.START_NODE]: StartNodeSvg,
   [NODE_TYPE.END_NODE]: EndNodeSvg,
   [NODE_TYPE.CONDITION_NODE]: ConditionSvg,
+  [NODE_TYPE.ANNOTATION_NODE]: "",
 };
 
 export {

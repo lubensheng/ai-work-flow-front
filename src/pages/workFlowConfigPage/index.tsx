@@ -5,11 +5,13 @@ import DialogueSvg from "../../assets/dialogue.svg";
 import classNames from "classnames";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router";
+import useAppNodeIdInfo from "../../store/appNodeInfo";
 
 type AppType = "workFlow" | "dialogue";
 
 function WorkFlowConfigPage() {
   const [currentType, setCurrentType] = useState<AppType>("workFlow");
+  const setAppNodeInfo = useAppNodeIdInfo((s) => s.setAppNodeInfo);
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const appName = Form.useWatch("appName", form);
@@ -79,6 +81,11 @@ function WorkFlowConfigPage() {
                   type="primary"
                   disabled={!appName}
                   onClick={() => {
+                    setAppNodeInfo({
+                      appType: currentType,
+                      appName: form.getFieldValue("appName"),
+                      appDesc: form.getFieldValue("appDesc"),
+                    });
                     navigate("/workFlow/createWorkFlow", { replace: true });
                   }}
                 >

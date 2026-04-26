@@ -1,5 +1,6 @@
 .draw-flow-container {
   height: calc(100vh - 60px);
+  display: flex;
 }
 
 .flow-operation-container {
@@ -26,4 +27,36 @@
     width: 16px;
     height: 16px;
   }
+}
+
+.app-info {
+  width: 215px;
+  background-color: #fff;
+
+  .app-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #354052;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .app-desc {
+    margin-top: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #676f83;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-grab {
+  cursor: grab;
 }
