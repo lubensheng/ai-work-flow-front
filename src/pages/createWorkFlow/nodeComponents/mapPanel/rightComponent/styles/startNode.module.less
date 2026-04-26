@@ -1,5 +1,6 @@
 .field-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   border: 0.5px solid rgb(16 24 40 / 0.08);
   color: #354052;
@@ -18,9 +19,31 @@
   --tw-shadow-colored: 0px 1px 2px 0px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  &:hover {
-    background-color: rgb(9 9 11 / 0.03);
+
+  .field-content {
+    display: block;
   }
+  .field-op {
+    display: none;
+  }
+
+  &:hover {
+    --tw-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06),
+      0px 4px 8px -2px rgba(16, 24, 40, 0.1);
+    --tw-shadow-colored: 0px 2px 4px -2px var(--tw-shadow-color),
+      0px 4px 8px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    .field-content {
+      display: none;
+    }
+    .field-op {
+      display: flex;
+    }
+  }
+}
+
+.field-op {
 }
 
 .add-field {

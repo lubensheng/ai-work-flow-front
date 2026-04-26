@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import startNodeSvg from "../../../../../assets/startNode.svg";
+import EditSvg from "../../../../../assets/edit.svg";
+import DeleteSvg from "../../../../../assets/delete.svg";
 import commonStyles from "./styles/common.module.less";
 import styles from "./styles/startNode.module.less";
 import type { NodeItem } from "../../../../../store/nodeList";
 import classNames from "classnames";
-import { Tabs } from "antd";
+import { Popconfirm, Tabs } from "antd";
 import NextNodeList from "./nextNodeList";
 import type { Field } from "../../../type";
 import AddFieldModal from "./addFieldModal";
@@ -34,6 +36,12 @@ function StartNodePanel(props: ViewProps) {
       const newFields = [{ ...field }, ...fields];
       updateNodeData(newFields, "nodeConfig.fields", nodeInfo.id);
       setFields([...newFields]);
+    } else if (addFieldModalProps.type === "edit") {
+      const newFields = [...fields].map((item) => {
+        return item.key === field.key ? { ...item, ...field } : { ...item };
+      });
+      updateNodeData(newFields, "nodeConfig.fields", nodeInfo.id);
+      setFields([...newFields]);
     }
   };
 
@@ -45,6 +53,16 @@ function StartNodePanel(props: ViewProps) {
     setNodeLabel(props.nodeInfo.data.title);
     setFields(props.nodeInfo.data.nodeConfig?.fields || []);
   }, [props.nodeInfo]);
+
+  const handleEditField = (record: Field) => {
+    setAddFieldModalProps({ isOpen: true, type: "edit", initValues: record });
+  };
+
+  const handelDeleteField = (record: Field) => {
+    const newFields = [...fields].filter((item) => item.name !== record.name);
+    updateNodeData(newFields, "nodeConfig.fields", nodeInfo.id);
+    setFields([...newFields]);
+  };
 
   return (
     <div>
@@ -94,7 +112,50 @@ function StartNodePanel(props: ViewProps) {
                   <div>
                     {fields.map((item) => (
                       <div key={item.key} className={styles["field-item"]}>
-                        {item.showName}
+                        <div>
+                          <span>{item.showName}</span>
+                          {!item.isSystemField && (
+                            <span
+                              className="inline-block ml-2.5"
+                              style={{ color: "#676f83" }}
+                            >
+                              {item.name}
+                            </span>
+                          )}
+                        </div>
+
+                        <div
+                          style={{ color: "#676f83" }}
+                          className={
+                            item.isSystemField ? "" : styles["field-content"]
+                          }
+                        >
+                          {item.fieldType}
+                        </div>
+                        {!item.isSystemField && (
+                          <div
+                            className={classNames(styles["field-op"], "flex")}
+                          >
+                            <img
+                              src={EditSvg}
+                              className="w-4 h-4 cursor-pointer"
+                              onClick={() => {
+                                handleEditField(item);
+                              }}
+                            />
+                            <Popconfirm
+                              title="是否要删除？"
+                              onConfirm={() => {
+                                handelDeleteField(item);
+                              }}
+                            >
+                              <img
+                                src={DeleteSvg}
+                                className="w-4 h-4 cursor-pointer ml-2.5"
+                              />
+                            </Popconfirm>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -126,9 +187,11 @@ function StartNodePanel(props: ViewProps) {
       <AddFieldModal
         isOpen={addFieldModalProps.isOpen}
         type={addFieldModalProps.type}
+        initValues={addFieldModalProps.initValues}
         onCancel={() => {
           setAddFieldModalProps((pre) => ({ ...pre, isOpen: false }));
         }}
+        allFields={fields}
         onOk={(item) => {
           console.log(item);
           handleAddFiledOk(item);

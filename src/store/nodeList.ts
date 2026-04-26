@@ -16,18 +16,21 @@ export const initStartFields: Field[] = [
     fieldType: "text",
     name: "sys.user_id",
     showName: "sys.user_id",
+    isSystemField: true,
   },
   {
     key: "sys.app_id",
     fieldType: "text",
     name: "sys.app_id",
     showName: "sys.app_id",
+    isSystemField: true,
   },
   {
     key: "sys.flow_name",
     fieldType: "text",
     name: "sys.flow_name",
     showName: "sys.flow_name",
+    isSystemField: true,
   },
 ];
 

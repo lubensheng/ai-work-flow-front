@@ -12,22 +12,29 @@ import type { Field } from "../../../../type";
 import styles from "./index.module.less";
 import { FIELD_LIST } from "./constant";
 import { useEffect } from "react";
+import { uuid } from "../utils";
 
 interface ViewProps {
   isOpen: boolean;
   type: "edit" | "add";
+  allFields: Field[];
   initValues?: Field;
   onCancel: () => void;
   onOk: (item: Field) => void;
 }
 
 function AddFieldModal(props: ViewProps) {
-  const { isOpen, type, onCancel, initValues, onOk } = props;
+  const { isOpen, type, onCancel, initValues, onOk, allFields } = props;
   const [form] = Form.useForm();
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
+      if (type === "add") {
+        values.key = uuid();
+      } else {
+        values.key = initValues?.key;
+      }
       onOk(values);
     } catch (e) {
       console.error(e);
@@ -45,7 +52,7 @@ function AddFieldModal(props: ViewProps) {
       form.resetFields();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, initValues]);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -83,7 +90,27 @@ function AddFieldModal(props: ViewProps) {
           <Form.Item
             name="name"
             label="变量名称"
-            rules={[{ required: true, message: "变量名称必填" }]}
+            rules={[
+              {
+                required: true,
+                validator: (_r, v) => {
+                  if (!v) {
+                    return Promise.reject(new Error("变量名称必填"));
+                  }
+                  if (initValues) {
+                    return allFields
+                      .filter((item) => item.key !== initValues.key)
+                      .some((item) => item.name === v)
+                      ? Promise.reject(new Error("变量名称不能重复"))
+                      : Promise.resolve();
+                  }
+                  if (allFields.some((item) => item.name === v)) {
+                    return Promise.reject(new Error("变量名称不能重复"));
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <Input />
           </Form.Item>

@@ -13,6 +13,7 @@ interface Field {
   showName: string;
   maxLength?: number;
   defaultValue?: string;
+  isSystemField?: boolean;
 }
 
 export type { NodeProps, Field };

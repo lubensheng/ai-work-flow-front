@@ -16,4 +16,6 @@ const getChildrenNodeInfo = (
   return ans;
 };
 
-export { getChildrenNodeInfo };
+const uuid = () => `${Date.now()}-${Math.floor(Math.random() * 999999)}`;
+
+export { getChildrenNodeInfo, uuid };

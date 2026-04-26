@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Headers from "../layouts/header";
 import { getUserInfo } from "../utils";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import "./base.css";
 
 function AiWorkFlow() {
   const navigate = useNavigate();
