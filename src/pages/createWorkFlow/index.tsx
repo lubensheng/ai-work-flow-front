@@ -107,6 +107,7 @@ function CreateWorkFlow() {
         nodes={nodes}
         edges={edges}
         ref={ref}
+        style={{ cursor: 'pointer' }}
         noDragClassName={
           currentPanelAddNode ? styles["cursor-pointer"] : styles["cursor-grab"]
         }
@@ -128,6 +129,16 @@ function CreateWorkFlow() {
           setCurrentNodeInfo({
             currentAddNodeInfo: {},
           });
+          if (currentPanelAddNode) {
+            const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
+            const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
+            if (reatFlowDom?.style.cursor === 'pointer') {
+              reatFlowDom.style.cursor = 'grab';
+            }
+            if (reatFlowNodeDom?.style.cursor === 'pointer') {
+              reatFlowNodeDom.style.cursor = 'grab';
+            }
+          }
           clearCurrentPanelAddNode();
           setEdges((edges) => {
             return edges.map((item) => {

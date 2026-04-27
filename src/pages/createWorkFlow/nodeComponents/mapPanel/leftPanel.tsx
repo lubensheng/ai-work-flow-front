@@ -35,11 +35,31 @@ function LeftPanel() {
       y: e.clientY,
     });
     console.log(flowPosition);
+    const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
+    const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
+    if (reatFlowDom?.style.cursor !== 'pointer') {
+      reatFlowDom.style.cursor = 'pointer';
+    }
+    if (reatFlowNodeDom?.style.cursor !== 'pointer') {
+      reatFlowNodeDom.style.cursor = 'pointer';
+    }
     updateNodePostionByNodeId(currentPanelAddNode?.id, flowPosition);
   };
 
   const handleWindowCLick = () => {
+    if (currentPanelAddNode) {
+      const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
+      const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
+      if (reatFlowDom?.style.cursor === 'pointer') {
+        reatFlowDom.style.cursor = 'grab';
+      }
+      if (reatFlowNodeDom?.style.cursor === 'pointer') {
+        reatFlowNodeDom.style.cursor = 'grab';
+      }
+    }
+   
     clearCurrentPanelAddNode();
+    
   };
 
   useEffect(() => {

@@ -14,6 +14,7 @@ function AiWorkFlow() {
       navigate("/login", { replace: true });
     } else {
       setIsLogin(true);
+      
     }
   };
   useEffect(() => {
