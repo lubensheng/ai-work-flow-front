@@ -17,7 +17,7 @@ function Headers(props: ViewProps) {
   const [activePath, setActivePath] = useState<Path>();
   useEffect(() => {
     const { pathname } = location;
-    setActivePath(pathname.indexOf("workFlow") ? "workFlow" : "myWorkFlow");
+    setActivePath(pathname.indexOf("workFlow") > -1 ? "workFlow" : "myWorkFlow");
   }, [location]);
   return (
     <div className={styles["header-container"]}>
@@ -27,7 +27,7 @@ function Headers(props: ViewProps) {
           type={activePath === "workFlow" ? "primary" : "link"}
           onClick={() => {
             setActivePath("workFlow");
-            navigate("/workFlow", { replace: true });
+            navigate("/workFlow");
           }}
         >
           工作流程
@@ -36,7 +36,7 @@ function Headers(props: ViewProps) {
           type={activePath === "myWorkFlow" ? "primary" : "link"}
           onClick={() => {
             setActivePath("myWorkFlow");
-            navigate("/myWorkFlow", { replace: true });
+            navigate("/myWorkFlow");
           }}
         >
           我的工作流程
