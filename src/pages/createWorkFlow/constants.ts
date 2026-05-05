@@ -66,6 +66,26 @@ const ANNOTATION_BG_COLOR = [
 ];
 
 const ANNOTATION_DRAG_HANDLE = "ANNOTATION_DRAG_HANDLE";
+const ANNOTATION_FONT_SIZE = [
+  {
+    label: "小",
+    value: "12px",
+  },
+  {
+    label: "中",
+    value: "14px",
+  },
+  {
+    label: "大",
+    value: "16px",
+  },
+];
+
+const ANNOTATION_FONT_SIZE_LABEL: Record<string, string> = {
+  "12px": "小",
+  "14px": "中",
+  "16px": "大",
+};
 
 export {
   NODE_TYPE,
@@ -79,4 +99,6 @@ export {
   LABEL_CONFIG,
   ANNOTATION_BG_COLOR,
   ANNOTATION_DRAG_HANDLE,
+  ANNOTATION_FONT_SIZE,
+  ANNOTATION_FONT_SIZE_LABEL,
 };

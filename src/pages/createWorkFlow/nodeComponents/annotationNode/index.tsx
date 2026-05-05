@@ -7,8 +7,8 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
-
 import { BulletList, ListItem } from "@tiptap/extension-list";
+import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import Text from "@tiptap/extension-text";
 
@@ -23,6 +23,8 @@ const extensions = [
   Paragraph,
   BulletList,
   ListItem,
+  TextStyle,
+  FontSize,
 ];
 
 function AnnotationNode(props: NodeItem) {

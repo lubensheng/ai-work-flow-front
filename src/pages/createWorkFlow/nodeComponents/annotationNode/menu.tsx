@@ -5,12 +5,18 @@ import weightFont from "../../../../assets/weightFont.svg";
 import toggleItalicFont from "../../../../assets/toggleItalicFont.svg";
 import deleteFont from "../../../../assets/deleteFont.svg";
 import listFormatFont from "../../../../assets/listFormatFont.svg";
+import sureSvg from "../../../../assets/sure.svg";
+import fontSizeSvg from "../../../../assets/fontSize.svg";
 import linkFont from "../../../../assets/linkFont.svg";
 import styles from "./index.module.less";
 import { Popover, Tooltip } from "antd";
 import classNames from "classnames";
-import { ANNOTATION_BG_COLOR } from "../../constants";
-import type { RefObject } from "react";
+import {
+  ANNOTATION_BG_COLOR,
+  ANNOTATION_FONT_SIZE,
+  ANNOTATION_FONT_SIZE_LABEL,
+} from "../../constants";
+import { useState, type RefObject } from "react";
 
 export const MenuBar = ({
   editor,
@@ -19,6 +25,7 @@ export const MenuBar = ({
   editor: Editor | null;
   boxRef: RefObject<HTMLDivElement | null>;
 }) => {
+  const [currentFontSize, setCurrentFontSize] = useState<string>("14px");
   // const editorState = useEditorState({
   //   editor: editor as Editor,
   //   selector: menuBarStateSelector,
@@ -71,6 +78,43 @@ export const MenuBar = ({
             ></div>
           </div>
         </Popover>
+        <Popover
+          trigger="click"
+          placement="bottom"
+          content={
+            <div style={{ width: "120px" }}>
+              {ANNOTATION_FONT_SIZE.map((item) => (
+                <div
+                  key={item.value}
+                  className="cursor-pointer flex justify-between items-center"
+                  style={{ fontSize: item.value }}
+                  onClick={() => {
+                    editor.chain().focus().setFontSize(item.value).run();
+                    setCurrentFontSize(item.value);
+                  }}
+                >
+                  <span>{item.label}</span>
+                  {currentFontSize === item.value && (
+                    <img src={sureSvg} className="w-[16px] h-[16px]" />
+                  )}
+                </div>
+              ))}
+            </div>
+          }
+        >
+          <div
+            onClick={() => {
+              editor.commands.setBold();
+            }}
+            className="hover:bg-black/5 w-10 h-10 p-1 rounded-sm flex items-center justify-center cursor-pointer"
+          >
+            <img src={fontSizeSvg} className="w-[16px] h-[16px]" />
+            <span style={{ fontSize: currentFontSize }}>
+              {ANNOTATION_FONT_SIZE_LABEL[currentFontSize]}
+            </span>
+          </div>
+        </Popover>
+
         <div
           onClick={() => {
             editor.commands.setBold();
