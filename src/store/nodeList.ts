@@ -70,6 +70,7 @@ type NodeDataValueType = ValueOf<NodeData> | Field[];
 
 export type NodeItem = {
   id: string;
+  dragHandle?: string;
   position: { x: number; y: number };
   data: NodeData;
   type: NODE_TYPE;

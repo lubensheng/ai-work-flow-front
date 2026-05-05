@@ -49,6 +49,24 @@ const NODE_TYPE_ICON: Record<NODE_TYPE, string> = {
   [NODE_TYPE.ANNOTATION_NODE]: "",
 };
 
+const LABEL_CONFIG = {
+  "controls.zoomIn.ariaLabel": "放大",
+  "controls.zoomOut.ariaLabel": "缩小",
+  "controls.fitView.ariaLabel": "全屏",
+  "controls.interactive.ariaLabel": "交互开关",
+};
+
+const ANNOTATION_BG_COLOR = [
+  "#d1e9ff",
+  "#cff9fe",
+  "#dcfae6",
+  "#fef7c3",
+  "#fce7f6",
+  "#ece9fe",
+];
+
+const ANNOTATION_DRAG_HANDLE = "ANNOTATION_DRAG_HANDLE";
+
 export {
   NODE_TYPE,
   AGENT_NODE_PREFIX,
@@ -58,4 +76,7 @@ export {
   NODE_TITLE_PREFIX_MAP,
   NODE_TYPE_ICON,
   CONDITION_NODE_PREFIX,
+  LABEL_CONFIG,
+  ANNOTATION_BG_COLOR,
+  ANNOTATION_DRAG_HANDLE,
 };

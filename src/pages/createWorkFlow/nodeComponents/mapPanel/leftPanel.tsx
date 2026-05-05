@@ -5,7 +5,11 @@ import { useReactFlow } from "@xyflow/react";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import useNodeList, { type NodeItem } from "../../../../store/nodeList";
 import useNodeIdInfo from "../../../../store/nodeIdInfo";
-import { NODE_PREFIX_MAP, NODE_TYPE } from "../../constants";
+import {
+  ANNOTATION_DRAG_HANDLE,
+  NODE_PREFIX_MAP,
+  NODE_TYPE,
+} from "../../constants";
 import { useEffect } from "react";
 
 function LeftPanel() {
@@ -35,31 +39,38 @@ function LeftPanel() {
       y: e.clientY,
     });
     console.log(flowPosition);
-    const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
-    const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
-    if (reatFlowDom?.style.cursor !== 'pointer') {
-      reatFlowDom.style.cursor = 'pointer';
+    const rectFlowDom = document.querySelector(
+      ".react-flow__pane.draggable"
+    ) as HTMLDivElement;
+    const rectFlowNodeDom = document.querySelector(
+      `.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`
+    ) as HTMLDivElement;
+    if (rectFlowDom?.style.cursor !== "pointer" && rectFlowDom) {
+      rectFlowDom.style.cursor = "pointer";
     }
-    if (reatFlowNodeDom?.style.cursor !== 'pointer') {
-      reatFlowNodeDom.style.cursor = 'pointer';
+    if (rectFlowNodeDom?.style.cursor !== "pointer" && rectFlowNodeDom) {
+      rectFlowNodeDom.style.cursor = "pointer";
     }
     updateNodePostionByNodeId(currentPanelAddNode?.id, flowPosition);
   };
 
   const handleWindowCLick = () => {
     if (currentPanelAddNode) {
-      const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
-      const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
-      if (reatFlowDom?.style.cursor === 'pointer') {
-        reatFlowDom.style.cursor = 'grab';
+      const rectFlowDom = document.querySelector(
+        ".react-flow__pane.draggable"
+      ) as HTMLDivElement;
+      const rectFlowNodeDom = document.querySelector(
+        `.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`
+      ) as HTMLDivElement;
+      if (rectFlowDom?.style.cursor === "pointer" && rectFlowDom) {
+        rectFlowDom.style.cursor = "grab";
       }
-      if (reatFlowNodeDom?.style.cursor === 'pointer') {
-        reatFlowNodeDom.style.cursor = 'grab';
+      if (rectFlowNodeDom?.style.cursor === "pointer" && rectFlowNodeDom) {
+        rectFlowNodeDom.style.cursor = "grab";
       }
     }
-   
+
     clearCurrentPanelAddNode();
-    
   };
 
   useEffect(() => {
@@ -111,6 +122,7 @@ function LeftPanel() {
               select: false,
               nodeConfig: undefined,
             },
+            dragHandle: "." + ANNOTATION_DRAG_HANDLE,
             type: NODE_TYPE.ANNOTATION_NODE,
           };
           setCurrentPanelAddNode(nodeInfo);

@@ -11,7 +11,7 @@ import {
   type NodeTypes,
 } from "@xyflow/react";
 import styles from "./index.module.less";
-import { NODE_TYPE } from "./constants";
+import { LABEL_CONFIG, NODE_TYPE } from "./constants";
 import useClickAddPositionInfo from "../../store/clickAddPositionInfo";
 import StartNode from "./nodeComponents/startNode";
 import AgentNode from "./nodeComponents/agentNode";
@@ -107,7 +107,8 @@ function CreateWorkFlow() {
         nodes={nodes}
         edges={edges}
         ref={ref}
-        style={{ cursor: 'pointer' }}
+        ariaLabelConfig={LABEL_CONFIG}
+        style={{ cursor: "pointer" }}
         noDragClassName={
           currentPanelAddNode ? styles["cursor-pointer"] : styles["cursor-grab"]
         }
@@ -130,13 +131,20 @@ function CreateWorkFlow() {
             currentAddNodeInfo: {},
           });
           if (currentPanelAddNode) {
-            const reatFlowDom = document.querySelector('.react-flow__pane.draggable') as HTMLDivElement;
-            const reatFlowNodeDom = document.querySelector(`.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`) as HTMLDivElement;
-            if (reatFlowDom?.style.cursor === 'pointer') {
-              reatFlowDom.style.cursor = 'grab';
+            const rectFlowDom = document.querySelector(
+              ".react-flow__pane.draggable"
+            ) as HTMLDivElement;
+            const rectFlowNodeDom = document.querySelector(
+              `.react-flow__node.draggable[data-id=${currentPanelAddNode.id}]`
+            ) as HTMLDivElement;
+            if (rectFlowDom?.style.cursor === "pointer" && rectFlowDom) {
+              rectFlowDom.style.cursor = "grab";
             }
-            if (reatFlowNodeDom?.style.cursor === 'pointer') {
-              reatFlowNodeDom.style.cursor = 'grab';
+            if (
+              rectFlowNodeDom?.style.cursor === "pointer" &&
+              rectFlowNodeDom
+            ) {
+              rectFlowNodeDom.style.cursor = "grab";
             }
           }
           clearCurrentPanelAddNode();
@@ -213,6 +221,8 @@ function CreateWorkFlow() {
           });
         }}
         proOptions={{ hideAttribution: true }}
+        nodeDragThreshold={1}
+        autoPanOnNodeFocus={false}
       >
         <Controls />
         <Background variant={BackgroundVariant.Dots} />
