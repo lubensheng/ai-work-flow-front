@@ -18,6 +18,7 @@ function Login() {
     <div>
       <div className={styles["form-container"]}>
         <Form form={form} className={styles.form}>
+          <h2 className={styles.title}>AI 工作平台</h2>
           <Form.Item
             name="account"
             label="账号"
