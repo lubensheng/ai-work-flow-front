@@ -15,6 +15,7 @@ function Headers(props: ViewProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [activePath, setActivePath] = useState<Path>();
+  const [activePathLeft, setActivePathLeft] = useState('-10px')
   useEffect(() => {
     const { pathname } = location;
     setActivePath(pathname.indexOf("workFlow") > -1 ? "workFlow" : "myWorkFlow");
@@ -22,10 +23,13 @@ function Headers(props: ViewProps) {
   return (
     <div className={styles["header-container"]}>
       <div className={styles["account-info"]}>{userInfo.account}的工作空间</div>
-      <div style={{ display: "flex", gap: "16px" }}>
+      <div style={{ display: "flex", gap: "16px", position: 'relative' }}>
         <Button
-          type={activePath === "workFlow" ? "primary" : "link"}
-          onClick={() => {
+          type="link"
+          style={{ color: '#101828' }}
+          onClick={(e) => {
+            console.log(e.target)
+            setActivePathLeft('-10px');
             setActivePath("workFlow");
             navigate("/workFlow");
           }}
@@ -33,14 +37,30 @@ function Headers(props: ViewProps) {
           工作流程
         </Button>
         <Button
-          type={activePath === "myWorkFlow" ? "primary" : "link"}
-          onClick={() => {
+          type="link"
+          style={{ color: '#101828' }}
+          onClick={(e) => {
+            console.log(e.target);
+            setActivePathLeft('105px');
             setActivePath("myWorkFlow");
             navigate("/myWorkFlow");
           }}
         >
           我的工作流程
         </Button>
+        <div style={{
+          transition: 'left 0.3s',
+          position: 'absolute',
+          width: '116px',
+          height: '32px',
+          left: activePathLeft,
+          pointerEvents: 'none',
+          background: '#f0f6ff',
+          borderRadius: '12px',
+          boxShadow:' 0 2px 10px rgba(24, 144, 255, 0.08)',
+          zIndex: '-1'
+        }}
+        ></div>
       </div>
       <div>
         <Popover
