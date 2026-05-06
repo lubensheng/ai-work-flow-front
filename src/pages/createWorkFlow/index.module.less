@@ -30,9 +30,9 @@
 }
 
 .app-info {
-  width: 215px;
   background-color: #fff;
-
+  position: relative;
+  transition: width 0.5s;
   .app-name {
     font-size: 14px;
     font-weight: 600;
@@ -50,6 +50,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  .fold-panel {
+    position: absolute;
+    
   }
 }
 

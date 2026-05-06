@@ -26,6 +26,7 @@ import ConditionNode from "./nodeComponents/conditionNode";
 import useAppNodeIdInfo, { type AppNodeItem } from "../../store/appNodeInfo";
 import RobotSvg from "../../assets/robot.svg";
 import SetSvg from "../../assets/setSvg.svg";
+import FlowInfoMenuSvg from "../../assets/flowInfoMenu.svg";
 import SetAppNodeInfoModal from "./setAppNodeInfoModal";
 import AnnotationNode from "./nodeComponents/annotationNode";
 
@@ -44,6 +45,7 @@ const edgeTypes = {
 function CreateWorkFlow() {
   const nodeList = useNodeList((state) => state.nodeList);
   const edgeList = useNodeList((state) => state.edgeList);
+  const [appInfoWidth, setAppInfoWidth] = useState('215px');
   const ref = useRef(null);
   const [appNodeInfoProps, setAppNodeInfoProps] = useState<{
     isOpen: boolean;
@@ -83,7 +85,7 @@ function CreateWorkFlow() {
   return (
     <div className={styles["draw-flow-container"]}>
       {appNodeInfo && (
-        <div className={styles["app-info"]}>
+        <div className={styles["app-info"]} style={{ width: appInfoWidth }}>
           <div className="p-2">
             <div className="flex justify-between items-center">
               <img src={RobotSvg} className="w-10 h-10" />
@@ -100,6 +102,23 @@ function CreateWorkFlow() {
               <div className={styles["app-name"]}>{appNodeInfo.appName}</div>
               <div className={styles["app-desc"]}>{appNodeInfo.appDesc}</div>
             </div>
+          </div>
+          <div
+            className={styles['fold-panel']}
+            style={{
+              top: '15px',
+              right: '-28px',
+              zIndex: 99999999999
+            }}
+          >
+            <img
+              onClick={() => {
+                setAppInfoWidth(pre => pre === '0px' ? '215px' : '0px')
+              }} 
+              src={FlowInfoMenuSvg}
+              className="w-[24px] h-[24px] cursor-pointer"
+              style={{ transform: `rotate(${appInfoWidth === '0px' ? '180' : '0'}deg)`,  }}
+            />
           </div>
         </div>
       )}

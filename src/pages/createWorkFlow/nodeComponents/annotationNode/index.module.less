@@ -27,6 +27,14 @@
       ul {
         padding-left: 16px !important;
       }
+
+      & p.is-editor-empty:first-child::before {
+        content: attr(data-placeholder) !important;
+        color: #9ca3af !important;
+        @apply text-gray-400;
+        pointer-events: none;
+        user-select: none;
+      }
     }
   }
 }

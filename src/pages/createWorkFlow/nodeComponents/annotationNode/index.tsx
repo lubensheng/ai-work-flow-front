@@ -7,6 +7,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
+import Placeholder from '@tiptap/extension-placeholder' // 👈 加这个
 import { BulletList, ListItem } from "@tiptap/extension-list";
 import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -16,15 +17,19 @@ import { MenuBar } from "./menu";
 import { ANNOTATION_DRAG_HANDLE } from "../../constants";
 
 const extensions = [
+  TextStyle,
+  FontSize,
   TextStyleKit,
+  Placeholder.configure({
+    placeholder: '请输入内容...',
+    
+  }),
   StarterKit,
   Document,
   Text,
   Paragraph,
   BulletList,
   ListItem,
-  TextStyle,
-  FontSize,
 ];
 
 function AnnotationNode(props: NodeItem) {
@@ -41,13 +46,14 @@ function AnnotationNode(props: NodeItem) {
         "bg-(--annotation-bg-color)!"
       )}
       ref={boxRef}
-      draggable={false}
     >
       <MenuBar editor={editor} boxRef={boxRef} />
-      <div className="nodrag nopan nowheel cursor-default">
-        <EditorContent editor={editor} className="nodrag nopan" />
+      <div className="flex flex-col h-full">
+        <div className="nowheel cursor-text">
+          <EditorContent editor={editor} />
+        </div>
+        <div className={ANNOTATION_DRAG_HANDLE} style={{ flex: "1" }}></div>
       </div>
-      <div className={ANNOTATION_DRAG_HANDLE} style={{ height: "40px" }}></div>
     </div>
   );
 }

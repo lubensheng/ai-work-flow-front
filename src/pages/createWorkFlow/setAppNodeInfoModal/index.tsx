@@ -36,6 +36,7 @@ function SetAppNodeInfoModal(props: ViewProps) {
   return (
     <Modal
       open={isOpen}
+      onCancel={onCancel}
       footer={
         <div>
           <Button onClick={onCancel}>取消</Button>
@@ -48,17 +49,18 @@ function SetAppNodeInfoModal(props: ViewProps) {
           </Button>
         </div>
       }
+      width={500}
     >
-      <Form form={form} labelCol={{ flex: "80px" }}>
+      <Form form={form} labelCol={{ flex: "80px" }} style={{ marginTop: '16px' }}>
         <Form.Item
           label="应用名称"
           name="appName"
           rules={[{ required: true, message: "应用名称不能为空" }]}
         >
-          <Input placeholder="请输入应用名称" />
+          <Input placeholder="请输入应用名称" style={{ width: '95%' }} />
         </Form.Item>
         <Form.Item label="描述" name="appDesc">
-          <Input.TextArea placeholder="请输入" />
+          <Input.TextArea placeholder="请输入" style={{ width: '95%' }} />
         </Form.Item>
       </Form>
     </Modal>
