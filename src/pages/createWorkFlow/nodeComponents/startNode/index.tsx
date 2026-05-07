@@ -88,12 +88,12 @@ function StartNode(props: NodeItem) {
           background: "none",
           border: "none",
         }}
+        onClick={handleAddNode}
       >
         <div className={commonStyles["add-node-icon-container"]}>
           <img
             src={addNodeSvg}
-            className={commonStyles["add-node-icon"]}
-            onClick={handleAddNode}
+            className={classNames(commonStyles["add-node-icon"], "cursor-pointer")}
           />
         </div>
       </Handle>

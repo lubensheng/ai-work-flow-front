@@ -193,6 +193,10 @@ function CreateWorkFlow() {
             });
           });
         }}
+        onConnectEnd={(e, connecState) => {
+          console.log(e);
+          console.log(connecState)
+        }}
         attributionPosition="top-right"
         className="overview"
         nodeTypes={nodeTypes as unknown as NodeTypes}

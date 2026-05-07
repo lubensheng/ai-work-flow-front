@@ -87,33 +87,33 @@ function AgentNode(props: NodeItem) {
             border: "none",
           }}
       >
-          <div
-            style={{
-              width: "1px",
-              height: "9px",
-              backgroundColor: "#1296db",
-              position: "absolute",
-              top: "-3px",
-              left: "1px",
-            }}
-          ></div>
+        <div
+          style={{
+            width: "1px",
+            height: "9px",
+            backgroundColor: "#1296db",
+            position: "absolute",
+            top: "-3px",
+            left: "1px",
+          }}
+        ></div>
       </Handle>
       <Handle
-          type="source"
-          position={Position.Right}
-          id={`${SOURCE_HANDLE_ID_MAP.AGENT_NODE}-${props.id}`}
-          style={{
-            background: "none",
-            border: "none",
-          }}
-        >
-          <div className={commonStyles["add-node-icon-container"]}>
-            <img
-              onClick={handleAddNode}
-              src={addNodeSvg}
-              className={classNames(commonStyles["add-node-icon"])}
-            />
-          </div>
+        type="source"
+        position={Position.Right}
+        id={`${SOURCE_HANDLE_ID_MAP.AGENT_NODE}-${props.id}`}
+        style={{
+          background: "none",
+          border: "none",
+        }}
+        onClick={handleAddNode}
+      >
+        <div className={commonStyles["add-node-icon-container"]}>
+          <img
+            src={addNodeSvg}
+            className={classNames(commonStyles["add-node-icon"], "cursor-pointer")}
+          />
+        </div>
       </Handle>
     </>
    
