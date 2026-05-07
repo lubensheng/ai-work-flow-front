@@ -6,7 +6,7 @@ import startNodeSvg from "../../../../assets/startNode.svg";
 import classNames from "classnames";
 import { memo } from "react";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
-import { SOURCE_HANDLE_ID_MAP } from "../../constants";
+import { SOURCE_HANDLE_ID_MAP, START_NODE_DRAG_HANDLE } from "../../constants";
 import type { NodeItem } from "../../../../store/nodeList";
 import useNodeList from "../../../../store/nodeList";
 
@@ -59,9 +59,11 @@ function StartNode(props: NodeItem) {
         className={classNames(
           commonStyles["common-node-container"],
           styles["start-node-container"],
+          START_NODE_DRAG_HANDLE,
           data.select
             ? commonStyles["active-node-container"]
             : commonStyles["unActive-node-container"]
+          
         )}
         onClick={() => {
           setSelectNode(props.id);

@@ -1,9 +1,11 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import {
+  AGENT_NODE_DRAG_HANDLE,
   AGENT_NODE_PREFIX,
   NODE_TYPE,
   SOURCE_HANDLE_ID_MAP,
+  START_NODE_DRAG_HANDLE,
   START_NODE_Id,
 } from "../pages/createWorkFlow/constants";
 import _ from "lodash";
@@ -148,12 +150,14 @@ const initNodeList: NodeItem[] = [
         fields: initStartFields,
       },
     },
+    dragHandle: `.${START_NODE_DRAG_HANDLE}`,
     type: NODE_TYPE.START_NODE,
   },
   {
     id: `${AGENT_NODE_PREFIX}-1`,
     position: { x: 240, y: 0 },
     data: { childrenIds: [], label: 1, select: false, title: "Agent" },
+    dragHandle: `.${AGENT_NODE_DRAG_HANDLE}`,
     type: NODE_TYPE.AGENT_NODE,
   },
 ];

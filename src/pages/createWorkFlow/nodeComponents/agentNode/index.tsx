@@ -4,7 +4,7 @@ import styles from "./index.module.less";
 import classNames from "classnames";
 import addNodeSvg from "../../../../assets/addNode.svg";
 import agentIcon from "../../../../assets/agentIcon.svg";
-import { SOURCE_HANDLE_ID_MAP } from "../../constants";
+import { AGENT_NODE_DRAG_HANDLE, SOURCE_HANDLE_ID_MAP } from "../../constants";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import { memo } from "react";
 import type { NodeItem } from "../../../../store/nodeList";
@@ -51,67 +51,72 @@ function AgentNode(props: NodeItem) {
     }
   };
   return (
-    <div
-      className={classNames(
-        commonStyles["common-node-container"],
-        styles["agent-node-container"],
-        data.select
-          ? commonStyles["active-node-container"]
-          : commonStyles["unActive-node-container"]
-      )}
-      onClick={() => {
-        setSelectNode(props.id);
-      }}
-      onMouseLeave={() => {
-        updateEdgeShowRelateNode();
-      }}
-      onMouseEnter={() => {
-        updateEdgeShowRelateNode(props.id);
-      }}
-    >
-      <div>
-        <img src={agentIcon} className={styles["agent-icon"]} />
-        <span style={{ display: "inline-block", marginLeft: "10px" }}>
-          {`Agent ${props?.data?.label || ""}`}
-        </span>
+    <>
+      <div
+        className={classNames(
+          commonStyles["common-node-container"],
+          styles["agent-node-container"],
+          AGENT_NODE_DRAG_HANDLE,
+          data.select
+            ? commonStyles["active-node-container"]
+            : commonStyles["unActive-node-container"]
+        )}
+        onClick={() => {
+          setSelectNode(props.id);
+        }}
+        onMouseLeave={() => {
+          updateEdgeShowRelateNode();
+        }}
+        onMouseEnter={() => {
+          updateEdgeShowRelateNode(props.id);
+        }}
+      >
+        <div>
+          <img src={agentIcon} className={styles["agent-icon"]} />
+          <span style={{ display: "inline-block", marginLeft: "10px" }}>
+            {`Agent ${props?.data?.label || ""}`}
+          </span>
+        </div>
+      
       </div>
       <Handle
-        type="target"
-        position={Position.Left}
-        style={{
-          background: "none",
-          border: "none",
-        }}
-      >
-        <div
+          type="target"
+          position={Position.Left}
           style={{
-            width: "1px",
-            height: "9px",
-            backgroundColor: "#1296db",
-            position: "absolute",
-            top: "-3px",
-            left: "1px",
+            background: "none",
+            border: "none",
           }}
-        ></div>
+      >
+          <div
+            style={{
+              width: "1px",
+              height: "9px",
+              backgroundColor: "#1296db",
+              position: "absolute",
+              top: "-3px",
+              left: "1px",
+            }}
+          ></div>
       </Handle>
       <Handle
-        type="source"
-        position={Position.Right}
-        id={`${SOURCE_HANDLE_ID_MAP.AGENT_NODE}-${props.id}`}
-        style={{
-          background: "none",
-          border: "none",
-        }}
-      >
-        <div className={commonStyles["add-node-icon-container"]}>
-          <img
-            onClick={handleAddNode}
-            src={addNodeSvg}
-            className={classNames(commonStyles["add-node-icon"])}
-          />
-        </div>
+          type="source"
+          position={Position.Right}
+          id={`${SOURCE_HANDLE_ID_MAP.AGENT_NODE}-${props.id}`}
+          style={{
+            background: "none",
+            border: "none",
+          }}
+        >
+          <div className={commonStyles["add-node-icon-container"]}>
+            <img
+              onClick={handleAddNode}
+              src={addNodeSvg}
+              className={classNames(commonStyles["add-node-icon"])}
+            />
+          </div>
       </Handle>
-    </div>
+    </>
+   
   );
 }
 

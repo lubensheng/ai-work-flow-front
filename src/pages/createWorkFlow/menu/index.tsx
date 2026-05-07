@@ -5,13 +5,19 @@ import agentIcon from "../../../assets/agentIcon.svg";
 import endNodeIcon from "../../../assets/endFlowNode.svg";
 import classNames from "classnames";
 import {
+  AGENT_NODE_DRAG_HANDLE,
+  ANNOTATION_DRAG_HANDLE,
+  CONDITION_NODE_DRAG_HANDLE,
+  END_NODE_DRAG_HANDLE,
   NODE_PREFIX_MAP,
   NODE_TITLE_PREFIX_MAP,
   NODE_TYPE,
+  START_NODE_DRAG_HANDLE,
 } from "../constants";
 import useNodeList from "../../../store/nodeList";
 import useNodeIdInfo from "../../../store/nodeIdInfo";
 import useClickAddPositionInfo from "../../../store/clickAddPositionInfo";
+import { getDrageHandle } from "../../../utils";
 
 interface ViewProps {
   position: { x: number; y: number };
@@ -42,6 +48,7 @@ function MenuList(props: ViewProps) {
       setNodeList(nodeId, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
+        dragHandle: getDrageHandle(type),
         data: {
           childrenIds: [],
           label: currentNodeId,
@@ -60,6 +67,7 @@ function MenuList(props: ViewProps) {
       setNodeListByEdgesInfo(edgesInfo, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
+        dragHandle: getDrageHandle(type),
         data: {
           childrenIds: [],
           label: currentNodeId,

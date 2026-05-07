@@ -3,7 +3,7 @@ import commonStyles from "../common.module.less";
 import styles from "./index.module.less";
 import type { NodeItem } from "../../../../store/nodeList";
 import { Handle, Position } from "@xyflow/react";
-import { NODE_TYPE, NODE_TYPE_ICON } from "../../constants";
+import { END_NODE_DRAG_HANDLE, NODE_TYPE, NODE_TYPE_ICON } from "../../constants";
 import useNodeList from "../../../../store/nodeList";
 
 function EndNode(props: NodeItem) {
@@ -18,6 +18,7 @@ function EndNode(props: NodeItem) {
         className={classNames(
           commonStyles["common-node-container"],
           styles["end-node-container"],
+          END_NODE_DRAG_HANDLE,
           data.select
             ? commonStyles["active-node-container"]
             : commonStyles["unActive-node-container"]

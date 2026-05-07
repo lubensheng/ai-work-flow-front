@@ -1,12 +1,16 @@
 import { Handle, Position } from "@xyflow/react";
 import type { NodeItem } from "../../../../store/nodeList";
+import { CONDITION_NODE_DRAG_HANDLE } from "../../constants";
 
 function ConditionNode(props: NodeItem) {
   console.log(props);
   return (
-    <div>
-      <div>
-        <span>条件分支</span>
+    <>
+      <div className={CONDITION_NODE_DRAG_HANDLE}>
+        <div>
+          <span>条件分支</span>
+        </div>
+      
       </div>
       <Handle type="source" position={Position.Right}>
         <div>IF</div>
@@ -14,7 +18,8 @@ function ConditionNode(props: NodeItem) {
       <Handle type="source" position={Position.Right}>
         <div>ELSE</div>
       </Handle>
-    </div>
+    </>
+   
   );
 }
 
