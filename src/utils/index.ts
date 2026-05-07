@@ -3,4 +3,9 @@ const getUserInfo = () => {
   return userInfo ? JSON.parse(userInfo) : null;
 };
 
-export { getUserInfo };
+const getAppInfo = () => {
+  const appInfo = localStorage.getItem("appInfo");
+  return appInfo ? JSON.parse(appInfo) : null;
+}
+
+export { getUserInfo, getAppInfo };

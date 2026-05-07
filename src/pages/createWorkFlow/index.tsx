@@ -29,6 +29,8 @@ import SetSvg from "../../assets/setSvg.svg";
 import FlowInfoMenuSvg from "../../assets/flowInfoMenu.svg";
 import SetAppNodeInfoModal from "./setAppNodeInfoModal";
 import AnnotationNode from "./nodeComponents/annotationNode";
+import { getAppInfo } from "../../utils";
+import { useNavigate } from "react-router";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -45,6 +47,7 @@ const edgeTypes = {
 function CreateWorkFlow() {
   const nodeList = useNodeList((state) => state.nodeList);
   const edgeList = useNodeList((state) => state.edgeList);
+  const navigation = useNavigate();
   const [appInfoWidth, setAppInfoWidth] = useState('215px');
   const ref = useRef(null);
   const [appNodeInfoProps, setAppNodeInfoProps] = useState<{
@@ -53,6 +56,7 @@ function CreateWorkFlow() {
   }>({
     isOpen: false,
   });
+  
   const appNodeInfo = useAppNodeIdInfo((state) => state.appNodeInfo);
   const currentPanelAddNode = useNodeList((state) => state.currentPanelAddNode);
   const setAppNodeInfo = useAppNodeIdInfo((state) => state.setAppNodeInfo);
@@ -82,6 +86,15 @@ function CreateWorkFlow() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edgeList]);
 
+  useEffect(() => {
+    const appInfo = getAppInfo();
+    if (appInfo) {
+      setAppNodeInfo({ ...appInfo });
+    } else {
+      navigation('/workFlow')
+    }
+  }, []);
+
   return (
     <div className={styles["draw-flow-container"]}>
       {appNodeInfo && (
@@ -90,7 +103,7 @@ function CreateWorkFlow() {
             <div className="flex justify-between items-center">
               <img src={RobotSvg} className="w-10 h-10" />
               <div
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-[rgb(200,206,218,0.2)] hover:rounded-[5px] w-[24px] h-[24px] flex justify-center items-center"
                 onClick={() => {
                   setAppNodeInfoProps({ isOpen: true, initValue: appNodeInfo });
                 }}

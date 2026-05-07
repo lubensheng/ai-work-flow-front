@@ -20,9 +20,15 @@ function Headers(props: ViewProps) {
     const { pathname } = location;
     setActivePath(pathname.indexOf("workFlow") > -1 ? "workFlow" : "myWorkFlow");
   }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/login');
+  }
+
   return (
     <div className={styles["header-container"]}>
-      <div className={styles["account-info"]}>{userInfo.account}的工作空间</div>
+      <div className={styles["account-info"]}>{userInfo?.account}的工作空间</div>
       <div style={{ display: "flex", gap: "16px", position: 'relative' }}>
         <Button
           type="link"
@@ -88,7 +94,7 @@ function Headers(props: ViewProps) {
                 <SettingOutlined /> 账户
               </div>
               <div style={{ marginTop: "16px" }}>
-                <Button type="primary" style={{ width: "100%" }}>
+                <Button type="primary" style={{ width: "100%" }} onClick={handleLogout}>
                   退出
                 </Button>
               </div>

@@ -87,6 +87,11 @@ function WorkFlowConfigPage() {
                       appDesc: form.getFieldValue("appDesc"),
                     });
                     navigate("/workFlow/createWorkFlow", { replace: true });
+                    localStorage.setItem('appInfo', JSON.stringify({
+                      appType: currentType,
+                      appName: form.getFieldValue("appName"),
+                      appDesc: form.getFieldValue("appDesc")
+                    }));
                   }}
                 >
                   创建

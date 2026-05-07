@@ -12,9 +12,12 @@ function AiWorkFlow() {
     const userInfo = getUserInfo();
     if (!userInfo) {
       navigate("/login", { replace: true });
+      setIsLogin(false);
     } else {
       setIsLogin(true);
-      
+      if (location.pathname === '/login') {
+        navigate("/workFlow", { replace: true })
+      }
     }
   };
   useEffect(() => {
@@ -23,7 +26,7 @@ function AiWorkFlow() {
 
   return (
     <div>
-      {isLogin && <Headers userInfo={getUserInfo()!} />}
+      {isLogin && getUserInfo() && <Headers userInfo={getUserInfo()!} />}
       <Outlet />
     </div>
   );
