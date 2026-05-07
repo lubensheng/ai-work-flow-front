@@ -111,6 +111,7 @@ type Actions = {
     nodeId: string,
     position: { x: number; y: number }
   ) => void;
+  initState: () => void;
 };
 
 export const edgeIdPrefix = "edge-el";
@@ -418,6 +419,14 @@ const useNodeList = create<State & Actions>()(
           currentPanelAddNode: undefined,
         }));
       },
+      initState: () => {
+        set({
+          nodeList: initNodeList,
+          edgeList: initialEdges,
+          edgeId: 2,
+          selectNodeInfo: initNodeList[0],
+        });
+      }
     })
   )
 );

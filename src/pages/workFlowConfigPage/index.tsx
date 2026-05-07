@@ -6,15 +6,33 @@ import classNames from "classnames";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router";
 import useAppNodeIdInfo from "../../store/appNodeInfo";
+import useNodeList from "../../store/nodeList";
+import useNodeIdInfo from "../../store/nodeIdInfo";
+import { useClickEdgeId } from "../../store/edges";
+import useClickAddPositionInfo from "../../store/clickAddPositionInfo";
 
 type AppType = "workFlow" | "dialogue";
 
 function WorkFlowConfigPage() {
   const [currentType, setCurrentType] = useState<AppType>("workFlow");
   const setAppNodeInfo = useAppNodeIdInfo((s) => s.setAppNodeInfo);
+  const initStateNodeList = useNodeList(state => state.initState);
+  const initNodeId = useNodeIdInfo(s => s.initState);
+  const setCurrentEdgeId = useClickEdgeId(s => s.setCurrentId);
+  const setCurrentNodeInfo = useClickAddPositionInfo(s => s.setCurrentNodeInfo);
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const appName = Form.useWatch("appName", form);
+
+  const clearStateInfo = () => {
+    initStateNodeList();
+    initNodeId();
+    setCurrentEdgeId('');
+    setCurrentNodeInfo({
+      currentAddNodeInfo: {},
+    });
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles["left-container"]}>
@@ -81,6 +99,7 @@ function WorkFlowConfigPage() {
                   type="primary"
                   disabled={!appName}
                   onClick={() => {
+                    clearStateInfo()
                     setAppNodeInfo({
                       appType: currentType,
                       appName: form.getFieldValue("appName"),

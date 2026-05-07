@@ -20,6 +20,7 @@ const initState = {
 
 type Action = {
   setNodeIdIndex: (type: NODE_TYPE) => void;
+  initState: () => void;
 };
 
 const useNodeIdInfo = create<State & Action>(
@@ -30,6 +31,9 @@ const useNodeIdInfo = create<State & Action>(
         [type]: ++state[type],
       }));
     },
+    initState: () => {
+      set(initState);
+    }
   }))
 );
 
