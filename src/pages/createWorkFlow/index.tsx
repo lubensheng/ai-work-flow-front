@@ -30,6 +30,7 @@ import AnnotationNode from "./nodeComponents/annotationNode";
 import { getAppInfo } from "../../utils";
 import { useNavigate } from "react-router";
 import GhostPanel from "./nodeComponents/mapPanel/ghostPanel";
+import FunctionPanel from "./nodeComponents/mapPanel/functionPanel";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -282,6 +283,9 @@ function CreateWorkFlow() {
         </Panel>
         <Panel position="bottom-right">
           <GhostPanel />
+        </Panel>
+        <Panel position="top-left">
+          <FunctionPanel />
         </Panel>
         {currentMenuInfo?.position && (
           <MenuList
