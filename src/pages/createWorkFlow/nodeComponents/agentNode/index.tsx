@@ -9,6 +9,7 @@ import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import { memo } from "react";
 import type { NodeItem } from "../../../../store/nodeList";
 import useNodeList from "../../../../store/nodeList";
+import { Tooltip } from "antd";
 
 function AgentNode(props: NodeItem) {
   const { data } = props;
@@ -77,15 +78,14 @@ function AgentNode(props: NodeItem) {
             {`Agent ${props?.data?.label || ""}`}
           </span>
         </div>
-      
       </div>
       <Handle
-          type="target"
-          position={Position.Left}
-          style={{
-            background: "none",
-            border: "none",
-          }}
+        type="target"
+        position={Position.Left}
+        style={{
+          background: "none",
+          border: "none",
+        }}
       >
         <div
           style={{
@@ -108,15 +108,48 @@ function AgentNode(props: NodeItem) {
         }}
         onClick={handleAddNode}
       >
-        <div className={commonStyles["add-node-icon-container"]}>
-          <img
-            src={addNodeSvg}
-            className={classNames(commonStyles["add-node-icon"], "cursor-pointer")}
-          />
-        </div>
+        <Tooltip
+          arrow={false}
+          styles={{
+            root: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+            container: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+          }}
+          title={
+            <div>
+              <div>
+                <span className="text-[#000000] font-semibold">点击</span>
+                <span className="text-[#676f83]">添加节点</span>
+              </div>
+              <div>
+                <span className="text-[#000000] font-semibold">拖拽</span>
+                <span className="text-[#676f83]">连接节点</span>
+              </div>
+            </div>
+          }
+        >
+          <div
+            className={commonStyles["add-node-icon-container"]}
+            onMouseLeave={() => {
+              updateEdgeShowRelateNode();
+            }}
+            onMouseEnter={() => {
+              updateEdgeShowRelateNode(props.id);
+            }}
+          >
+            <img
+              src={addNodeSvg}
+              className={classNames(commonStyles["add-node-icon"])}
+            />
+          </div>
+        </Tooltip>
       </Handle>
     </>
-   
   );
 }
 

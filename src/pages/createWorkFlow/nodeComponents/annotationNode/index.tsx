@@ -7,7 +7,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
-import Placeholder from '@tiptap/extension-placeholder' // 👈 加这个
+import Placeholder from "@tiptap/extension-placeholder"; // 👈 加这个
 import { BulletList, ListItem } from "@tiptap/extension-list";
 import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -21,8 +21,7 @@ const extensions = [
   FontSize,
   TextStyleKit,
   Placeholder.configure({
-    placeholder: '请输入内容...',
-    
+    placeholder: "请输入内容...",
   }),
   StarterKit,
   Document,

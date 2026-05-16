@@ -1,26 +1,23 @@
-import { ViewportPortal } from "@xyflow/react";
+import { useReactFlow, ViewportPortal } from "@xyflow/react";
 import styles from "./index.module.less";
 import { Tabs, Tooltip } from "antd";
 import agentIcon from "../../../assets/agentIcon.svg";
 import endNodeIcon from "../../../assets/endFlowNode.svg";
 import classNames from "classnames";
 import {
-  AGENT_NODE_DRAG_HANDLE,
-  ANNOTATION_DRAG_HANDLE,
-  CONDITION_NODE_DRAG_HANDLE,
-  END_NODE_DRAG_HANDLE,
   NODE_PREFIX_MAP,
   NODE_TITLE_PREFIX_MAP,
   NODE_TYPE,
-  START_NODE_DRAG_HANDLE,
 } from "../constants";
-import useNodeList from "../../../store/nodeList";
+import useNodeList, { type NodeItem } from "../../../store/nodeList";
 import useNodeIdInfo from "../../../store/nodeIdInfo";
 import useClickAddPositionInfo from "../../../store/clickAddPositionInfo";
-import { getDrageHandle } from "../../../utils";
+import { getDragHandle } from "../../../utils";
+import { type CSSProperties } from "react";
 
 interface ViewProps {
-  position: { x: number; y: number };
+  position?: { x: number; y: number };
+  style?: CSSProperties;
   nodeId?: string;
   edgesInfo?: {
     source: string;
@@ -30,7 +27,8 @@ interface ViewProps {
 }
 
 function MenuList(props: ViewProps) {
-  const { position, nodeId, edgesInfo } = props;
+  const { position, nodeId, edgesInfo, style = {} } = props;
+  const { screenToFlowPosition } = useReactFlow();
   const setNodeList = useNodeList((state) => state.setNodeList);
   const setNodeListByEdgesInfo = useNodeList(
     (state) => state.setNodeListByEdgesInfo
@@ -40,15 +38,18 @@ function MenuList(props: ViewProps) {
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
-
-  const handleAddNode = (type: NODE_TYPE) => {
+  const setNotParentIdNode = useNodeList((s) => s.setNotParentIdNode);
+  const handleAddNode = (
+    type: NODE_TYPE,
+    position: { x: number; y: number }
+  ) => {
     if (nodeId) {
       const currentNodeId = allNodeIds[type];
       setNodeIdIndex(type);
       setNodeList(nodeId, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        dragHandle: getDrageHandle(type),
+        dragHandle: getDragHandle(type),
         data: {
           childrenIds: [],
           label: currentNodeId,
@@ -67,7 +68,7 @@ function MenuList(props: ViewProps) {
       setNodeListByEdgesInfo(edgesInfo, {
         id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
         position: { x: 400, y: 0 },
-        dragHandle: getDrageHandle(type),
+        dragHandle: getDragHandle(type),
         data: {
           childrenIds: [],
           label: currentNodeId,
@@ -81,19 +82,47 @@ function MenuList(props: ViewProps) {
       });
     } else {
       // 全是空的情况
+      if (!position) {
+        console.error("当前节点没有position, 检查为啥没有position");
+        return;
+      }
+      const currentNodeId = allNodeIds[type];
+      setNodeIdIndex(type);
+      const nodeInfo: NodeItem = {
+        id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
+        position: { x: position.x, y: position.y },
+        dragHandle: getDragHandle(type),
+        data: {
+          childrenIds: [],
+          label: currentNodeId,
+          select: false,
+          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+        },
+        type: type,
+      };
+      setNotParentIdNode(nodeInfo);
+      setCurrentNodeInfo({
+        currentAddNodeInfo: {},
+      });
     }
   };
+
   return (
     <ViewportPortal>
       <div
         className={styles["container"]}
         style={{
-          left: `${position.x + 20}px`,
-          top: `${position.y - 20}px`,
-          position: "absolute",
-          background: "#fff",
-          zIndex: 99999999,
-          pointerEvents: "all",
+          ...style,
+          ...(position
+            ? {
+                left: `${position.x + 25}px`,
+                top: `${position.y - 20}px`,
+                position: "absolute",
+                background: "#fff",
+                zIndex: 99999999,
+                pointerEvents: "all",
+              }
+            : {}),
         }}
       >
         <Tabs
@@ -127,7 +156,15 @@ function MenuList(props: ViewProps) {
                     <div
                       className={classNames(styles.item, styles.hover)}
                       style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}
-                      onClick={() => handleAddNode(NODE_TYPE.AGENT_NODE)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const flowPosition = screenToFlowPosition({
+                          x: e.clientX,
+                          y: e.clientY,
+                        });
+                        console.log(flowPosition);
+                        handleAddNode(NODE_TYPE.AGENT_NODE, flowPosition);
+                      }}
                     >
                       <img src={agentIcon} className={styles["image"]} />
                       <span className={styles["text"]}>Agent</span>
@@ -136,7 +173,14 @@ function MenuList(props: ViewProps) {
                   <div
                     className={classNames(styles.item, styles.hover)}
                     style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}
-                    onClick={() => handleAddNode(NODE_TYPE.END_NODE)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const flowPosition = screenToFlowPosition({
+                        x: e.clientX,
+                        y: e.clientY,
+                      });
+                      handleAddNode(NODE_TYPE.END_NODE, flowPosition);
+                    }}
                   >
                     <img src={endNodeIcon} className={styles["image"]} />
                     <span className={styles["text"]}>结束</span>

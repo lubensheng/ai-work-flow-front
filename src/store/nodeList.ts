@@ -57,6 +57,7 @@ type NodeData = {
   childrenIds: string[];
   label: number;
   title: string;
+  notParent?: boolean;
   select: boolean;
   nodeConfig?: {
     fields: Field[];
@@ -84,6 +85,7 @@ type State = {
   edgeList: EdgeItem[];
   selectNodeInfo: NodeItem;
   currentPanelAddNode?: NodeItem;
+  currentMenuAddNode?: NodeItem;
 };
 
 type Actions = {
@@ -109,11 +111,14 @@ type Actions = {
   ) => void;
   setCurrentPanelAddNode: (node: NodeItem) => void;
   clearCurrentPanelAddNode: () => void;
+  clearCurrentMenuAddNode: () => void;
   updateNodePostionByNodeId: (
     nodeId: string,
     position: { x: number; y: number }
   ) => void;
   initState: () => void;
+  setNotParentIdNode: (nodeInfo: NodeItem) => void;
+  connectNode: (targetId: string, sourceId: string) => void;
 };
 
 export const edgeIdPrefix = "edge-el";
@@ -423,6 +428,12 @@ const useNodeList = create<State & Actions>()(
           currentPanelAddNode: undefined,
         }));
       },
+      clearCurrentMenuAddNode() {
+        set((pre) => ({
+          ...pre,
+          currentMenuAddNode: undefined,
+        }));
+      },
       initState: () => {
         set({
           nodeList: initNodeList,
@@ -430,7 +441,67 @@ const useNodeList = create<State & Actions>()(
           edgeId: 2,
           selectNodeInfo: initNodeList[0],
         });
-      }
+      },
+      setNotParentIdNode: (nodeInfo) => {
+        const { nodeList } = get();
+        nodeInfo.data.notParent = true;
+        set({
+          nodeList: [...nodeList, nodeInfo],
+          currentMenuAddNode: nodeInfo,
+        } as State);
+      },
+      connectNode: (targetId, sourceId) => {
+        console.log(targetId);
+        console.log(sourceId);
+        set((state) => {
+          const newNodeList = [...state.nodeList];
+          const newEdgeList = [...state.edgeList];
+          const currentTargetNodeInfo = newNodeList.find(
+            (item) => item.id === targetId
+          );
+          const currentSourceNodeInfo = newNodeList.find(
+            (item) => item.id === sourceId
+          );
+          if (!currentTargetNodeInfo || !currentSourceNodeInfo) {
+            console.error("未找到节点信息，请排查相关数据");
+            return {
+              ...state,
+            };
+          }
+          if (!currentTargetNodeInfo.data?.childrenIds) {
+            currentTargetNodeInfo.data.childrenIds = [];
+          }
+          currentTargetNodeInfo.data.childrenIds = [
+            ...currentTargetNodeInfo.data.childrenIds,
+            sourceId,
+          ];
+          const lastIdNum = state.edgeId;
+          const newEdgeItem: EdgeItem = {
+            id: `${edgeIdPrefix}-${lastIdNum}`,
+            source: targetId,
+            target: sourceId,
+            sourceHandle: "",
+            type: "workFlowEdge",
+            data: {
+              active: false,
+              mouseIn: false,
+              showRelateNode: false,
+              currentEdgeInfo: {
+                source: sourceId,
+                target: targetId,
+              },
+            },
+          };
+          newEdgeList.push({
+            ...newEdgeItem,
+          });
+          return {
+            ...state,
+            edgeList: newEdgeList,
+            nodeList: newNodeList,
+          };
+        });
+      },
     })
   )
 );

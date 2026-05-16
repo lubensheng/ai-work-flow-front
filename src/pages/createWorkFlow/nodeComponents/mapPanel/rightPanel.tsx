@@ -19,6 +19,7 @@ function RightPanel() {
     ),
     [NODE_TYPE.END_NODE]: <EndNodePanel />,
     [NODE_TYPE.CONDITION_NODE]: <ConditionNodePanel />,
+    [NODE_TYPE.ANNOTATION_NODE]: null,
   };
 
   return <div className={styles["container"]}>{dom[selectNodeInfo.type]}</div>;

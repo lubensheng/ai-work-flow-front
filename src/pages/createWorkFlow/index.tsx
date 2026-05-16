@@ -1,5 +1,4 @@
 import {
-  addEdge,
   Background,
   BackgroundVariant,
   Controls,
@@ -7,7 +6,6 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
-  type Connection,
   type NodeTypes,
 } from "@xyflow/react";
 import styles from "./index.module.less";
@@ -31,6 +29,7 @@ import SetAppNodeInfoModal from "./setAppNodeInfoModal";
 import AnnotationNode from "./nodeComponents/annotationNode";
 import { getAppInfo } from "../../utils";
 import { useNavigate } from "react-router";
+import GhostPanel from "./nodeComponents/mapPanel/ghostPanel";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -48,7 +47,7 @@ function CreateWorkFlow() {
   const nodeList = useNodeList((state) => state.nodeList);
   const edgeList = useNodeList((state) => state.edgeList);
   const navigation = useNavigate();
-  const [appInfoWidth, setAppInfoWidth] = useState('215px');
+  const [appInfoWidth, setAppInfoWidth] = useState("215px");
   const ref = useRef(null);
   const [appNodeInfoProps, setAppNodeInfoProps] = useState<{
     isOpen: boolean;
@@ -56,25 +55,26 @@ function CreateWorkFlow() {
   }>({
     isOpen: false,
   });
-  
+
   const appNodeInfo = useAppNodeIdInfo((state) => state.appNodeInfo);
   const currentPanelAddNode = useNodeList((state) => state.currentPanelAddNode);
   const setAppNodeInfo = useAppNodeIdInfo((state) => state.setAppNodeInfo);
   const updateNodePosition = useNodeList((state) => state.updateNodePosition);
+  const clearCurrentMenuAddNode = useNodeList(
+    (state) => state.clearCurrentMenuAddNode
+  );
   const clearCurrentPanelAddNode = useNodeList(
     (state) => state.clearCurrentPanelAddNode
   );
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
+  const connectNode = useNodeList((s) => s.connectNode);
   const [nodes, setNodes, onNodesChange] = useNodesState(nodeList);
   const [edges, setEdges, onEdgesChange] = useEdgesState(edgeList);
   const currentMenuInfo = useClickAddPositionInfo(
     (state) => state.currentAddNodeInfo
   );
-  const onConnect = (params: Connection) => {
-    setEdges((eds) => addEdge(params, eds));
-  };
 
   useEffect(() => {
     setNodes([...nodeList]);
@@ -91,8 +91,9 @@ function CreateWorkFlow() {
     if (appInfo) {
       setAppNodeInfo({ ...appInfo });
     } else {
-      navigation('/workFlow')
+      navigation("/workFlow");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -117,20 +118,22 @@ function CreateWorkFlow() {
             </div>
           </div>
           <div
-            className={styles['fold-panel']}
+            className={styles["fold-panel"]}
             style={{
-              top: '15px',
-              right: '-28px',
-              zIndex: 99999999999
+              top: "15px",
+              right: "-28px",
+              zIndex: 99999999999,
             }}
           >
             <img
               onClick={() => {
-                setAppInfoWidth(pre => pre === '0px' ? '215px' : '0px')
-              }} 
+                setAppInfoWidth((pre) => (pre === "0px" ? "215px" : "0px"));
+              }}
               src={FlowInfoMenuSvg}
               className="w-[24px] h-[24px] cursor-pointer"
-              style={{ transform: `rotate(${appInfoWidth === '0px' ? '180' : '0'}deg)`,  }}
+              style={{
+                transform: `rotate(${appInfoWidth === "0px" ? "180" : "0"}deg)`,
+              }}
             />
           </div>
         </div>
@@ -154,7 +157,6 @@ function CreateWorkFlow() {
           onNodesChange(changes);
         }}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
         fitView
         panOnDrag
         fitViewOptions={{ minZoom: 0.5, maxZoom: 1 }}
@@ -180,6 +182,7 @@ function CreateWorkFlow() {
             }
           }
           clearCurrentPanelAddNode();
+          clearCurrentMenuAddNode();
           setEdges((edges) => {
             return edges.map((item) => {
               return {
@@ -193,9 +196,18 @@ function CreateWorkFlow() {
             });
           });
         }}
-        onConnectEnd={(e, connecState) => {
+        onConnectEnd={(e, connectState) => {
           console.log(e);
-          console.log(connecState)
+          console.log(connectState);
+          if (
+            connectState.fromHandle?.nodeId &&
+            connectState.toHandle?.nodeId
+          ) {
+            connectNode(
+              connectState.fromHandle.nodeId,
+              connectState.toHandle.nodeId
+            );
+          }
         }}
         attributionPosition="top-right"
         className="overview"
@@ -267,6 +279,9 @@ function CreateWorkFlow() {
         </Panel>
         <Panel position="top-right">
           <RightPanel />
+        </Panel>
+        <Panel position="bottom-right">
+          <GhostPanel />
         </Panel>
         {currentMenuInfo?.position && (
           <MenuList

@@ -9,6 +9,7 @@ import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import { SOURCE_HANDLE_ID_MAP, START_NODE_DRAG_HANDLE } from "../../constants";
 import type { NodeItem } from "../../../../store/nodeList";
 import useNodeList from "../../../../store/nodeList";
+import { Tooltip } from "antd";
 
 function StartNode(props: NodeItem) {
   const { data } = props;
@@ -63,7 +64,6 @@ function StartNode(props: NodeItem) {
           data.select
             ? commonStyles["active-node-container"]
             : commonStyles["unActive-node-container"]
-          
         )}
         onClick={() => {
           setSelectNode(props.id);
@@ -90,12 +90,46 @@ function StartNode(props: NodeItem) {
         }}
         onClick={handleAddNode}
       >
-        <div className={commonStyles["add-node-icon-container"]}>
-          <img
-            src={addNodeSvg}
-            className={classNames(commonStyles["add-node-icon"], "cursor-pointer")}
-          />
-        </div>
+        <Tooltip
+          arrow={false}
+          styles={{
+            root: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+            container: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+          }}
+          title={
+            <div>
+              <div>
+                <span className="text-[#000000] font-semibold">点击</span>
+                <span className="text-[#676f83]">添加节点</span>
+              </div>
+              <div>
+                <span className="text-[#000000] font-semibold">拖拽</span>
+                <span className="text-[#676f83]">连接节点</span>
+              </div>
+            </div>
+          }
+        >
+          <div
+            className={commonStyles["add-node-icon-container"]}
+            onMouseLeave={() => {
+              updateEdgeShowRelateNode();
+            }}
+            onMouseEnter={() => {
+              updateEdgeShowRelateNode(props.id);
+            }}
+          >
+            <img
+              src={addNodeSvg}
+              className={classNames(commonStyles["add-node-icon"])}
+            />
+          </div>
+        </Tooltip>
       </Handle>
     </>
   );

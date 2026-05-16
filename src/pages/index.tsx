@@ -15,13 +15,14 @@ function AiWorkFlow() {
       setIsLogin(false);
     } else {
       setIsLogin(true);
-      if (location.pathname === '/login') {
-        navigate("/workFlow", { replace: true })
+      if (location.pathname === "/login") {
+        navigate("/workFlow", { replace: true });
       }
     }
   };
   useEffect(() => {
     initData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   return (

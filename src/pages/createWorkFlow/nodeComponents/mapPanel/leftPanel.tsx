@@ -74,14 +74,17 @@ function LeftPanel() {
   };
 
   useEffect(() => {
-    if (currentPanelAddNode) {
+    if (
+      currentPanelAddNode &&
+      [NODE_TYPE.ANNOTATION_NODE].includes(currentPanelAddNode?.type)
+    ) {
       window.addEventListener("mousemove", handleNodeMouseMove);
       window.addEventListener("click", handleWindowCLick);
-      return () => {
-        window.removeEventListener("mousemove", handleNodeMouseMove);
-        window.removeEventListener("click", handleWindowCLick);
-      };
     }
+    return () => {
+      window.removeEventListener("mousemove", handleNodeMouseMove);
+      window.removeEventListener("click", handleWindowCLick);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPanelAddNode]);
   return (

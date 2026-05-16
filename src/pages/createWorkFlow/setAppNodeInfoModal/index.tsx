@@ -31,6 +31,7 @@ function SetAppNodeInfoModal(props: ViewProps) {
     } else {
       form.setFieldsValue(initValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, initValue]);
 
   return (
@@ -51,16 +52,20 @@ function SetAppNodeInfoModal(props: ViewProps) {
       }
       width={500}
     >
-      <Form form={form} labelCol={{ flex: "80px" }} style={{ marginTop: '16px' }}>
+      <Form
+        form={form}
+        labelCol={{ flex: "80px" }}
+        style={{ marginTop: "16px" }}
+      >
         <Form.Item
           label="应用名称"
           name="appName"
           rules={[{ required: true, message: "应用名称不能为空" }]}
         >
-          <Input placeholder="请输入应用名称" style={{ width: '95%' }} />
+          <Input placeholder="请输入应用名称" style={{ width: "95%" }} />
         </Form.Item>
         <Form.Item label="描述" name="appDesc">
-          <Input.TextArea placeholder="请输入" style={{ width: '95%' }} />
+          <Input.TextArea placeholder="请输入" style={{ width: "95%" }} />
         </Form.Item>
       </Form>
     </Modal>
