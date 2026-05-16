@@ -17,6 +17,8 @@ function AiWorkFlow() {
       setIsLogin(true);
       if (location.pathname === "/login") {
         navigate("/workFlow", { replace: true });
+      } else if (location.pathname === "/") {
+        navigate("/workFlow", { replace: true });
       }
     }
   };
