@@ -1,6 +1,8 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import styles from "./index.module.less";
 import { useNavigate } from "react-router";
+import { login } from "./servces";
+import { SUCCESS_CODE } from "../../utils/constants";
 
 function Login() {
   const [form] = Form.useForm();
@@ -8,6 +10,15 @@ function Login() {
   const handleLogin = async () => {
     try {
       const values = await form.validateFields();
+      const res = await login({
+        userName: values.account,
+        password: values.password,
+      });
+      console.log(res);
+      if (res.data.code !== SUCCESS_CODE) {
+        message.error(res.data.message);
+        return;
+      }
       localStorage.setItem("userInfo", JSON.stringify({ ...values }));
       navigate("/workFlow", { replace: true });
     } catch (e) {

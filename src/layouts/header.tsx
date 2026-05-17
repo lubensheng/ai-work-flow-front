@@ -2,7 +2,8 @@ import { useNavigate } from "react-router";
 import styles from "./header.module.less";
 import { Button, Popover } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import UpdateAccountModal from "./updateAccountInfoModal";
 
 interface ViewProps {
   userInfo: { account: string };
@@ -10,8 +11,19 @@ interface ViewProps {
 
 function Headers(props: ViewProps) {
   const { userInfo } = props;
+  const [openUpdateAccountModal, setOpenUpdateAccountModal] = useState(false);
+  const [popoverVisible, setPopoverVisible] = useState(false);
   const navigate = useNavigate();
   const [activePathLeft, setActivePathLeft] = useState("-10px");
+  const onCancelPopover = () => {
+    setPopoverVisible(false);
+  };
+  useEffect(() => {
+    window.addEventListener("click", onCancelPopover);
+    return () => {
+      window.removeEventListener("click", onCancelPopover);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
@@ -64,6 +76,7 @@ function Headers(props: ViewProps) {
         <Popover
           trigger="click"
           placement="bottomLeft"
+          open={popoverVisible}
           content={
             <div className={styles["set-account-info"]}>
               <div className={styles["account-info-container"]}>
@@ -80,6 +93,10 @@ function Headers(props: ViewProps) {
                   cursor: "pointer",
                   lineHeight: "32px",
                   borderRadius: "5px",
+                }}
+                onClick={() => {
+                  setPopoverVisible(false);
+                  setOpenUpdateAccountModal(true);
                 }}
                 className={styles.hover}
               >
@@ -98,9 +115,25 @@ function Headers(props: ViewProps) {
           }
           arrow={false}
         >
-          <div className={styles["switch-account"]}>{userInfo.account[0]}</div>
+          <div
+            className={styles["switch-account"]}
+            onClick={(e) => {
+              e.stopPropagation();
+              setPopoverVisible(() => true);
+            }}
+          >
+            {userInfo.account[0]}
+          </div>
         </Popover>
       </div>
+      <UpdateAccountModal
+        onCancel={() => {
+          setPopoverVisible(false);
+          setOpenUpdateAccountModal(false);
+        }}
+        isOpen={openUpdateAccountModal}
+        initValues={{ userName: userInfo.account }}
+      />
     </div>
   );
 }
