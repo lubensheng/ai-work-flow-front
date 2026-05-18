@@ -3,6 +3,7 @@ import styles from "./index.module.less";
 import { Tabs, Tooltip } from "antd";
 import agentIcon from "../../../assets/agentIcon.svg";
 import endNodeIcon from "../../../assets/endFlowNode.svg";
+import conditionNodeIcon from "../../../assets/conditionNode.svg";
 import classNames from "classnames";
 import {
   NODE_PREFIX_MAP,
@@ -136,12 +137,12 @@ function MenuList(props: ViewProps) {
                     getPopupContainer={(node) => node}
                     arrow={false}
                     title={
-                      <div>
+                      <div className="p-2.5">
                         <img
                           src={agentIcon}
                           style={{ width: "30px", height: "30px" }}
                         />
-                        <div>
+                        <div className="mt-2.5 ml-2.5">
                           <div style={{ color: "#000", fontSize: "14px" }}>
                             Agent
                           </div>
@@ -168,6 +169,53 @@ function MenuList(props: ViewProps) {
                     >
                       <img src={agentIcon} className={styles["image"]} />
                       <span className={styles["text"]}>Agent</span>
+                    </div>
+                  </Tooltip>
+                  <Tooltip
+                    arrow={false}
+                    placement="right"
+                    getPopupContainer={(node) => node}
+                    title={
+                      <div className="p-2.5">
+                        <img
+                          src={conditionNodeIcon}
+                          className="rotate-270"
+                          style={{ width: "30px", height: "30px" }}
+                        />
+                        <div className="mt-2.5 ml-2.5">
+                          <div style={{ color: "#000", fontSize: "14px" }}>
+                            条件分支
+                          </div>
+                          <div
+                            style={{
+                              color: "#ccc",
+                              fontSize: "12px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            允许通过IF/ELSE条件将流程分成两个分支。
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <div
+                      className={classNames(styles.item, styles.hover)}
+                      style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const flowPosition = screenToFlowPosition({
+                          x: e.clientX,
+                          y: e.clientY,
+                        });
+                        handleAddNode(NODE_TYPE.CONDITION_NODE, flowPosition);
+                      }}
+                    >
+                      <img
+                        src={conditionNodeIcon}
+                        className={classNames(styles["image"], "rotate-270")}
+                      />
+                      <span className={styles["text"]}>条件分支</span>
                     </div>
                   </Tooltip>
                   <div

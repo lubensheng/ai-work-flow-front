@@ -5,6 +5,7 @@ import problemListSvg from "../../../../assets/problemListSvg.svg";
 import useNodeList from "../../../../store/nodeList";
 import { NODE_TYPE } from "../../constants";
 import { useEffect, useState } from "react";
+import classNames from "classnames";
 
 interface ProblemItem {
   desc: string;
@@ -27,12 +28,24 @@ function FunctionPanel() {
 
   return (
     <div className={styles["container"]}>
-      <div className="w-[32px] h-[33px] bg-[#fff]">
-        <img src={envSvg} className="w-[32px] h-[33px]" />
+      <div
+        className={classNames([
+          "w-8",
+          "h-8.25",
+          "bg--white",
+          "flex",
+          "justify-center",
+          "items-center",
+          "rounded-lg",
+          styles["show-dom"],
+        ])}
+      >
+        <img src={envSvg} className="w-6 h-6" />
       </div>
       <Badge count={problemList.length} status="error">
         <Tooltip
           color="#fff"
+          arrow={false}
           styles={{
             root: {
               backgroundColor: "#fff",
@@ -57,8 +70,19 @@ function FunctionPanel() {
             </div>
           }
         >
-          <div className="w-[32px] h-[33px] bg-[#fff]">
-            <img src={problemListSvg} className="w-[32px] h-[33px]" />
+          <div
+            className={classNames([
+              "w-8",
+              "h-8.25",
+              "bg--white",
+              "flex",
+              "justify-center",
+              "items-center",
+              "rounded-lg",
+              styles["show-dom"],
+            ])}
+          >
+            <img src={problemListSvg} className="w-6 h-6" />
           </div>
         </Tooltip>
       </Badge>

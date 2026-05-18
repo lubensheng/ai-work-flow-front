@@ -1,7 +1,7 @@
 import AgentNodeSvg from "../../assets/agentIcon.svg";
 import StartNodeSvg from "../../assets/startNode.svg";
 import EndNodeSvg from "../../assets/endFlowNode.svg";
-import ConditionSvg from "../../assets/condition.svg";
+import ConditionSvg from "../../assets/conditionNode.svg";
 
 enum NODE_TYPE {
   START_NODE = "START_NODE",
@@ -108,5 +108,5 @@ export {
   START_NODE_DRAG_HANDLE,
   AGENT_NODE_DRAG_HANDLE,
   END_NODE_DRAG_HANDLE,
-  CONDITION_NODE_DRAG_HANDLE
+  CONDITION_NODE_DRAG_HANDLE,
 };
