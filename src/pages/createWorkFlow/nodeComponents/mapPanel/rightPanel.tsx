@@ -18,7 +18,7 @@ function RightPanel() {
       <AgentNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
     ),
     [NODE_TYPE.END_NODE]: <EndNodePanel />,
-    [NODE_TYPE.CONDITION_NODE]: <ConditionNodePanel />,
+    [NODE_TYPE.CONDITION_NODE]: <ConditionNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />,
     [NODE_TYPE.ANNOTATION_NODE]: null,
   };
 

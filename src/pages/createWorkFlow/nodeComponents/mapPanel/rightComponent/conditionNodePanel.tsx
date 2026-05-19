@@ -3,8 +3,17 @@ import { useState } from "react";
 import commonStyles from "./styles/common.module.less";
 import conditionNodeSvg from "../../../../../assets/conditionNode.svg";
 import { Tabs } from "antd";
+import ConditionList from "./conditionList";
+import type { NodeItem } from "../../../../../store/nodeList";
 
-function ConditionNodePanel() {
+interface ViewProps {
+  nodeInfo: NodeItem;
+  nodeList: NodeItem[];
+}
+
+function ConditionNodePanel(props: ViewProps) {
+  const { nodeInfo, nodeList } = props;
+  console.log(nodeList);
   const [nodeLabel] = useState("");
   return (
     <div>
@@ -44,7 +53,9 @@ function ConditionNodePanel() {
             {
               label: "设置",
               key: "setting",
-              children: <div></div>,
+              children: <div>
+                <ConditionList nodeInfo={nodeInfo} />
+              </div>,
             },
           ]}
         />

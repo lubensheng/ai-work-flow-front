@@ -11,6 +11,7 @@ import {
 import _ from "lodash";
 import type { NodeChange } from "@xyflow/react";
 import type { Field } from "../pages/createWorkFlow/type";
+import type { ConditionItem } from "./types/nodeListTypes";
 
 export const initStartFields: Field[] = [
   {
@@ -60,7 +61,10 @@ type NodeData = {
   notParent?: boolean;
   select: boolean;
   nodeConfig?: {
-    fields: Field[];
+    // 当前节点的字段，可以用做环境变量
+    fields?: Field[];
+    // 条件节点的条件配置
+    conditions?: ConditionItem[]
   };
 };
 
