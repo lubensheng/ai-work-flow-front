@@ -10,6 +10,7 @@ import type { ReactNode } from "react";
 function RightPanel() {
   const selectNodeInfo = useNodeList((s) => s.selectNodeInfo);
   const nodeList = useNodeList((s) => s.nodeList);
+  console.log(nodeList);
   const dom: Record<NODE_TYPE, ReactNode> = {
     [NODE_TYPE.START_NODE]: (
       <StartNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
@@ -18,7 +19,9 @@ function RightPanel() {
       <AgentNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
     ),
     [NODE_TYPE.END_NODE]: <EndNodePanel />,
-    [NODE_TYPE.CONDITION_NODE]: <ConditionNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />,
+    [NODE_TYPE.CONDITION_NODE]: (
+      <ConditionNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
+    ),
     [NODE_TYPE.ANNOTATION_NODE]: null,
   };
 

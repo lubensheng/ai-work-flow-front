@@ -64,7 +64,7 @@ type NodeData = {
     // 当前节点的字段，可以用做环境变量
     fields?: Field[];
     // 条件节点的条件配置
-    conditions?: ConditionItem[]
+    conditions?: ConditionItem[];
   };
 };
 
@@ -73,7 +73,7 @@ type KeyOf<T> = keyof T;
 
 type NodeDataKey = KeyOf<NodeData> | string;
 
-type NodeDataValueType = ValueOf<NodeData> | Field[];
+export type NodeDataValueType = ValueOf<NodeData> | Field[];
 
 export type NodeItem = {
   id: string;
@@ -394,7 +394,6 @@ const useNodeList = create<State & Actions>()(
               _.set(item.data, type, data);
             }
           });
-
           return {
             ...state,
             nodeList: newNodeList,
@@ -449,6 +448,18 @@ const useNodeList = create<State & Actions>()(
       setNotParentIdNode: (nodeInfo) => {
         const { nodeList } = get();
         nodeInfo.data.notParent = true;
+        nodeInfo.data.nodeConfig = {
+          conditions: [
+            {
+              type: "IF",
+              id: "1",
+            },
+            {
+              type: "ELSE",
+              id: "2",
+            },
+          ],
+        };
         set({
           nodeList: [...nodeList, nodeInfo],
           currentMenuAddNode: nodeInfo,

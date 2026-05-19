@@ -1,9 +1,9 @@
 import {
-  closestCenter, 
-  DndContext, 
-  KeyboardSensor, 
-  PointerSensor, 
-  useSensor, 
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
@@ -12,23 +12,53 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { useState } from "react";
+} from "@dnd-kit/sortable";
+import { useEffect, useState } from "react";
 import ConditionItem from "./conditionItem";
-import type { NodeItem } from "../../../../../../store/nodeList";
+import type {
+  NodeDataValueType,
+  NodeItem,
+} from "../../../../../../store/nodeList";
+import type { ConditionItem as ConditionItemType } from "../../../../../../store/types/nodeListTypes";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import useNodeList from "../../../../../../store/nodeList";
 
 interface ViewProps {
   nodeInfo: NodeItem;
+  nodeList: NodeItem[];
 }
 
 function ConditionList(props: ViewProps) {
-  const { nodeInfo } = props;
-   const [items, setItems] = useState([
-    { id: '1', title: 'case 1' },
-    { id: '2', title: 'case 2' },
-    { id: '3', title: 'case 3' },
-    { id: '4', title: 'case 4' },
-  ]);
+  const { nodeInfo, nodeList } = props;
+  const [items, setItems] = useState<ConditionItemType[]>([]);
+  const updateNodeData = useNodeList((s) => s.updateNodeData);
+  const handleAddCondition = () => {
+    const max = Math.max(...items.map((i) => Number(i.id)));
+    const newItems: ConditionItemType[] = [
+      ...items,
+      {
+        id: String(max + 1),
+        type: "ELSE IF",
+      },
+    ];
+    updateNodeData(
+      newItems as unknown as NodeDataValueType,
+      "nodeConfig.conditions",
+      nodeInfo.id
+    );
+  };
+
+  useEffect(() => {
+    if (!Array.isArray(nodeList)) {
+      return;
+    }
+    const currentNodeInfo = nodeList.find((item) => item.id === nodeInfo.id);
+    if (currentNodeInfo?.data.nodeConfig?.conditions) {
+      setItems(currentNodeInfo.data.nodeConfig.conditions);
+    }
+  }, [nodeList, nodeInfo]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -50,13 +80,33 @@ function ConditionList(props: ViewProps) {
       });
     }
   }
-  return <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-    <SortableContext items={items.map(i => i.id)}  strategy={verticalListSortingStrategy}>
-        {items.map((item) => (
-            <ConditionItem key={item.id} id={item.id} label={item.title} />
+  return (
+    <div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={items.map((i) => i.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {items.map((item) => (
+            <ConditionItem key={item.id} id={item.id} label={item.type} />
           ))}
-    </SortableContext> 
-  </DndContext>
+        </SortableContext>
+      </DndContext>
+      <div className="mt-[20px]">
+        <Button
+          className="w-full"
+          icon={<PlusOutlined />}
+          onClick={handleAddCondition}
+        >
+          ELIF
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export default ConditionList;

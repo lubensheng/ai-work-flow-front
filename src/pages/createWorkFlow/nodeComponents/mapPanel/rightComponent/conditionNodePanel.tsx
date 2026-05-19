@@ -53,9 +53,11 @@ function ConditionNodePanel(props: ViewProps) {
             {
               label: "设置",
               key: "setting",
-              children: <div>
-                <ConditionList nodeInfo={nodeInfo} />
-              </div>,
+              children: (
+                <div>
+                  <ConditionList nodeInfo={nodeInfo} nodeList={nodeList} />
+                </div>
+              ),
             },
           ]}
         />
