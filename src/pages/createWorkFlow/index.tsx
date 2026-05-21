@@ -31,6 +31,7 @@ import { getAppInfo } from "../../utils";
 import { useNavigate } from "react-router";
 import GhostPanel from "./nodeComponents/mapPanel/ghostPanel";
 import FunctionPanel from "./nodeComponents/mapPanel/functionPanel";
+import LlmNode from "./nodeComponents/llmNode";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -38,6 +39,7 @@ const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.END_NODE]: EndNode,
   [NODE_TYPE.CONDITION_NODE]: ConditionNode,
   [NODE_TYPE.ANNOTATION_NODE]: AnnotationNode,
+  [NODE_TYPE.LLM_NODE]: LlmNode,
 };
 
 const edgeTypes = {

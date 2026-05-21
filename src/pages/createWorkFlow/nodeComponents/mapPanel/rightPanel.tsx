@@ -4,6 +4,7 @@ import styles from "./right.module.less";
 import AgentNodePanel from "./rightComponent/agentNodePanel";
 import ConditionNodePanel from "./rightComponent/conditionNodePanel";
 import EndNodePanel from "./rightComponent/endNodePanel";
+import LlmNodePannel from "./rightComponent/llmNodePannel";
 import StartNodePanel from "./rightComponent/startNodePanel";
 import type { ReactNode } from "react";
 
@@ -23,6 +24,7 @@ function RightPanel() {
       <ConditionNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
     ),
     [NODE_TYPE.ANNOTATION_NODE]: null,
+    [NODE_TYPE.LLM_NODE]: <LlmNodePannel />,
   };
 
   return <div className={styles["container"]}>{dom[selectNodeInfo.type]}</div>;

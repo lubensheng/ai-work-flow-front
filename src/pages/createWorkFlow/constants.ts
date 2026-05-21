@@ -2,6 +2,7 @@ import AgentNodeSvg from "../../assets/agentIcon.svg";
 import StartNodeSvg from "../../assets/startNode.svg";
 import EndNodeSvg from "../../assets/endFlowNode.svg";
 import ConditionSvg from "../../assets/conditionNode.svg";
+import LlmNodeSvg from "../../assets/llmNode.svg";
 
 enum NODE_TYPE {
   START_NODE = "START_NODE",
@@ -9,6 +10,7 @@ enum NODE_TYPE {
   END_NODE = "END_NODE",
   CONDITION_NODE = "CONDITION_NODE",
   ANNOTATION_NODE = "ANNOTATION_NODE",
+  LLM_NODE = "LLM_NODE",
 }
 
 const AGENT_NODE_PREFIX = "agent-node";
@@ -16,6 +18,7 @@ const START_NODE_Id = "start";
 const END_NODE_ID = "end";
 const CONDITION_NODE_PREFIX = "condition-node";
 const ANNOTATION_NODE_PREFIX = "annotation-node";
+const LLM_NODE_PREFIX = "llm-node";
 
 const NODE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.AGENT_NODE]: AGENT_NODE_PREFIX,
@@ -23,6 +26,7 @@ const NODE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.END_NODE]: END_NODE_ID,
   [NODE_TYPE.CONDITION_NODE]: CONDITION_NODE_PREFIX,
   [NODE_TYPE.ANNOTATION_NODE]: ANNOTATION_NODE_PREFIX,
+  [NODE_TYPE.LLM_NODE]: LLM_NODE_PREFIX,
 };
 
 const NODE_TITLE_PREFIX_MAP: Record<NODE_TYPE, string> = {
@@ -31,6 +35,7 @@ const NODE_TITLE_PREFIX_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.END_NODE]: "结束",
   [NODE_TYPE.CONDITION_NODE]: "",
   [NODE_TYPE.ANNOTATION_NODE]: "",
+  [NODE_TYPE.LLM_NODE]: "LLM",
 };
 
 const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
@@ -39,6 +44,7 @@ const SOURCE_HANDLE_ID_MAP: Record<NODE_TYPE, string> = {
   [NODE_TYPE.END_NODE]: "end",
   [NODE_TYPE.CONDITION_NODE]: "condition-handle",
   [NODE_TYPE.ANNOTATION_NODE]: "annotation-handle",
+  [NODE_TYPE.LLM_NODE]: "ll-handle",
 };
 
 const NODE_TYPE_ICON: Record<NODE_TYPE, string> = {
@@ -47,6 +53,7 @@ const NODE_TYPE_ICON: Record<NODE_TYPE, string> = {
   [NODE_TYPE.END_NODE]: EndNodeSvg,
   [NODE_TYPE.CONDITION_NODE]: ConditionSvg,
   [NODE_TYPE.ANNOTATION_NODE]: "",
+  [NODE_TYPE.LLM_NODE]: LlmNodeSvg,
 };
 
 const LABEL_CONFIG = {
@@ -70,6 +77,7 @@ const START_NODE_DRAG_HANDLE = "START_NODE_DRAG_HANDLE";
 const AGENT_NODE_DRAG_HANDLE = "AGENT_NODE_DRAG_HANDLE";
 const END_NODE_DRAG_HANDLE = "END_NODE_DRAG_HANDLE";
 const CONDITION_NODE_DRAG_HANDLE = "CONDITION_NODE_DRAG_HANDLE";
+const LLM_NODE_DARG_HANDLE = "LLM_NODE_DARG_HANDLE";
 const ANNOTATION_FONT_SIZE = [
   {
     label: "小",
@@ -109,4 +117,5 @@ export {
   AGENT_NODE_DRAG_HANDLE,
   END_NODE_DRAG_HANDLE,
   CONDITION_NODE_DRAG_HANDLE,
+  LLM_NODE_DARG_HANDLE,
 };

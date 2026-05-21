@@ -4,6 +4,7 @@ import { Tabs, Tooltip } from "antd";
 import agentIcon from "../../../assets/agentIcon.svg";
 import endNodeIcon from "../../../assets/endFlowNode.svg";
 import conditionNodeIcon from "../../../assets/conditionNode.svg";
+import LlmNodeIcon from "../../../assets/llmNode.svg";
 import classNames from "classnames";
 import {
   NODE_PREFIX_MAP,
@@ -144,6 +145,44 @@ function MenuList(props: ViewProps) {
                         />
                         <div className="mt-2.5 ml-2.5">
                           <div style={{ color: "#000", fontSize: "14px" }}>
+                            LLM
+                          </div>
+                          <div style={{ color: "#ccc", fontSize: "12px" }}>
+                            调用大型语言模型回答问题或者对自然语言进行处理
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    placement="right"
+                  >
+                    <div
+                      className={classNames(styles.item, styles.hover)}
+                      style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const flowPosition = screenToFlowPosition({
+                          x: e.clientX,
+                          y: e.clientY,
+                        });
+                        console.log(flowPosition);
+                        handleAddNode(NODE_TYPE.LLM_NODE, flowPosition);
+                      }}
+                    >
+                      <img src={LlmNodeIcon} className={styles["image"]} />
+                      <span className={styles["text"]}>LLM</span>
+                    </div>
+                  </Tooltip>
+                  <Tooltip
+                    getPopupContainer={(node) => node}
+                    arrow={false}
+                    title={
+                      <div className="p-2.5">
+                        <img
+                          src={agentIcon}
+                          style={{ width: "30px", height: "30px" }}
+                        />
+                        <div className="mt-2.5 ml-2.5">
+                          <div style={{ color: "#000", fontSize: "14px" }}>
                             Agent
                           </div>
                           <div style={{ color: "#ccc", fontSize: "12px" }}>
@@ -218,6 +257,7 @@ function MenuList(props: ViewProps) {
                       <span className={styles["text"]}>条件分支</span>
                     </div>
                   </Tooltip>
+
                   <div
                     className={classNames(styles.item, styles.hover)}
                     style={{ padding: "8px 12px 8px 8px", cursor: "pointer" }}

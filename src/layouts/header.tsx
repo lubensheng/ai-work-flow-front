@@ -4,6 +4,8 @@ import { Button, Popover } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import UpdateAccountModal from "./updateAccountInfoModal";
+import LlmNodeSvg from "../assets/llmNode.svg";
+import classNames from "classnames";
 
 interface ViewProps {
   userInfo: { account: string };
@@ -72,7 +74,33 @@ function Headers(props: ViewProps) {
           }}
         ></div>
       </div>
-      <div>
+      <div className="flex items-center">
+        <Popover
+          trigger="hover"
+          placement="bottom"
+          arrow={false}
+          content={<div>配置模型</div>}
+        >
+          <div
+            className={classNames(
+              "mr-[16px]",
+              "h-[30px]",
+              "p-[10px]",
+              "flex",
+              "justify-center",
+              "items-center",
+              styles.hover
+            )}
+          >
+            <img
+              src={LlmNodeSvg}
+              className="w-[24px] h-[24px] cursor-pointer"
+            />
+            <span className="inline-block ml-[8px] text-[#495464] text-[13px] font-semibold">
+              配置模型
+            </span>
+          </div>
+        </Popover>
         <Popover
           trigger="click"
           placement="bottomLeft"
