@@ -4,9 +4,11 @@ import commonStyles from "./styles/common.module.less";
 import LlmNodeSvg from "../../../../../assets/llmNode.svg";
 import { ConfigProvider, Select, Tabs } from "antd";
 import zhCh from "antd/locale/zh_CN";
+import useLLMConfig from "../../../../../store/llmConfig";
 
 function LlmNodePannel() {
   const [nodeLabel] = useState("");
+  const currentLLMConfig = useLLMConfig((s) => s.currentLLMConfig);
   return (
     <div>
       <div
@@ -63,7 +65,13 @@ function LlmNodePannel() {
                       <Select
                         placeholder="请选择模型"
                         style={{ width: "100%" }}
-                      ></Select>
+                        options={currentLLMConfig.map((item) => {
+                          return {
+                            label: item.apiType,
+                            value: item.apiType,
+                          };
+                        })}
+                      />
                     </div>
                   </div>
                 ),

@@ -89,13 +89,14 @@ function Headers(props: ViewProps) {
               "flex",
               "justify-center",
               "items-center",
+              "cursor-pointer",
               styles.hover
             )}
+            onClick={() => {
+              navigate("/llmConfigPage", { replace: true });
+            }}
           >
-            <img
-              src={LlmNodeSvg}
-              className="w-[24px] h-[24px] cursor-pointer"
-            />
+            <img src={LlmNodeSvg} className="w-[24px] h-[24px] " />
             <span className="inline-block ml-[8px] text-[#495464] text-[13px] font-semibold">
               配置模型
             </span>
