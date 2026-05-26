@@ -17,6 +17,16 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/role\/updateUserInfo/, ""),
       },
+      "/llmConfig/": {
+        target: "http://43.138.198.247:8080/llmConfig/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/llmConfig/, ""),
+      },
+      "/flow/": {
+        target: "http://43.138.198.247:8080/flow/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/flow/, ""),
+      },
     },
   },
 });

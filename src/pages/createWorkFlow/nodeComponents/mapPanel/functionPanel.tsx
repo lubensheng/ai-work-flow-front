@@ -1,4 +1,4 @@
-import { Badge, Button, Tooltip } from "antd";
+import { Badge, Button, message, Tooltip } from "antd";
 import styles from "./functionPanel.module.less";
 import envSvg from "../../../../assets/envSvg.svg";
 import problemListSvg from "../../../../assets/problemListSvg.svg";
@@ -6,6 +6,10 @@ import useNodeList from "../../../../store/nodeList";
 import { NODE_TYPE } from "../../constants";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
+import useAppNodeIdInfo from "../../../../store/appNodeInfo";
+import { saveFlow } from "../../services";
+import { useNavigate } from "react-router";
+import { getUserInfo } from "../../../../utils";
 
 interface ProblemItem {
   desc: string;
@@ -14,13 +18,39 @@ interface ProblemItem {
 function FunctionPanel() {
   const nodeList = useNodeList((state) => state.nodeList);
   const [problemList, setProblemList] = useState<ProblemItem[]>([]);
-
+  const edgeList = useNodeList((state) => state.edgeList);
+  const s = useAppNodeIdInfo((s) => s.appNodeInfo);
+  const navigator = useNavigate();
+  const publish = async () => {
+    console.log(nodeList);
+    console.log(edgeList);
+    console.log(s);
+    if (!s) {
+      return;
+    }
+    const useInfo = getUserInfo();
+    const res = await saveFlow({
+      appName: s.appName,
+      appType: s.appType,
+      appDesc: s.appDesc,
+      edgeList: edgeList,
+      nodeList: nodeList,
+      userName: useInfo.account,
+      flowStatus: 0,
+    });
+    if (res.data.code !== 0) {
+      message.error(res.data.message);
+      return;
+    }
+    message.success("发布成功");
+    navigator("/myWorkFlow", { replace: true });
+  };
   useEffect(() => {
     const problemItem: ProblemItem[] = [];
     if (!nodeList.length) {
       problemItem.push({ desc: "该流程没有任何节点" });
     }
-    if (nodeList.find((item) => item.type !== NODE_TYPE.END_NODE)) {
+    if (!nodeList.find((item) => item.type === NODE_TYPE.END_NODE)) {
       problemItem.push({ desc: "该流程没有结束节点" });
     }
     setProblemList(problemItem);
@@ -87,7 +117,9 @@ function FunctionPanel() {
         </Tooltip>
       </Badge>
 
-      <Button type="primary">发布</Button>
+      <Button type="primary" onClick={publish}>
+        发布
+      </Button>
     </div>
   );
 }

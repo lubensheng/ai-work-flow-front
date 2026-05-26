@@ -67,8 +67,8 @@ function LlmNodePannel() {
                         style={{ width: "100%" }}
                         options={currentLLMConfig.map((item) => {
                           return {
-                            label: item.apiType,
-                            value: item.apiType,
+                            label: item.modalType,
+                            value: item.modalType,
                           };
                         })}
                       />

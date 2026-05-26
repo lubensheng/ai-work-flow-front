@@ -7,10 +7,11 @@ interface ViewProps {
   isOpen: boolean;
   type: "edit" | "add";
   onCancel: () => void;
+  onOk: () => void;
 }
 
 function AddModal(props: ViewProps) {
-  const { isOpen, type, onCancel } = props;
+  const { isOpen, type, onCancel, onOk } = props;
   const [form] = Form.useForm();
   useEffect(() => {
     if (!isOpen) {
@@ -25,10 +26,12 @@ function AddModal(props: ViewProps) {
         modalType: values["modalType"],
         apiKey: values["apiKey"],
       });
-      if (res.data.code !== "0") {
+      if (String(res.data.code) !== "0") {
         message.error(res.data.message);
         return;
       }
+      message.success("添加成功");
+      onOk();
       onCancel();
     } catch (e) {
       console.error(e);

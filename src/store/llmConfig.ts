@@ -2,17 +2,29 @@ import { create } from "zustand";
 import { combine } from "zustand/middleware";
 
 type State = {
-  currentLLMConfig: { apiType: string; apiKey: string }[];
+  currentLLMConfig: { modalType: string; apiKey: string; id: number }[];
 };
 
 type Action = {
-  getCurrentLLMConfig: () => { apiType: string; apiKey: string }[];
-  setCurrentLLMConfig: (value: { apiType: string; apiKey: string }[]) => void;
+  getCurrentLLMConfig: () => {
+    modalType: string;
+    apiKey: string;
+    id: number;
+  }[];
+  setCurrentLLMConfig: (
+    value: { modalType: string; apiKey: string; id: number }[]
+  ) => void;
 };
 
 const useLLMConfig = create<State & Action>(
   combine(
-    { currentLLMConfig: [] as { apiType: string; apiKey: string }[] },
+    {
+      currentLLMConfig: [] as {
+        modalType: string;
+        apiKey: string;
+        id: number;
+      }[],
+    },
     (set, get) => ({
       getCurrentLLMConfig: () => {
         const { currentLLMConfig } = get();

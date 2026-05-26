@@ -32,6 +32,9 @@ import { useNavigate } from "react-router";
 import GhostPanel from "./nodeComponents/mapPanel/ghostPanel";
 import FunctionPanel from "./nodeComponents/mapPanel/functionPanel";
 import LlmNode from "./nodeComponents/llmNode";
+import useLLMConfig from "../../store/llmConfig";
+import { queryAllLLMConfig } from "../llmConfigPage/services";
+import { message } from "antd";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -78,6 +81,7 @@ function CreateWorkFlow() {
   const currentMenuInfo = useClickAddPositionInfo(
     (state) => state.currentAddNodeInfo
   );
+  const setCurrentLLMConfig = useLLMConfig((s) => s.setCurrentLLMConfig);
 
   useEffect(() => {
     setNodes([...nodeList]);
@@ -92,6 +96,13 @@ function CreateWorkFlow() {
   useEffect(() => {
     const appInfo = getAppInfo();
     if (appInfo) {
+      queryAllLLMConfig().then((res) => {
+        if (String(res.data.code) !== "0") {
+          message.error(res.data.message);
+          return;
+        }
+        setCurrentLLMConfig(res.data.data);
+      });
       setAppNodeInfo({ ...appInfo });
     } else {
       navigation("/workFlow");

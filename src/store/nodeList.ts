@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import {
-  AGENT_NODE_DRAG_HANDLE,
   AGENT_NODE_PREFIX,
+  END_NODE_DRAG_HANDLE,
+  LLM_NODE_DARG_HANDLE,
+  NODE_PREFIX_MAP,
   NODE_TYPE,
   SOURCE_HANDLE_ID_MAP,
   START_NODE_DRAG_HANDLE,
@@ -131,7 +133,7 @@ const initialEdges: EdgeItem[] = [
   {
     id: `${edgeIdPrefix}-1`,
     source: "start",
-    target: "agent-node-1",
+    target: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
     type: "workFlowEdge",
     sourceHandle: SOURCE_HANDLE_ID_MAP.START_NODE,
     data: {
@@ -140,7 +142,23 @@ const initialEdges: EdgeItem[] = [
       showRelateNode: false,
       currentEdgeInfo: {
         source: "start",
-        target: "agent-node-1",
+        target: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
+      },
+    },
+  },
+  {
+    id: `${edgeIdPrefix}-2`,
+    source: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
+    target: `${NODE_PREFIX_MAP.END_NODE}-1`,
+    type: "workFlowEdge",
+    sourceHandle: `${SOURCE_HANDLE_ID_MAP.LLM_NODE}-${NODE_PREFIX_MAP.LLM_NODE}-1`,
+    data: {
+      active: false,
+      mouseIn: false,
+      showRelateNode: false,
+      currentEdgeInfo: {
+        source: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
+        target: `${NODE_PREFIX_MAP.END_NODE}-1`,
       },
     },
   },
@@ -163,11 +181,18 @@ const initNodeList: NodeItem[] = [
     type: NODE_TYPE.START_NODE,
   },
   {
-    id: `${AGENT_NODE_PREFIX}-1`,
+    id: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
     position: { x: 240, y: 0 },
-    data: { childrenIds: [], label: 1, select: false, title: "Agent" },
-    dragHandle: `.${AGENT_NODE_DRAG_HANDLE}`,
-    type: NODE_TYPE.AGENT_NODE,
+    data: { childrenIds: [], label: 1, select: false, title: "LLM" },
+    dragHandle: `.${LLM_NODE_DARG_HANDLE}`,
+    type: NODE_TYPE.LLM_NODE,
+  },
+  {
+    id: `${NODE_PREFIX_MAP.END_NODE}-1`,
+    position: { x: 480, y: 0 },
+    data: { childrenIds: [], label: 1, select: false, title: "End" },
+    dragHandle: `.${END_NODE_DRAG_HANDLE}`,
+    type: NODE_TYPE.END_NODE,
   },
 ];
 

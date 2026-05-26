@@ -12,6 +12,7 @@ import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 
 function LlmNode(props: NodeItem) {
   const { data } = props;
+  console.log(`${SOURCE_HANDLE_ID_MAP.LLM_NODE}-${props.id}`);
   const setSelectNode = useNodeList((state) => state.setSelectNode);
   const updateEdgeShowRelateNode = useNodeList(
     (state) => state.updateEdgeShowRelateNode

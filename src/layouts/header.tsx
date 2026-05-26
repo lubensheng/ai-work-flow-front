@@ -93,7 +93,7 @@ function Headers(props: ViewProps) {
               styles.hover
             )}
             onClick={() => {
-              navigate("/llmConfigPage", { replace: true });
+              navigate("/llmConfigPage");
             }}
           >
             <img src={LlmNodeSvg} className="w-[24px] h-[24px] " />
