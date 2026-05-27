@@ -67,6 +67,8 @@ type NodeData = {
     fields?: Field[];
     // 条件节点的条件配置
     conditions?: ConditionItem[];
+    // llm节点 模型配置
+    llmApiConfig?: { id: number, modalType: string, apiKey: string }
   };
 };
 

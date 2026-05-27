@@ -10,6 +10,7 @@ import useAppNodeIdInfo from "../../../../store/appNodeInfo";
 import { saveFlow } from "../../services";
 import { useNavigate } from "react-router";
 import { getUserInfo } from "../../../../utils";
+import { getCurrentFlowErrorInfos } from "./utils";
 
 interface ProblemItem {
   desc: string;
@@ -22,10 +23,6 @@ function FunctionPanel() {
   const s = useAppNodeIdInfo((s) => s.appNodeInfo);
   const navigator = useNavigate();
   const publish = async () => {
-    console.log(nodeList);
-    console.log(edgeList);
-    console.log(s);
-    debugger;
     if (!s) {
       return;
     }
@@ -47,14 +44,7 @@ function FunctionPanel() {
     navigator("/myWorkFlow", { replace: true });
   };
   useEffect(() => {
-    const problemItem: ProblemItem[] = [];
-    if (!nodeList.length) {
-      problemItem.push({ desc: "该流程没有任何节点" });
-    }
-    if (!nodeList.find((item) => item.type === NODE_TYPE.END_NODE)) {
-      problemItem.push({ desc: "该流程没有结束节点" });
-    }
-    setProblemList(problemItem);
+    setProblemList(getCurrentFlowErrorInfos(nodeList));
   }, [nodeList]);
 
   return (
@@ -69,8 +59,7 @@ function FunctionPanel() {
           "items-center",
           "rounded-lg",
           styles["show-dom"],
-        ])}
-      >
+        ])}>
         <img src={envSvg} className="w-6 h-6" />
       </div>
       <Badge count={problemList.length} status="error">
@@ -94,13 +83,16 @@ function FunctionPanel() {
           }}
           placement="bottom"
           title={
-            <div>
-              {problemList.map((item) => (
-                <div key={item.desc}>{item.desc}</div>
-              ))}
-            </div>
-          }
-        >
+            problemList.length ? (
+              <div>
+                {problemList.map((item) => (
+                  <div key={item.desc}>{item.desc}</div>
+                ))}
+              </div>
+            ) : (
+              <div>暂无问题</div>
+            )
+          }>
           <div
             className={classNames([
               "w-8",
@@ -111,8 +103,7 @@ function FunctionPanel() {
               "items-center",
               "rounded-lg",
               styles["show-dom"],
-            ])}
-          >
+            ])}>
             <img src={problemListSvg} className="w-6 h-6" />
           </div>
         </Tooltip>
