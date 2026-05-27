@@ -87,6 +87,8 @@ function AgentNode(props: NodeItem) {
           border: "none",
           height: "9px",
         }}
+        isConnectableStart={false}
+        isConnectableEnd={true}
       >
         <div
           style={{
@@ -101,6 +103,8 @@ function AgentNode(props: NodeItem) {
       <Handle
         type="source"
         position={Position.Right}
+        isConnectableStart={true}
+        isConnectableEnd={false}
         id={`${SOURCE_HANDLE_ID_MAP.AGENT_NODE}-${props.id}`}
         style={{
           background: "none",

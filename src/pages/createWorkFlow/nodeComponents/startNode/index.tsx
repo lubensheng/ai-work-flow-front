@@ -89,6 +89,8 @@ function StartNode(props: NodeItem) {
           border: "none",
         }}
         onClick={handleAddNode}
+        isConnectableStart={true}
+        isConnectableEnd={false}
       >
         <Tooltip
           arrow={false}
