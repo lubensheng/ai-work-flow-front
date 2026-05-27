@@ -5,12 +5,12 @@ import LlmNodeSvg from "../../../../../assets/llmNode.svg";
 import { ConfigProvider, Select, Tabs } from "antd";
 import zhCh from "antd/locale/zh_CN";
 import useLLMConfig from "../../../../../store/llmConfig";
-import useNodeList from "../../../../../store/nodeList";
+// import useNodeList from "../../../../../store/nodeList";
 
 function LlmNodePannel() {
   const [nodeLabel] = useState("");
   const currentLLMConfig = useLLMConfig((s) => s.currentLLMConfig);
-  const updateNodeData = useNodeList((s) => s.updateNodeData);
+  // const updateNodeData = useNodeList((s) => s.updateNodeData);
   return (
     <div>
       <div
@@ -74,7 +74,7 @@ function LlmNodePannel() {
                           };
                         })}
                         onChange={(value) => {
-                          console.log(value)
+                          console.log(value);
                         }}
                       />
                     </div>

@@ -3,7 +3,6 @@ import styles from "./functionPanel.module.less";
 import envSvg from "../../../../assets/envSvg.svg";
 import problemListSvg from "../../../../assets/problemListSvg.svg";
 import useNodeList from "../../../../store/nodeList";
-import { NODE_TYPE } from "../../constants";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import useAppNodeIdInfo from "../../../../store/appNodeInfo";
@@ -59,7 +58,8 @@ function FunctionPanel() {
           "items-center",
           "rounded-lg",
           styles["show-dom"],
-        ])}>
+        ])}
+      >
         <img src={envSvg} className="w-6 h-6" />
       </div>
       <Badge count={problemList.length} status="error">
@@ -92,7 +92,8 @@ function FunctionPanel() {
             ) : (
               <div>暂无问题</div>
             )
-          }>
+          }
+        >
           <div
             className={classNames([
               "w-8",
@@ -103,7 +104,8 @@ function FunctionPanel() {
               "items-center",
               "rounded-lg",
               styles["show-dom"],
-            ])}>
+            ])}
+          >
             <img src={problemListSvg} className="w-6 h-6" />
           </div>
         </Tooltip>
