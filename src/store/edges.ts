@@ -3,6 +3,7 @@ import { combine } from "zustand/middleware";
 const useClickEdgeId = create<{
   currentId: string;
   setCurrentId: (id: string) => void;
+  clearCurrentId: () => void;
 }>(
   combine({ currentId: "" }, (set) => {
     return {
@@ -11,6 +12,9 @@ const useClickEdgeId = create<{
           currentId: id,
         }));
       },
+      clearCurrentId() {
+        set({ currentId: '' })
+      }
     };
   })
 );

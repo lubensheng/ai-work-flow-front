@@ -35,6 +35,7 @@ import LlmNode from "./nodeComponents/llmNode";
 import useLLMConfig from "../../store/llmConfig";
 import { queryAllLLMConfig } from "../llmConfigPage/services";
 import { message } from "antd";
+import NodeRightClickMenu from "./nodeRightClickMenu";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -210,9 +211,7 @@ function CreateWorkFlow() {
             });
           });
         }}
-        onConnectEnd={(e, connectState) => {
-          console.log(e);
-          console.log(connectState);
+        onConnectEnd={(_e, connectState) => {
           if (
             connectState.fromHandle?.nodeId &&
             connectState.toHandle?.nodeId
@@ -308,6 +307,7 @@ function CreateWorkFlow() {
           />
         )}
       </ReactFlow>
+      <NodeRightClickMenu />
       <SetAppNodeInfoModal
         isOpen={appNodeInfoProps.isOpen}
         initValue={appNodeInfoProps.initValue!}

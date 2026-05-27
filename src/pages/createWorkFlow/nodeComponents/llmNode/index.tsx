@@ -9,6 +9,7 @@ import useNodeList from "../../../../store/nodeList";
 import { Handle, Position, useReactFlow } from "@xyflow/react";
 import { Tooltip } from "antd";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
+import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo";
 
 function LlmNode(props: NodeItem) {
   const { data } = props;
@@ -20,7 +21,9 @@ function LlmNode(props: NodeItem) {
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
-  const { getNode } = useReactFlow();
+    
+  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(s => s.setStateInfo)
+  const { getNode, flowToScreenPosition } = useReactFlow();
 
   const getNodePosition = () => {
     const node = getNode(props.id);
@@ -51,6 +54,22 @@ function LlmNode(props: NodeItem) {
       });
     }
   };
+
+  const handleMenuClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
+     const node = getNode(props.id);
+    if (node) {
+      const p = flowToScreenPosition(node.position)
+      setClickRightMenuNodeInfo({
+        position: { x: p.x + 150, y: p.y },
+        nodeInfo: props,
+      })
+    }
+   
+  }
+
   return (
     <>
       <div
@@ -71,6 +90,7 @@ function LlmNode(props: NodeItem) {
         onMouseEnter={() => {
           updateEdgeShowRelateNode(props.id);
         }}
+        onContextMenu={handleMenuClick}
       >
         <div>
           <img src={llmNodeIcon} className={styles["llm-icon"]} />

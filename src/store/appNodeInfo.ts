@@ -13,6 +13,7 @@ type State = {
 
 type Action = {
   setAppNodeInfo: (app: AppNodeItem) => void;
+  clearAppNodeInfo: () => void;
 };
 
 const useAppNodeIdInfo = create<State & Action>(
@@ -22,6 +23,9 @@ const useAppNodeIdInfo = create<State & Action>(
         appNodeInfo: app,
       });
     },
+    clearAppNodeInfo() {
+      set({ appNodeInfo: undefined })
+    }
   }))
 );
 

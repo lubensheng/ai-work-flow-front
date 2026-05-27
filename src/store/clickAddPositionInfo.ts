@@ -17,6 +17,7 @@ type State = {
 
 type Action = {
   setCurrentNodeInfo: (state: State) => void;
+  clearCurrentNodeInfo: () => void;
 };
 
 const useClickAddPositionInfo = create<State & Action>(
@@ -25,6 +26,9 @@ const useClickAddPositionInfo = create<State & Action>(
       setCurrentNodeInfo: (currentAddNodeInfo: State) => {
         set(currentAddNodeInfo);
       },
+      clearCurrentNodeInfo() {
+        set({currentAddNodeInfo: {}});
+      }
     };
   })
 );
