@@ -25,6 +25,7 @@ function FunctionPanel() {
     console.log(nodeList);
     console.log(edgeList);
     console.log(s);
+    debugger;
     if (!s) {
       return;
     }

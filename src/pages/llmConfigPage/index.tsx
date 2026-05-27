@@ -49,7 +49,7 @@ function LlmConfigPage() {
           新增
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mt-[16px]">
         {llmConfigs.map((item) => {
           return (
             <div
