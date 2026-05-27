@@ -36,6 +36,7 @@ import useLLMConfig from "../../store/llmConfig";
 import { queryAllLLMConfig } from "../llmConfigPage/services";
 import { message } from "antd";
 import NodeRightClickMenu from "./nodeRightClickMenu";
+import useClickRightMenuNodeInfo from "../../store/clickRightMenuNodeInfo";
 
 const nodeTypes: Record<NODE_TYPE, React.FC<NodeItem>> = {
   [NODE_TYPE.START_NODE]: StartNode,
@@ -83,7 +84,9 @@ function CreateWorkFlow() {
     (state) => state.currentAddNodeInfo
   );
   const setCurrentLLMConfig = useLLMConfig((s) => s.setCurrentLLMConfig);
-
+  const clearClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
+    (s) => s.clearState
+  );
   useEffect(() => {
     setNodes([...nodeList]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,6 +96,10 @@ function CreateWorkFlow() {
     setEdges([...edgeList]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edgeList]);
+
+  const handleWindClick = () => {
+    clearClickRightMenuNodeInfo();
+  };
 
   useEffect(() => {
     const appInfo = getAppInfo();
@@ -112,7 +119,7 @@ function CreateWorkFlow() {
   }, []);
 
   return (
-    <div className={styles["draw-flow-container"]}>
+    <div className={styles["draw-flow-container"]} onClick={handleWindClick}>
       {appNodeInfo && (
         <div className={styles["app-info"]} style={{ width: appInfoWidth }}>
           <div className="p-2">
@@ -157,6 +164,7 @@ function CreateWorkFlow() {
         nodes={nodes}
         edges={edges}
         ref={ref}
+        nodeDragThreshold={3}
         ariaLabelConfig={LABEL_CONFIG}
         style={{ cursor: "pointer" }}
         noDragClassName={
@@ -282,7 +290,6 @@ function CreateWorkFlow() {
           });
         }}
         proOptions={{ hideAttribution: true }}
-        nodeDragThreshold={1}
         autoPanOnNodeFocus={false}
       >
         <Controls />

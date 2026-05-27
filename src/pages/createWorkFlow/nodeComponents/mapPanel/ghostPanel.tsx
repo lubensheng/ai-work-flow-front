@@ -71,7 +71,6 @@ function GhostPanel() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMenuAddNode]);
-  console.log("currentMenuAddNode", currentMenuAddNode);
   return <div className="w-[70px] h-[100px]"></div>;
 }
 

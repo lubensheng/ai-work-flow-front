@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import {
-  AGENT_NODE_PREFIX,
   END_NODE_DRAG_HANDLE,
   LLM_NODE_DARG_HANDLE,
   NODE_PREFIX_MAP,
@@ -14,6 +13,7 @@ import _ from "lodash";
 import type { NodeChange } from "@xyflow/react";
 import type { Field } from "../pages/createWorkFlow/type";
 import type { ConditionItem } from "./types/nodeListTypes";
+import { findBetweenNodeByCurrentNode } from "./utils";
 
 export const initStartFields: Field[] = [
   {
@@ -68,7 +68,7 @@ type NodeData = {
     // 条件节点的条件配置
     conditions?: ConditionItem[];
     // llm节点 模型配置
-    llmApiConfig?: { id: number, modalType: string, apiKey: string }
+    llmApiConfig?: { id: number; modalType: string; apiKey: string };
   };
 };
 
@@ -127,6 +127,7 @@ type Actions = {
   initState: () => void;
   setNotParentIdNode: (nodeInfo: NodeItem) => void;
   connectNode: (targetId: string, sourceId: string) => void;
+  deleteNode: (nodeInfo: NodeItem) => void;
 };
 
 export const edgeIdPrefix = "edge-el";
@@ -171,7 +172,7 @@ const initNodeList: NodeItem[] = [
     id: START_NODE_Id,
     position: { x: 0, y: 0 },
     data: {
-      childrenIds: [`${AGENT_NODE_PREFIX}-1`],
+      childrenIds: [`${NODE_PREFIX_MAP.LLM_NODE}-1`],
       label: 1,
       select: true,
       title: "开始",
@@ -185,7 +186,12 @@ const initNodeList: NodeItem[] = [
   {
     id: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
     position: { x: 240, y: 0 },
-    data: { childrenIds: [], label: 1, select: false, title: "LLM" },
+    data: {
+      childrenIds: [`${NODE_PREFIX_MAP.END_NODE}-1`],
+      label: 1,
+      select: false,
+      title: "LLM",
+    },
     dragHandle: `.${LLM_NODE_DARG_HANDLE}`,
     type: NODE_TYPE.LLM_NODE,
   },
@@ -210,7 +216,7 @@ const useNodeList = create<State & Actions>()(
     {
       nodeList: initNodeList,
       edgeList: initialEdges,
-      edgeId: 2,
+      edgeId: 3,
       selectNodeInfo: initNodeList[0],
     },
     (set, get) => ({
@@ -534,6 +540,11 @@ const useNodeList = create<State & Actions>()(
               },
             },
           };
+          if (newEdgeList.find((item) => item.target === newEdgeItem.target)) {
+            return {
+              ...state,
+            };
+          }
           newEdgeList.push({
             ...newEdgeItem,
           });
@@ -541,6 +552,28 @@ const useNodeList = create<State & Actions>()(
             ...state,
             edgeList: newEdgeList,
             nodeList: newNodeList,
+            edgeId: state.edgeId + 1,
+          };
+        });
+      },
+      deleteNode(nodeInfo) {
+        set((pre) => {
+          let nodeList = [...pre.nodeList];
+          let edgeList = [...pre.edgeList];
+          nodeList = nodeList.filter((item) => item.id !== nodeInfo.id);
+          nodeList.forEach((node) => {
+            if (node.data.childrenIds) {
+              node.data.childrenIds = node.data.childrenIds.filter(
+                (item) => item !== nodeInfo.id
+              );
+            }
+          });
+          const needList = findBetweenNodeByCurrentNode(edgeList, nodeInfo);
+          edgeList = edgeList.filter((item) => !needList.includes(item.id));
+          return {
+            ...pre,
+            nodeList,
+            edgeList,
           };
         });
       },

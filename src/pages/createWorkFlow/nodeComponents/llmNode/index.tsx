@@ -13,7 +13,6 @@ import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo"
 
 function LlmNode(props: NodeItem) {
   const { data } = props;
-  console.log(`${SOURCE_HANDLE_ID_MAP.LLM_NODE}-${props.id}`);
   const setSelectNode = useNodeList((state) => state.setSelectNode);
   const updateEdgeShowRelateNode = useNodeList(
     (state) => state.updateEdgeShowRelateNode
@@ -21,8 +20,10 @@ function LlmNode(props: NodeItem) {
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
-    
-  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(s => s.setStateInfo)
+
+  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
+    (s) => s.setStateInfo
+  );
   const { getNode, flowToScreenPosition } = useReactFlow();
 
   const getNodePosition = () => {
@@ -59,16 +60,15 @@ function LlmNode(props: NodeItem) {
     e.preventDefault();
     e.stopPropagation();
     console.log(e);
-     const node = getNode(props.id);
+    const node = getNode(props.id);
     if (node) {
-      const p = flowToScreenPosition(node.position)
+      const p = flowToScreenPosition(node.position);
       setClickRightMenuNodeInfo({
         position: { x: p.x + 150, y: p.y },
         nodeInfo: props,
-      })
+      });
     }
-   
-  }
+  };
 
   return (
     <>
@@ -105,6 +105,7 @@ function LlmNode(props: NodeItem) {
         style={{
           background: "none",
           border: "none",
+          height: "9px",
         }}
       >
         <div
@@ -113,7 +114,6 @@ function LlmNode(props: NodeItem) {
             height: "9px",
             backgroundColor: "#1296db",
             position: "absolute",
-            top: "-3px",
             left: "1px",
           }}
         ></div>

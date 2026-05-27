@@ -51,6 +51,7 @@ function EndNode(props: NodeItem) {
         style={{
           background: "none",
           border: "none",
+          height: "9px",
         }}
       >
         <div
@@ -59,7 +60,6 @@ function EndNode(props: NodeItem) {
             height: "9px",
             backgroundColor: "#1296db",
             position: "absolute",
-            top: "-3px",
             left: "1px",
           }}
         ></div>
