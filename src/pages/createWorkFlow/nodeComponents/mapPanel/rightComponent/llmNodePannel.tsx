@@ -1,16 +1,47 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import commonStyles from "./styles/common.module.less";
 import LlmNodeSvg from "../../../../../assets/llmNode.svg";
 import { ConfigProvider, Select, Tabs } from "antd";
 import zhCh from "antd/locale/zh_CN";
 import useLLMConfig from "../../../../../store/llmConfig";
-// import useNodeList from "../../../../../store/nodeList";
+import useNodeList, { type NodeDataValueType, type NodeItem } from "../../../../../store/nodeList";
 
-function LlmNodePannel() {
+interface ViewProps {
+  nodeInfo: NodeItem;
+  nodeList: NodeItem[];
+}
+
+function LlmNodePannel(props: ViewProps) {
+  const { nodeInfo, nodeList } = props;
   const [nodeLabel] = useState("");
   const currentLLMConfig = useLLMConfig((s) => s.currentLLMConfig);
-  // const updateNodeData = useNodeList((s) => s.updateNodeData);
+  const updateNodeData = useNodeList((s) => s.updateNodeData);
+  const [currentLLMConfigValue, setCurrentLLMConfigValue] = useState<number>();
+
+  const handleUpdateLLMConifg = (modalId: number) => {
+    const currentInfo = currentLLMConfig.find((item) => item.id === modalId);
+    if (currentInfo) {
+      updateNodeData(
+        currentInfo as unknown as NodeDataValueType,
+        "nodeConfig.llmApiConfig",
+        nodeInfo.id,
+      );
+    } else {
+      console.log("没有找到对应的配置");
+    }
+  };
+
+   useEffect(() => {
+      if (!Array.isArray(nodeList)) {
+        return;
+      }
+      const currentNodeInfo = nodeList.find((item) => item.id === nodeInfo.id);
+      if (currentNodeInfo?.data.nodeConfig?.llmApiConfig) {
+        setCurrentLLMConfigValue(currentNodeInfo.data.nodeConfig.llmApiConfig.id);
+      }
+    }, [nodeList, nodeInfo]);
+
   return (
     <div>
       <div
@@ -18,8 +49,7 @@ function LlmNodePannel() {
           display: "flex",
           padding: "16px 16px 4px 16px",
           alignItems: "center",
-        }}
-      >
+        }}>
         <div>
           <img src={LlmNodeSvg} className={commonStyles["header-icon"]} />
         </div>
@@ -35,7 +65,7 @@ function LlmNodePannel() {
         <input
           className={classNames(
             commonStyles["set_node_label_input"],
-            commonStyles["set_node_desc_input"]
+            commonStyles["set_node_desc_input"],
           )}
           placeholder="添加描述..."
         />
@@ -58,8 +88,7 @@ function LlmNodePannel() {
                           color: "red",
                           display: "inline-block",
                           transform: "translate(6px, 2px)",
-                        }}
-                      >
+                        }}>
                         *
                       </span>
                     </div>
@@ -73,8 +102,10 @@ function LlmNodePannel() {
                             value: item.id,
                           };
                         })}
+                        value={currentLLMConfigValue}
                         onChange={(value) => {
                           console.log(value);
+                          handleUpdateLLMConifg(value);
                         }}
                       />
                     </div>

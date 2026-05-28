@@ -5,6 +5,7 @@ import {
   END_NODE_DRAG_HANDLE,
   CONDITION_NODE_DRAG_HANDLE,
   ANNOTATION_DRAG_HANDLE,
+  LLM_NODE_DARG_HANDLE,
 } from "../pages/createWorkFlow/constants";
 
 const getUserInfo = () => {
@@ -33,6 +34,9 @@ const getDragHandle = (type: NODE_TYPE) => {
     }
     case NODE_TYPE.ANNOTATION_NODE: {
       return "." + ANNOTATION_DRAG_HANDLE;
+    }
+    case NODE_TYPE.LLM_NODE: {
+      return "." + LLM_NODE_DARG_HANDLE;
     }
     default: {
       return undefined;

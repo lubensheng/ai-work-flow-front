@@ -23,7 +23,7 @@ function RightPanel() {
       <ConditionNodePanel nodeInfo={selectNodeInfo} nodeList={nodeList} />
     ),
     [NODE_TYPE.ANNOTATION_NODE]: null,
-    [NODE_TYPE.LLM_NODE]: <LlmNodePannel />,
+    [NODE_TYPE.LLM_NODE]: <LlmNodePannel nodeInfo={selectNodeInfo} nodeList={nodeList} />,
   };
 
   return <div className={styles["container"]}>{dom[selectNodeInfo.type]}</div>;

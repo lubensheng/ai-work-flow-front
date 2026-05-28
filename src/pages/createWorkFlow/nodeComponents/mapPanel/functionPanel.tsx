@@ -10,6 +10,7 @@ import { saveFlow } from "../../services";
 import { useNavigate } from "react-router";
 import { getUserInfo } from "../../../../utils";
 import { getCurrentFlowErrorInfos } from "./utils";
+import { FLOW_STATUS } from "../../constants";
 
 interface ProblemItem {
   desc: string;
@@ -22,6 +23,10 @@ function FunctionPanel() {
   const s = useAppNodeIdInfo((s) => s.appNodeInfo);
   const navigator = useNavigate();
   const publish = async () => {
+    if (!!problemList.length) {
+      message.error('请先查看该流程图配置');
+      return;
+    }
     if (!s) {
       return;
     }
@@ -33,7 +38,7 @@ function FunctionPanel() {
       edgeList: edgeList,
       nodeList: nodeList,
       userName: useInfo.account,
-      flowStatus: 0,
+      flowStatus: FLOW_STATUS.PUBLISH,
     });
     if (res.data.code !== 0) {
       message.error(res.data.message);
@@ -42,6 +47,29 @@ function FunctionPanel() {
     message.success("发布成功");
     navigator("/myWorkFlow", { replace: true });
   };
+
+  const saveDraf = async () => {
+    if (!s) {
+      return;
+    }
+    const useInfo = getUserInfo();
+    const res = await saveFlow({
+      appName: s.appName,
+      appType: s.appType,
+      appDesc: s.appDesc,
+      edgeList: edgeList,
+      nodeList: nodeList,
+      userName: useInfo.account,
+      flowStatus: FLOW_STATUS.DARFT,
+    });
+    if (res.data.code !== 0) {
+      message.error(res.data.message);
+      return;
+    }
+    message.success("保存成功");
+    navigator("/myWorkFlow", { replace: true });
+  };
+
   useEffect(() => {
     setProblemList(getCurrentFlowErrorInfos(nodeList));
   }, [nodeList]);
@@ -113,6 +141,9 @@ function FunctionPanel() {
 
       <Button type="primary" onClick={publish}>
         发布
+      </Button>
+      <Button type="primary" onClick={saveDraf}>
+        保存草稿
       </Button>
     </div>
   );

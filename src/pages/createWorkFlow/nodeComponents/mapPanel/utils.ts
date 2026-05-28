@@ -1,9 +1,14 @@
 import type { NodeItem } from "../../../../store/nodeList";
 import { NODE_TYPE } from "../../constants";
 
-type ValidateType = "noNode" | "noEndNode" | "blankNode" | 'LLMNodeNotSetApi';
+type ValidateType = "noNode" | "noEndNode" | "blankNode" | "LLMNodeNotSetApi";
 
-const validateType: ValidateType[] = ["noNode", "noEndNode", "blankNode", "LLMNodeNotSetApi"];
+const validateType: ValidateType[] = [
+  "noNode",
+  "noEndNode",
+  "blankNode",
+  "LLMNodeNotSetApi",
+];
 
 const validateMethod: Record<
   ValidateType,
@@ -20,27 +25,35 @@ const validateMethod: Record<
     }
   },
   blankNode: (nodeList: NodeItem[]) => {
-    const realFlowNode = nodeList.filter(item => item.type !== NODE_TYPE.AGENT_NODE);
+    const realFlowNode = nodeList.filter(
+      (item) => item.type !== NODE_TYPE.AGENT_NODE,
+    );
     let num = 0;
-    realFlowNode.forEach(item => {
+    realFlowNode.forEach((item) => {
       const { data } = item;
       if (data.notParent) {
         num++;
       }
-    })
-    return `该流程有独立存在的节点-${num}`;
+    });
+    if (num !== 0) {
+      return `该流程有独立存在的节点-${num}`;
+    }
   },
   LLMNodeNotSetApi: (nodeList: NodeItem[]) => {
-    const realFlowNode = nodeList.filter(item => item.type === NODE_TYPE.LLM_NODE);
+    const realFlowNode = nodeList.filter(
+      (item) => item.type === NODE_TYPE.LLM_NODE,
+    );
     let num = 0;
-    realFlowNode.forEach(item => {
+    realFlowNode.forEach((item) => {
       const { data } = item;
       if (!data.nodeConfig?.llmApiConfig) {
         num++;
       }
-    })
-    return `该流程有独立存在的节点-${num}`;
-  }
+    });
+    if (num !== 0) {
+      return `存在llm节点没有配置模型-${num}`;
+    }
+  },
 };
 
 export const getCurrentFlowErrorInfos = (

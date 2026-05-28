@@ -99,6 +99,11 @@ const ANNOTATION_FONT_SIZE_LABEL: Record<string, string> = {
   "16px": "大",
 };
 
+enum FLOW_STATUS {
+  'DARFT' = 1,
+  'PUBLISH' = 2
+}
+
 export {
   NODE_TYPE,
   AGENT_NODE_PREFIX,
@@ -118,4 +123,5 @@ export {
   END_NODE_DRAG_HANDLE,
   CONDITION_NODE_DRAG_HANDLE,
   LLM_NODE_DARG_HANDLE,
+  FLOW_STATUS
 };
