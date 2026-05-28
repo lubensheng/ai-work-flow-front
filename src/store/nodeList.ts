@@ -1,19 +1,15 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import {
-  END_NODE_DRAG_HANDLE,
-  LLM_NODE_DARG_HANDLE,
-  NODE_PREFIX_MAP,
   NODE_TYPE,
   SOURCE_HANDLE_ID_MAP,
-  START_NODE_DRAG_HANDLE,
-  START_NODE_Id,
 } from "../pages/createWorkFlow/constants";
 import _ from "lodash";
 import type { NodeChange } from "@xyflow/react";
 import type { Field } from "../pages/createWorkFlow/type";
-import type { ConditionItem } from "./types/nodeListTypes";
+import type { Actions, ConditionItem, State } from "./types/nodeListTypes";
 import { findBetweenNodeByCurrentNode } from "./utils";
+import { initialEdges, initNodeList } from "./initState/nodeListInitState";
 
 export const initStartFields: Field[] = [
   {
@@ -73,9 +69,6 @@ type NodeData = {
 };
 
 type ValueOf<T> = T[keyof T];
-type KeyOf<T> = keyof T;
-
-type NodeDataKey = KeyOf<NodeData> | string;
 
 export type NodeDataValueType = ValueOf<NodeData> | Field[];
 
@@ -87,122 +80,7 @@ export type NodeItem = {
   type: NODE_TYPE;
 };
 
-type State = {
-  edgeId: number;
-  nodeList: NodeItem[];
-  edgeList: EdgeItem[];
-  selectNodeInfo: NodeItem;
-  currentPanelAddNode?: NodeItem;
-  currentMenuAddNode?: NodeItem;
-};
-
-type Actions = {
-  setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => void;
-  setEdgeList: (edge: EdgeItem) => void;
-  getEdgeLastId: () => string;
-  setNodeListByEdgesInfo: (
-    currentEdgeInfo: {
-      source: string;
-      target: string;
-      edgeId: string;
-    },
-    nodeInfo: NodeItem
-  ) => void;
-  updateNodePosition: (nodeList: NodeChange<NodeItem>[]) => void;
-  getSelectNodeInfo: () => NodeItem;
-  setSelectNode: (nodeId: string) => void;
-  updateEdgeShowRelateNode: (nodeId?: string) => void;
-  updateNodeData: (
-    data: NodeDataValueType,
-    type: NodeDataKey,
-    nodeId: string
-  ) => void;
-  setCurrentPanelAddNode: (node: NodeItem) => void;
-  clearCurrentPanelAddNode: () => void;
-  clearCurrentMenuAddNode: () => void;
-  updateNodePostionByNodeId: (
-    nodeId: string,
-    position: { x: number; y: number }
-  ) => void;
-  initState: () => void;
-  setNotParentIdNode: (nodeInfo: NodeItem) => void;
-  connectNode: (targetId: string, sourceId: string) => void;
-  deleteNode: (nodeInfo: NodeItem) => void;
-};
-
 export const edgeIdPrefix = "edge-el";
-
-const initialEdges: EdgeItem[] = [
-  {
-    id: `${edgeIdPrefix}-1`,
-    source: "start",
-    target: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
-    type: "workFlowEdge",
-    sourceHandle: SOURCE_HANDLE_ID_MAP.START_NODE,
-    data: {
-      active: false,
-      mouseIn: false,
-      showRelateNode: false,
-      currentEdgeInfo: {
-        source: "start",
-        target: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
-      },
-    },
-  },
-  {
-    id: `${edgeIdPrefix}-2`,
-    source: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
-    target: `${NODE_PREFIX_MAP.END_NODE}-1`,
-    type: "workFlowEdge",
-    sourceHandle: `${SOURCE_HANDLE_ID_MAP.LLM_NODE}-${NODE_PREFIX_MAP.LLM_NODE}-1`,
-    data: {
-      active: false,
-      mouseIn: false,
-      showRelateNode: false,
-      currentEdgeInfo: {
-        source: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
-        target: `${NODE_PREFIX_MAP.END_NODE}-1`,
-      },
-    },
-  },
-];
-
-const initNodeList: NodeItem[] = [
-  {
-    id: START_NODE_Id,
-    position: { x: 0, y: 0 },
-    data: {
-      childrenIds: [`${NODE_PREFIX_MAP.LLM_NODE}-1`],
-      label: 1,
-      select: true,
-      title: "开始",
-      nodeConfig: {
-        fields: initStartFields,
-      },
-    },
-    dragHandle: `.${START_NODE_DRAG_HANDLE}`,
-    type: NODE_TYPE.START_NODE,
-  },
-  {
-    id: `${NODE_PREFIX_MAP.LLM_NODE}-1`,
-    position: { x: 240, y: 0 },
-    data: {
-      childrenIds: [`${NODE_PREFIX_MAP.END_NODE}-1`],
-      label: 1,
-      select: false,
-      title: "LLM",
-    },
-    dragHandle: `.${LLM_NODE_DARG_HANDLE}`,
-    type: NODE_TYPE.LLM_NODE,
-  },
-  {
-    id: `${NODE_PREFIX_MAP.END_NODE}-1`,
-    position: { x: 480, y: 0 },
-    data: { childrenIds: [], label: 1, select: false, title: "End" },
-    dragHandle: `.${END_NODE_DRAG_HANDLE}`,
-    type: NODE_TYPE.END_NODE,
-  },
-];
 
 export const nodeHeight = 60;
 

@@ -100,8 +100,8 @@ const ANNOTATION_FONT_SIZE_LABEL: Record<string, string> = {
 };
 
 enum FLOW_STATUS {
-  'DARFT' = 1,
-  'PUBLISH' = 2
+  "DRAFT" = 1,
+  "PUBLISH" = 2,
 }
 
 export {
@@ -123,5 +123,5 @@ export {
   END_NODE_DRAG_HANDLE,
   CONDITION_NODE_DRAG_HANDLE,
   LLM_NODE_DARG_HANDLE,
-  FLOW_STATUS
+  FLOW_STATUS,
 };

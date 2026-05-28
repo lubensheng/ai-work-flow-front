@@ -23,8 +23,8 @@ function FunctionPanel() {
   const s = useAppNodeIdInfo((s) => s.appNodeInfo);
   const navigator = useNavigate();
   const publish = async () => {
-    if (!!problemList.length) {
-      message.error('请先查看该流程图配置');
+    if (!problemList.length) {
+      message.error("请先查看该流程图配置");
       return;
     }
     if (!s) {
@@ -48,7 +48,7 @@ function FunctionPanel() {
     navigator("/myWorkFlow", { replace: true });
   };
 
-  const saveDraf = async () => {
+  const saveDraft = async () => {
     if (!s) {
       return;
     }
@@ -60,7 +60,7 @@ function FunctionPanel() {
       edgeList: edgeList,
       nodeList: nodeList,
       userName: useInfo.account,
-      flowStatus: FLOW_STATUS.DARFT,
+      flowStatus: FLOW_STATUS.DRAFT,
     });
     if (res.data.code !== 0) {
       message.error(res.data.message);
@@ -142,7 +142,7 @@ function FunctionPanel() {
       <Button type="primary" onClick={publish}>
         发布
       </Button>
-      <Button type="primary" onClick={saveDraf}>
+      <Button type="primary" onClick={saveDraft}>
         保存草稿
       </Button>
     </div>
