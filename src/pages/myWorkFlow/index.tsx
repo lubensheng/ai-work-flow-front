@@ -4,9 +4,11 @@ import { getUserInfo } from "../../utils";
 import { message, Pagination, Spin } from "antd";
 import styles from "./index.module.less";
 import classNames from "classnames";
+import { useNavigate } from "react-router";
 
 function MyWorkFlow() {
   const [loading, setLoading] = useState(false);
+  const navigator = useNavigate();
   const [queryPageInfo, setQueryPageInfo] = useState<{
     pageIndex: number;
     pageSize: number;
@@ -43,10 +45,12 @@ function MyWorkFlow() {
             height: "calc(100vh - 57px)",
             padding: "16px",
             position: "relative",
-          }}>
+          }}
+        >
           <div
             className="grid grid-cols-4 gap-1"
-            style={{ maxHeight: "calc(100% - 50px)", overflowY: "auto" }}>
+            style={{ maxHeight: "calc(100% - 50px)", overflowY: "auto" }}
+          >
             {flowInfo.map((item) => {
               return (
                 <div className={styles.container} key={item.id}>
@@ -56,18 +60,44 @@ function MyWorkFlow() {
                       "absolute",
                       "bottom-[8px]",
                       "right-[8px]",
-                      "w-[60px]",
-                      "text-center",
-                      "cursor-pointer",
-                      "p-[5px]",
-                      styles.hover,
-                    )}>
-                    编辑
+                      "flex"
+                    )}
+                  >
+                    <div
+                      className={classNames(
+                        "w-[60px]",
+                        "text-center",
+                        "cursor-pointer",
+                        "p-[5px]",
+
+                        styles.hover
+                      )}
+                    >
+                      编辑
+                    </div>
+                    <div
+                      className={classNames(
+                        "w-[60px]",
+                        "text-center",
+                        "cursor-pointer",
+                        "p-[5px]",
+                        styles.hover
+                      )}
+                      onClick={() => {
+                        navigator(
+                          "/executePage?flowConfigId=" +
+                            item.flowConfigId +
+                            "&appName=" +
+                            item.appName
+                        );
+                      }}
+                    >
+                      执行
+                    </div>
                   </div>
                 </div>
               );
             })}
-           
           </div>
           <div
             style={{
@@ -78,13 +108,15 @@ function MyWorkFlow() {
               bottom: "10px",
               display: "flex",
               justifyContent: "space-between",
-            }}>
+            }}
+          >
             <div
               style={{
                 height: "40px",
                 lineHeight: "40px",
                 marginLeft: "10px",
-              }}>
+              }}
+            >
               总共{total}条
             </div>
             <Pagination

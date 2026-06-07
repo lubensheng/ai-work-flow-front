@@ -18,6 +18,16 @@ const getAppInfo = () => {
   return appInfo ? JSON.parse(appInfo) : null;
 };
 
+const getUrlParams = (search: string): Record<string, unknown> => {
+  const params = search.indexOf("?") === 0 ? search.slice(1) : search;
+  const ans: Record<string, unknown> = {};
+  params.split("&").forEach((item) => {
+    const [key, value] = item.split("=");
+    ans[key] = decodeURIComponent(value);
+  });
+  return ans;
+};
+
 const getDragHandle = (type: NODE_TYPE) => {
   switch (type) {
     case NODE_TYPE.START_NODE: {
@@ -44,4 +54,4 @@ const getDragHandle = (type: NODE_TYPE) => {
   }
 };
 
-export { getUserInfo, getAppInfo, getDragHandle };
+export { getUserInfo, getAppInfo, getDragHandle, getUrlParams };

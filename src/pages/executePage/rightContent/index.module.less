@@ -1,0 +1,25 @@
+.input-container {
+  --tw-shadow: 0px 2px 4px -2px rgba(16, 24, 40, 0.06),
+    0px 4px 8px -2px rgba(16, 24, 40, 0.1);
+  --tw-shadow-colored: 0px 2px 4px -2px var(--tw-shadow-color),
+    0px 4px 8px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  border: 1px solid rgb(16 24 40/0.08);
+  border-radius: 5px;
+  // .sub-container {
+  //   border: 1px solid #fff;
+  //   border-radius: 5px;
+  // }
+
+  .input-textarea {
+    border: none;
+    border-color: transparent;
+
+    &:focus {
+      border: none !important;
+      border-color: transparent !important;
+      box-shadow: none;
+    }
+  }
+}

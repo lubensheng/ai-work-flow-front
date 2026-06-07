@@ -6,6 +6,7 @@ import MyWorkFlow from "./pages/myWorkFlow";
 import WorkFlow from "./pages/workFlow";
 import WorkFlowConfigPage from "./pages/workFlowConfigPage";
 import LlmConfigPage from "./pages/llmConfigPage";
+import ExecutePage from "./pages/executePage";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "llmConfigPage",
         Component: LlmConfigPage,
+      },
+      {
+        path: "executePage",
+        Component: ExecutePage,
       },
     ],
   },
