@@ -8,10 +8,12 @@ import RobotSvg from "../../../assets/robot.svg";
 interface ViewProps {
   conversationId: string;
   content: string;
+  isFinished: boolean;
 }
 
 function Content(props: ViewProps) {
-  const { content } = props;
+  const { content, isFinished } = props;
+  console.log("content", isFinished);
   return (
     <div className={styles["content-item-container"]}>
       <div className={styles["icon-container"]}>
@@ -26,7 +28,8 @@ function Content(props: ViewProps) {
 
 export default memo<ViewProps>(Content, (preProps, nextProps) => {
   return (
-    isEqual(nextProps.content, nextProps.content) ||
-    isEqual(preProps.conversationId, preProps.conversationId)
+    isEqual(preProps.content, nextProps.content) &&
+    isEqual(preProps.conversationId, preProps.conversationId) &&
+    isEqual(preProps.isFinished, nextProps.isFinished)
   );
 });

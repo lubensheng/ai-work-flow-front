@@ -69,6 +69,19 @@
       var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     border: 1px solid rgb(16 24 40/0.08);
     border-radius: 10px;
+    position: relative;
+    .cursor {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 2px;
+      height: 1.2em;
+      margin-left: 4px;
+      background-color: #333;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
   }
 }
 
@@ -97,5 +110,15 @@
     border-radius: 50%;
     margin-right: 40px;
     margin-left: 20px;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }

@@ -27,6 +27,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/flow/, ""),
       },
+      "/agent/": {
+        target: "http://43.138.198.247:3000/agent/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/agent/, ""),
+      },
     },
   },
 });
