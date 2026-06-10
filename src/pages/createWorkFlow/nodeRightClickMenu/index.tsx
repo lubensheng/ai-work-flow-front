@@ -6,6 +6,7 @@ import classNames from "classnames";
 function NodeRightClickMenu() {
   const position = useClickRightMenuNodeInfo((s) => s.position);
   const nodeInfo = useClickRightMenuNodeInfo((s) => s.nodeInfo);
+  const clearState = useClickRightMenuNodeInfo((s) => s.clearState);
   const deleteNode = useNodeList((s) => s.deleteNode);
   return nodeInfo && position ? (
     <div
@@ -27,6 +28,7 @@ function NodeRightClickMenu() {
           onClick={(e) => {
             e.stopPropagation();
             deleteNode(nodeInfo);
+            clearState();
           }}
         >
           删除

@@ -426,6 +426,11 @@ const useNodeList = create<State & Actions>()(
           newEdgeList.push({
             ...newEdgeItem,
           });
+          newNodeList.forEach((item) => {
+            if (item.id === sourceId) {
+              item.data.notParent = false;
+            }
+          });
           return {
             ...state,
             edgeList: newEdgeList,

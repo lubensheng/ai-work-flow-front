@@ -2,13 +2,14 @@ import classNames from "classnames";
 import commonStyles from "../common.module.less";
 import styles from "./index.module.less";
 import type { NodeItem } from "../../../../store/nodeList";
-import { Handle, Position } from "@xyflow/react";
+import { Handle, Position, useReactFlow } from "@xyflow/react";
 import {
   END_NODE_DRAG_HANDLE,
   NODE_TYPE,
   NODE_TYPE_ICON,
 } from "../../constants";
 import useNodeList from "../../../../store/nodeList";
+import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo";
 
 function EndNode(props: NodeItem) {
   const { data } = props;
@@ -16,6 +17,23 @@ function EndNode(props: NodeItem) {
   const updateEdgeShowRelateNode = useNodeList(
     (s) => s.updateEdgeShowRelateNode
   );
+  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
+    (s) => s.setStateInfo
+  );
+  const { getNode, flowToScreenPosition } = useReactFlow();
+  const handleMenuClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
+    const node = getNode(props.id);
+    if (node) {
+      const p = flowToScreenPosition(node.position);
+      setClickRightMenuNodeInfo({
+        position: { x: p.x + 150, y: p.y },
+        nodeInfo: props,
+      });
+    }
+  };
   return (
     <div>
       <div
@@ -36,6 +54,7 @@ function EndNode(props: NodeItem) {
         onMouseEnter={() => {
           updateEdgeShowRelateNode(props.id);
         }}
+        onContextMenu={handleMenuClick}
       >
         <div>
           <img

@@ -10,17 +10,34 @@ import { memo } from "react";
 import type { NodeItem } from "../../../../store/nodeList";
 import useNodeList from "../../../../store/nodeList";
 import { Tooltip } from "antd";
+import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo";
 
 function AgentNode(props: NodeItem) {
   const { data } = props;
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
+  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
+    (s) => s.setStateInfo
+  );
   const setSelectNode = useNodeList((state) => state.setSelectNode);
   const updateEdgeShowRelateNode = useNodeList(
     (s) => s.updateEdgeShowRelateNode
   );
-  const { getNode } = useReactFlow();
+  const { getNode, flowToScreenPosition } = useReactFlow();
+  const handleMenuClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
+    const node = getNode(props.id);
+    if (node) {
+      const p = flowToScreenPosition(node.position);
+      setClickRightMenuNodeInfo({
+        position: { x: p.x + 150, y: p.y },
+        nodeInfo: props,
+      });
+    }
+  };
 
   const getNodePosition = () => {
     const node = getNode(props.id);
@@ -71,6 +88,7 @@ function AgentNode(props: NodeItem) {
         onMouseEnter={() => {
           updateEdgeShowRelateNode(props.id);
         }}
+        onContextMenu={handleMenuClick}
       >
         <div>
           <img src={agentIcon} className={styles["agent-icon"]} />

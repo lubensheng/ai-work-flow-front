@@ -12,6 +12,7 @@ import { Tooltip } from "antd";
 import useNodeList from "../../../../store/nodeList";
 import styles from "./index.module.less";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
+import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo";
 
 function ConditionNode(props: NodeItem) {
   console.log(props);
@@ -19,10 +20,27 @@ function ConditionNode(props: NodeItem) {
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
+  const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
+    (s) => s.setStateInfo
+  );
   const updateEdgeShowRelateNode = useNodeList(
     (s) => s.updateEdgeShowRelateNode
   );
-  const { screenToFlowPosition } = useReactFlow();
+  const { getNode, flowToScreenPosition, screenToFlowPosition } =
+    useReactFlow();
+  const handleMenuClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
+    const node = getNode(props.id);
+    if (node) {
+      const p = flowToScreenPosition(node.position);
+      setClickRightMenuNodeInfo({
+        position: { x: p.x + 150, y: p.y },
+        nodeInfo: props,
+      });
+    }
+  };
 
   const getNodePosition = (x: number, y: number) => {
     const flowPosition = screenToFlowPosition({
@@ -66,6 +84,7 @@ function ConditionNode(props: NodeItem) {
         onClick={() => {
           setSelectNode(props.id);
         }}
+        onContextMenu={handleMenuClick}
       >
         <div className="p-[8px]">
           <img

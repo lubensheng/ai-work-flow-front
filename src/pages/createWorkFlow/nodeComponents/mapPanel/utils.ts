@@ -26,7 +26,7 @@ const validateMethod: Record<
   },
   blankNode: (nodeList: NodeItem[]) => {
     const realFlowNode = nodeList.filter(
-      (item) => item.type !== NODE_TYPE.AGENT_NODE,
+      (item) => item.type !== NODE_TYPE.ANNOTATION_NODE
     );
     let num = 0;
     realFlowNode.forEach((item) => {
@@ -41,7 +41,7 @@ const validateMethod: Record<
   },
   LLMNodeNotSetApi: (nodeList: NodeItem[]) => {
     const realFlowNode = nodeList.filter(
-      (item) => item.type === NODE_TYPE.LLM_NODE,
+      (item) => item.type === NODE_TYPE.LLM_NODE
     );
     let num = 0;
     realFlowNode.forEach((item) => {
@@ -57,7 +57,7 @@ const validateMethod: Record<
 };
 
 export const getCurrentFlowErrorInfos = (
-  nodeList: NodeItem[],
+  nodeList: NodeItem[]
 ): { desc: string }[] => {
   const problemItem: { desc: string }[] = [];
   validateType.forEach((item) => {
