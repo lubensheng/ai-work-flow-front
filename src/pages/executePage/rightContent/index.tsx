@@ -2,7 +2,7 @@ import { Input, message, Tooltip } from "antd";
 import sendMsg from "../../../assets/sendMsg.svg";
 import classNames from "classnames";
 import styles from "./index.module.less";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Content from "./content";
 import UserAskContent from "./userAskContent";
 
@@ -64,6 +64,16 @@ function RightContent() {
       content: "test-content2",
     },
   ]);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [contentList]);
+
   const connectSSE = (id: string) => {
     // 关闭已有连接
     if (eventSourceRef.current) {
@@ -123,7 +133,6 @@ function RightContent() {
   };
 
   const sendMsgData = () => {
-    console.log(inputValue);
     if (!inputValue) {
       message.warning("请输入内容");
       return;
@@ -135,6 +144,7 @@ function RightContent() {
     };
     setUserAskList((pre) => [...pre, newUserAskItem]);
     connectSSE("conversationId-" + (contentList.length + 1));
+    setTimeout(scrollToBottom, 0);
   };
 
   console.log(contentList);
@@ -143,7 +153,7 @@ function RightContent() {
       <div className={styles["content-container"]} ref={messagesEndRef}>
         {contentList.map((item) => {
           const userAskContent = userAskList.find(
-            (i) => i.relateConversationId === item.conversationId
+            (i) => i.relateConversationId === item.conversationId,
           );
           return (
             <>
@@ -180,14 +190,12 @@ function RightContent() {
               "flex",
               "items-center",
               "justify-end",
-              "p-[9px]"
-            )}
-          >
+              "p-[9px]",
+            )}>
             <Tooltip title="发送">
               <div
                 className={classNames("cursor-pointer")}
-                onClick={sendMsgData}
-              >
+                onClick={sendMsgData}>
                 <img
                   src={sendMsg}
                   className={classNames("w-[24px] h-[24px]")}
