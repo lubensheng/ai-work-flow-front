@@ -104,6 +104,7 @@ const useNodeList = create<State & Actions>()(
             ...item,
             data: { ...item.data, select: false },
           }));
+          debugger;
           const newEdgeList = [...state.edgeList];
           const parentIndex = newNodeList.findIndex(
             (item) => item.id === parentNodeId
