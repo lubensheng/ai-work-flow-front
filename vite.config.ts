@@ -32,6 +32,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/agent/, ""),
       },
+      "/flowExecute/": {
+        target: "http://43.138.198.247:8080/flowExecute/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/flowExecute/, ""),
+      },
     },
   },
 });

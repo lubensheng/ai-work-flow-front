@@ -88,7 +88,9 @@ function MyWorkFlow() {
                           "/executePage?flowConfigId=" +
                             item.flowConfigId +
                             "&appName=" +
-                            item.appName
+                            item.appName +
+                            "&flowId=" +
+                            item.id
                         );
                       }}
                     >

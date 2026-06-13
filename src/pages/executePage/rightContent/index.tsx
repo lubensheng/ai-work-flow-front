@@ -6,64 +6,21 @@ import { useEffect, useRef, useState } from "react";
 import Content from "./content";
 import UserAskContent from "./userAskContent";
 
-function RightContent() {
+interface ViewProps {
+  flowId: string;
+}
+
+function RightContent(props: ViewProps) {
+  const { flowId } = props;
   const [inputValue, setInputValue] = useState<string>();
   const eventSourceRef = useRef<EventSource | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [contentList, setContentList] = useState<
     { conversationId: string; content: string; isFinish: boolean }[]
-  >([
-    {
-      isFinish: true,
-      conversationId: "conversationId-1",
-      content: `
-  # 标题测试
-  **加粗文本** *斜体文本*
-  
-  ~~删除线~~
-  
-  - 普通列表
-  - [x] 已完成任务
-  - [ ] 待办任务
-  
-  | 姓名 | 年龄 |
-  | ---- | ---- |
-  | 小明 | 20 |
-  `,
-    },
-    {
-      isFinish: true,
-      conversationId: "conversationId-2",
-      content: `
-  # 标题测试
-  **加粗文本** *斜体文本*
-  
-  ~~删除线~~
-  
-  - 普通列表
-  - [x] 已完成任务
-  - [ ] 待办任务
-  
-  | 姓名 | 年龄 |
-  | ---- | ---- |
-  | 小明 | 20 |
-  `,
-    },
-  ]);
+  >([]);
   const [userAskList, setUserAskList] = useState<
     { askId: string; relateConversationId: string; content: string }[]
-  >([
-    {
-      askId: "askId-1",
-      relateConversationId: "conversationId-1",
-      content: "test-content",
-    },
-    {
-      askId: "askId-2",
-      relateConversationId: "conversationId-2",
-      content: "test-content2",
-    },
-  ]);
+  >([]);
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
@@ -74,15 +31,14 @@ function RightContent() {
     scrollToBottom();
   }, [contentList]);
 
-  const connectSSE = (id: string) => {
+  const connectSSE = (id: string, content: string) => {
     // 关闭已有连接
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
     }
 
     // 接口地址，对应 Nest 后端
-    const sseUrl =
-      "/agent/mockConversation?apiType=claude&apiKey=www&content=2222";
+    const sseUrl = `/flowExecute/executeFlow?flowId=${flowId}&content=${content}`;
     const es = new EventSource(sseUrl);
     eventSourceRef.current = es;
 
@@ -133,6 +89,10 @@ function RightContent() {
   };
 
   const sendMsgData = () => {
+    if (!flowId) {
+      message.warning("该流程id缺少");
+      return;
+    }
     if (!inputValue) {
       message.warning("请输入内容");
       return;
@@ -143,7 +103,7 @@ function RightContent() {
       content: inputValue || "",
     };
     setUserAskList((pre) => [...pre, newUserAskItem]);
-    connectSSE("conversationId-" + (contentList.length + 1));
+    connectSSE("conversationId-" + (contentList.length + 1), inputValue);
     setTimeout(scrollToBottom, 0);
   };
 
@@ -153,7 +113,7 @@ function RightContent() {
       <div className={styles["content-container"]} ref={messagesEndRef}>
         {contentList.map((item) => {
           const userAskContent = userAskList.find(
-            (i) => i.relateConversationId === item.conversationId,
+            (i) => i.relateConversationId === item.conversationId
           );
           return (
             <>
@@ -190,12 +150,14 @@ function RightContent() {
               "flex",
               "items-center",
               "justify-end",
-              "p-[9px]",
-            )}>
+              "p-[9px]"
+            )}
+          >
             <Tooltip title="发送">
               <div
                 className={classNames("cursor-pointer")}
-                onClick={sendMsgData}>
+                onClick={sendMsgData}
+              >
                 <img
                   src={sendMsg}
                   className={classNames("w-[24px] h-[24px]")}

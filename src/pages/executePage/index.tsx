@@ -9,9 +9,12 @@ import { SUCCESS_CODE } from "../../utils/constants";
 
 function ExecutePage() {
   const location = useLocation();
-  const [flowInfo, setFlowInfo] = useState<{ appName: string }>({
-    appName: "",
-  });
+  const [flowInfo, setFlowInfo] = useState<{ appName: string; flowId: string }>(
+    {
+      appName: "",
+      flowId: "",
+    }
+  );
   const [loading, setLoading] = useState(false);
   const getFlowInfo = async (flowConfigId: string) => {
     setLoading(true);
@@ -27,7 +30,10 @@ function ExecutePage() {
     console.log(location.search);
     const params = getUrlParams(location.search);
     console.log(params);
-    setFlowInfo({ appName: params["appName"] as string });
+    setFlowInfo({
+      appName: params["appName"] as string,
+      flowId: params["flowId"] as string,
+    });
     getFlowInfo(params["flowConfigId"] as string);
   }, [location.search]);
 
