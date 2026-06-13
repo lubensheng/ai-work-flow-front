@@ -11,6 +11,10 @@ const modalType = [
     value: "doubao",
     label: "豆包",
   },
+  {
+    value: "claude",
+    label: "claude",
+  },
 ];
 
 export { modalType };

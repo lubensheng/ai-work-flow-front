@@ -23,7 +23,7 @@ function FunctionPanel() {
   const s = useAppNodeIdInfo((s) => s.appNodeInfo);
   const navigator = useNavigate();
   const publish = async () => {
-    if (!problemList.length) {
+    if (problemList.length) {
       message.error("请先查看该流程图配置");
       return;
     }
