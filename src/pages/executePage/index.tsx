@@ -44,7 +44,7 @@ function ExecutePage() {
         style={{ height: "calc(100vh - 57px)", padding: "16px" }}
       >
         <LeftConversationInfo appName={flowInfo.appName} />
-        <RightContent />
+        <RightContent flowId={flowInfo.flowId} />
       </div>
     </Spin>
   );
