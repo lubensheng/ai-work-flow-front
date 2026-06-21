@@ -11,10 +11,11 @@ import { useState } from "react";
 interface ViewProps {
   label: string;
   id: string;
+  handelAddCondition: (isOpen: boolean, conditionId: string) => void;
 }
 
 function ConditionItem(props: ViewProps) {
-  const { id, label } = props;
+  const { id, label, handelAddCondition } = props;
   const {
     attributes,
     listeners,
@@ -62,7 +63,14 @@ function ConditionItem(props: ViewProps) {
         <div className="text-[10px] font-medium text-[#676f83]">Case {id}</div>
       </div>
       <div className="ml-[16px]">
-        <Button icon={<PlusOutlined />}>添加条件</Button>
+        <Button
+          icon={<PlusOutlined />}
+          onClick={() => {
+            handelAddCondition(true, id);
+          }}
+        >
+          添加条件
+        </Button>
       </div>
       <div
         className={classNames(

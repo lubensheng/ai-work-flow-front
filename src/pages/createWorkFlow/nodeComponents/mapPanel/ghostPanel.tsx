@@ -20,7 +20,6 @@ function GhostPanel() {
       x: e.clientX,
       y: e.clientY,
     });
-    console.log(flowPosition);
     const rectFlowDom = document.querySelector(
       ".react-flow__pane.draggable"
     ) as HTMLDivElement;

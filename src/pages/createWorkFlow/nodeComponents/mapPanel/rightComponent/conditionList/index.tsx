@@ -23,6 +23,7 @@ import type { ConditionItem as ConditionItemType } from "../../../../../../store
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import useNodeList from "../../../../../../store/nodeList";
+import AddConditionModal from "../addConditionModal";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -33,6 +34,11 @@ function ConditionList(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
   const [items, setItems] = useState<ConditionItemType[]>([]);
   const updateNodeData = useNodeList((s) => s.updateNodeData);
+  const [isOpenAddCondition, setIsOpenAddConditions] = useState<{
+    isOpen: boolean;
+    originValue: string;
+  }>({ isOpen: false, originValue: "" });
+
   const handleAddCondition = () => {
     const max = Math.max(...items.map((i) => Number(i.id)));
     const newItems: ConditionItemType[] = [
@@ -80,6 +86,11 @@ function ConditionList(props: ViewProps) {
       });
     }
   }
+
+  const handelAddCondition = (isOpen: boolean, conditionId: string) => {
+    setIsOpenAddConditions({ isOpen, originValue: conditionId });
+  };
+
   return (
     <div>
       <DndContext
@@ -92,7 +103,12 @@ function ConditionList(props: ViewProps) {
           strategy={verticalListSortingStrategy}
         >
           {items.map((item) => (
-            <ConditionItem key={item.id} id={item.id} label={item.type} />
+            <ConditionItem
+              key={item.id}
+              id={item.id}
+              label={item.type}
+              handelAddCondition={handelAddCondition}
+            />
           ))}
         </SortableContext>
       </DndContext>
@@ -105,6 +121,10 @@ function ConditionList(props: ViewProps) {
           ELIF
         </Button>
       </div>
+      <AddConditionModal
+        isOpen={isOpenAddCondition.isOpen}
+        originCondition={isOpenAddCondition.originValue}
+      />
     </div>
   );
 }
