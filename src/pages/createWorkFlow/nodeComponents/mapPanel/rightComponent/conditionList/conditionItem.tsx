@@ -126,14 +126,34 @@ function ConditionItem(props: ViewProps) {
             </div>
           </div>
         )}
-        <Button
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setAddCondition(true);
-          }}
-        >
-          添加条件
-        </Button>
+        <div className="flex justify-between mt-[10px]">
+          <Button
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setAddCondition(true);
+            }}
+          >
+            添加条件
+          </Button>
+          <div
+            className={classNames(
+              "flex",
+              "items-center",
+              "ml-auto",
+              "p-[8px]",
+              "cursor-pointer",
+              "text-[#354052]",
+              "rounded-md",
+              styles["delete-container"]
+            )}
+            onMouseEnter={() => setMouseIn(true)}
+            onMouseLeave={() => setMouseIn(false)}
+          >
+            <img src={deleteIcon} className="w-[14px] h-[14px]" />
+            <span className="inline-block ml-[5px]">删除</span>
+          </div>
+        </div>
+
         {addCondition && (
           <div className={classNames(styles["condition-container"])}>
             <Input.Search placeholder="搜索变量" />
@@ -169,23 +189,6 @@ function ConditionItem(props: ViewProps) {
             </div>
           </div>
         )}
-      </div>
-      <div
-        className={classNames(
-          "flex",
-          "items-center",
-          "ml-auto",
-          "p-[8px]",
-          "cursor-pointer",
-          "text-[#354052]",
-          "rounded-md",
-          styles["delete-container"]
-        )}
-        onMouseEnter={() => setMouseIn(true)}
-        onMouseLeave={() => setMouseIn(false)}
-      >
-        <img src={deleteIcon} className="w-[14px] h-[14px]" />
-        <span className="inline-block ml-[5px]">删除</span>
       </div>
     </div>
   );
