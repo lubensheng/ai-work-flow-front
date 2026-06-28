@@ -3,6 +3,7 @@ import StartNodeSvg from "../../assets/startNode.svg";
 import EndNodeSvg from "../../assets/endFlowNode.svg";
 import ConditionSvg from "../../assets/conditionNode.svg";
 import LlmNodeSvg from "../../assets/llmNode.svg";
+import { ConditionRelationType } from "../../store/types/nodeListTypes";
 
 enum NODE_TYPE {
   START_NODE = "START_NODE",
@@ -104,6 +105,17 @@ enum FLOW_STATUS {
   "PUBLISH" = 2,
 }
 
+const CONDITION_RELATION_CN_MAP: Record<ConditionRelationType, string> = {
+  [ConditionRelationType.CONTAIN]: "包含",
+  [ConditionRelationType.NOT_CONTAIN]: "不包含",
+  [ConditionRelationType.START_INPUT]: "开始是",
+  [ConditionRelationType.END_INPUT]: "结束是",
+  [ConditionRelationType.EQUAL]: "是",
+  [ConditionRelationType.NOT_EQUAL]: "不是",
+  [ConditionRelationType.IS_EMPTY]: "为空",
+  [ConditionRelationType.NOT_EMPTY]: "不为空",
+};
+
 export {
   NODE_TYPE,
   AGENT_NODE_PREFIX,
@@ -124,4 +136,5 @@ export {
   CONDITION_NODE_DRAG_HANDLE,
   LLM_NODE_DARG_HANDLE,
   FLOW_STATUS,
+  CONDITION_RELATION_CN_MAP,
 };

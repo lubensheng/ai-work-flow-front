@@ -8,7 +8,11 @@ import {
   START_NODE_Id,
 } from "../../pages/createWorkFlow/constants";
 import type { Field } from "../../pages/createWorkFlow/type";
-import type { EdgeItem, NodeItem } from "../types/nodeListTypes";
+import type {
+  EdgeItem,
+  EnvironmentItems,
+  NodeItem,
+} from "../types/nodeListTypes";
 
 export const edgeIdPrefix = "edge-el";
 
@@ -105,5 +109,12 @@ export const initNodeList: NodeItem[] = [
     data: { childrenIds: [], label: 1, select: false, title: "End" },
     dragHandle: `.${END_NODE_DRAG_HANDLE}`,
     type: NODE_TYPE.END_NODE,
+  },
+];
+
+export const initEnvironment: EnvironmentItems = [
+  {
+    key: "preNodeInput",
+    type: "string",
   },
 ];

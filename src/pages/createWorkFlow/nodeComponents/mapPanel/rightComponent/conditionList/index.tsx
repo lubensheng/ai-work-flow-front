@@ -88,7 +88,8 @@ function ConditionList(props: ViewProps) {
   }
 
   const handelAddCondition = (isOpen: boolean, conditionId: string) => {
-    setIsOpenAddConditions({ isOpen, originValue: conditionId });
+    console.log(conditionId);
+    setIsOpenAddConditions({ isOpen, originValue: "" });
   };
 
   return (
@@ -107,7 +108,9 @@ function ConditionList(props: ViewProps) {
               key={item.id}
               id={item.id}
               label={item.type}
+              nodeId={nodeInfo.id}
               handelAddCondition={handelAddCondition}
+              nodeList={nodeList}
             />
           ))}
         </SortableContext>
@@ -124,6 +127,13 @@ function ConditionList(props: ViewProps) {
       <AddConditionModal
         isOpen={isOpenAddCondition.isOpen}
         originCondition={isOpenAddCondition.originValue}
+        onClose={() => {
+          setIsOpenAddConditions({ isOpen: false, originValue: "" });
+        }}
+        onSure={(conditionStr) => {
+          console.log(conditionStr);
+          setIsOpenAddConditions({ isOpen: false, originValue: "" });
+        }}
       />
     </div>
   );

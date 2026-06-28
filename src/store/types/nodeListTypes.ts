@@ -4,10 +4,25 @@ import type { Field } from "../../pages/createWorkFlow/type";
 
 export type ConditionType = "IF" | "ELSE" | "ELSE IF";
 
+export type ConditionRelation = "and" | "or";
+
+export type ConditionInfo = {
+  relationType: ConditionRelationType;
+  conditionInfo: {
+    environmentInfo: EnvironmentItem;
+    conditionValue: string;
+  };
+};
+
+export type Condition = {
+  type: ConditionRelation;
+  conditions: ConditionInfo[];
+};
+
 export type ConditionItem = {
   id: string;
   type: ConditionType;
-  condition?: string;
+  condition?: Condition;
   // 这里缓存一下， 其实可以通过edgeList 的 target source 去查找的，这里存储方便查找
   handleNodeId?: string;
 };
@@ -59,6 +74,32 @@ export type NodeItem = {
   type: NODE_TYPE;
 };
 
+export type EnvironmentItem = {
+  key: string;
+  type: string;
+};
+
+export type EnvironmentItems = EnvironmentItem[];
+
+export enum ConditionRelationType {
+  // 包含
+  CONTAIN = "CONTAIN",
+  // 不包含
+  NOT_CONTAIN = "NOT_CONTAIN",
+  // 开始是
+  START_INPUT = "START_INPUT",
+  // 结束是
+  END_INPUT = "END_INPUT",
+  // 是 等于
+  EQUAL = "EQUAL",
+  // 不是 不等于
+  NOT_EQUAL = "NOT_EQUAL",
+  // 为空
+  IS_EMPTY = "IS_EMPTY",
+  // 不为空
+  NOT_EMPTY = "NOT_EMPTY",
+}
+
 export type State = {
   edgeId: number;
   nodeList: NodeItem[];
@@ -66,6 +107,7 @@ export type State = {
   selectNodeInfo: NodeItem;
   currentPanelAddNode?: NodeItem;
   currentMenuAddNode?: NodeItem;
+  environment: EnvironmentItems;
 };
 
 export type Actions = {
@@ -100,4 +142,15 @@ export type Actions = {
   setNotParentIdNode: (nodeInfo: NodeItem) => void;
   connectNode: (targetId: string, sourceId: string) => void;
   deleteNode: (nodeInfo: NodeItem) => void;
+  setConditionNodeByCondition: (
+    id: string,
+    nodeId: string,
+    conditionInfo: {
+      condition: EnvironmentItem;
+      value: string;
+      type: ConditionRelationType;
+      // 当前条件的index
+      index?: number;
+    }
+  ) => void;
 };

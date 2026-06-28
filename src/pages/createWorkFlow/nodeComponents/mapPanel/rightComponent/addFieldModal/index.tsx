@@ -26,7 +26,6 @@ interface ViewProps {
 function AddFieldModal(props: ViewProps) {
   const { isOpen, type, onCancel, initValues, onOk, allFields } = props;
   const [form] = Form.useForm();
-
   const handleOk = async () => {
     try {
       const values = await form.validateFields();

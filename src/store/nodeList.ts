@@ -7,9 +7,17 @@ import {
 import _ from "lodash";
 import type { NodeChange } from "@xyflow/react";
 import type { Field } from "../pages/createWorkFlow/type";
-import type { Actions, ConditionItem, State } from "./types/nodeListTypes";
+import {
+  type Actions,
+  type ConditionItem,
+  type State,
+} from "./types/nodeListTypes";
 import { findBetweenNodeByCurrentNode } from "./utils";
-import { initialEdges, initNodeList } from "./initState/nodeListInitState";
+import {
+  initEnvironment,
+  initialEdges,
+  initNodeList,
+} from "./initState/nodeListInitState";
 
 export const initStartFields: Field[] = [
   {
@@ -96,6 +104,7 @@ const useNodeList = create<State & Actions>()(
       edgeList: initialEdges,
       edgeId: 3,
       selectNodeInfo: initNodeList[0],
+      environment: initEnvironment,
     },
     (set, get) => ({
       setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => {
@@ -457,6 +466,69 @@ const useNodeList = create<State & Actions>()(
             ...pre,
             nodeList,
             edgeList,
+          };
+        });
+      },
+      setConditionNodeByCondition(id, nodeId, conditionInfo) {
+        console.log(id);
+        console.log(nodeId);
+        console.log(conditionInfo);
+        set((pre) => {
+          const { index } = conditionInfo;
+          const oldNodeList = [...pre.nodeList];
+          oldNodeList.forEach((item) => {
+            if (item.id === nodeId) {
+              const {
+                data: { nodeConfig },
+              } = item;
+              if (nodeConfig) {
+                const { conditions } = nodeConfig;
+                conditions?.forEach((item) => {
+                  if (item.id === id) {
+                    if (!item.condition) {
+                      item.condition = {
+                        type: "and",
+                        conditions: [
+                          {
+                            conditionInfo: {
+                              environmentInfo: conditionInfo.condition,
+                              conditionValue: conditionInfo.value,
+                            },
+                            relationType: conditionInfo.type,
+                          },
+                        ],
+                      };
+                    } else {
+                      if (index) {
+                        item.condition.conditions[index] = {
+                          conditionInfo: {
+                            environmentInfo: conditionInfo.condition,
+                            conditionValue: conditionInfo.value,
+                          },
+                          relationType: conditionInfo.type,
+                        };
+                      } else {
+                        item.condition.conditions = [
+                          ...item.condition.conditions,
+                          {
+                            conditionInfo: {
+                              environmentInfo: conditionInfo.condition,
+                              conditionValue: conditionInfo.value,
+                            },
+                            relationType: conditionInfo.type,
+                          },
+                        ];
+                      }
+                    }
+                  }
+                });
+              }
+            }
+          });
+
+          return {
+            ...pre,
+            nodeList: [...oldNodeList],
           };
         });
       },
