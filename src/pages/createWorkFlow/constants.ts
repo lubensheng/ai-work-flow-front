@@ -116,6 +116,41 @@ const CONDITION_RELATION_CN_MAP: Record<ConditionRelationType, string> = {
   [ConditionRelationType.NOT_EMPTY]: "不为空",
 };
 
+const CONDITION_RELATION_OPTIONS: { label: string; key: string }[] = [
+  {
+    key: ConditionRelationType.CONTAIN,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.CONTAIN],
+  },
+  {
+    key: ConditionRelationType.NOT_CONTAIN,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.NOT_CONTAIN],
+  },
+  {
+    key: ConditionRelationType.START_INPUT,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.START_INPUT],
+  },
+  {
+    key: ConditionRelationType.END_INPUT,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.END_INPUT],
+  },
+  {
+    key: ConditionRelationType.EQUAL,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.EQUAL],
+  },
+  {
+    key: ConditionRelationType.NOT_EQUAL,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.NOT_EQUAL],
+  },
+  {
+    key: ConditionRelationType.IS_EMPTY,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.IS_EMPTY],
+  },
+  {
+    key: ConditionRelationType.NOT_EMPTY,
+    label: CONDITION_RELATION_CN_MAP[ConditionRelationType.NOT_EMPTY],
+  },
+];
+
 export {
   NODE_TYPE,
   AGENT_NODE_PREFIX,
@@ -137,4 +172,5 @@ export {
   LLM_NODE_DARG_HANDLE,
   FLOW_STATUS,
   CONDITION_RELATION_CN_MAP,
+  CONDITION_RELATION_OPTIONS,
 };

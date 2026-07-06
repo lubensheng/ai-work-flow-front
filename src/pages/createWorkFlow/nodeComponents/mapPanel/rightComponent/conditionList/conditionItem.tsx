@@ -15,7 +15,11 @@ import {
   type NodeItem,
   type ConditionItem as ConditionListItem,
 } from "../../../../../../store/types/nodeListTypes";
-import { CONDITION_RELATION_CN_MAP } from "../../../../constants";
+import {
+  CONDITION_RELATION_CN_MAP,
+  CONDITION_RELATION_OPTIONS,
+} from "../../../../constants";
+import SelectPanel from "../../../../../../components/select";
 
 interface ViewProps {
   label: string;
@@ -47,7 +51,6 @@ function ConditionItem(props: ViewProps) {
     transition,
     opacity: isDragging ? 0.5 : 1,
     display: "flex",
-    alignItems: "center",
     gap: "8px",
     padding: "8px 12px",
     border: "1px solid #e5e7eb",
@@ -103,23 +106,43 @@ function ConditionItem(props: ViewProps) {
       <div className="ml-[16px] relative flex-1">
         {conditionList && (
           <div>
-            <div>{conditionList.condition?.type}</div>
+            {(conditionList.condition?.conditions?.length || 0) > 1 && (
+              <div>
+                <div></div>
+                <div>{conditionList.condition?.type}</div>
+                <div></div>
+              </div>
+            )}
+
             <div>
               {conditionList.condition?.conditions.map((item, index) => {
                 return (
-                  <div
-                    key={`${index}-info`}
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <div>
-                      <span className="flex items-center justify-between">
-                        <img src={ConditionEv} className="w-[14px] h-[14px]" />
-                        <span className="inline-block ml-[6px]">
-                          {item.conditionInfo.environmentInfo.key}
+                  <div key={`${index}-info`}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <span className="flex items-center justify-between">
+                          <img
+                            src={ConditionEv}
+                            className="w-[14px] h-[14px]"
+                          />
+                          <span className="inline-block ml-[6px]">
+                            {item.conditionInfo.environmentInfo.key}
+                          </span>
                         </span>
-                      </span>
+                      </div>
+                      <SelectPanel
+                        options={CONDITION_RELATION_OPTIONS}
+                        initValue={CONDITION_RELATION_CN_MAP[item.relationType]}
+                      />
                     </div>
-                    <div>{CONDITION_RELATION_CN_MAP[item.relationType]}</div>
+                    <div>
+                      <Input />
+                    </div>
                   </div>
                 );
               })}
