@@ -20,6 +20,7 @@ import {
   CONDITION_RELATION_OPTIONS,
 } from "../../../../constants";
 import SelectPanel from "../../../../../../components/select";
+import CustomInput from "../../../../../../components/customInput";
 
 interface ViewProps {
   label: string;
@@ -117,7 +118,10 @@ function ConditionItem(props: ViewProps) {
             <div>
               {conditionList.condition?.conditions.map((item, index) => {
                 return (
-                  <div key={`${index}-info`}>
+                  <div
+                    key={`${index}-info`}
+                    className={styles["condition-item"]}
+                  >
                     <div
                       style={{
                         display: "flex",
@@ -141,7 +145,7 @@ function ConditionItem(props: ViewProps) {
                       />
                     </div>
                     <div>
-                      <Input />
+                      <CustomInput placeholder="请输入" />
                     </div>
                   </div>
                 );
