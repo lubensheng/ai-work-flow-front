@@ -24,7 +24,6 @@ function SelectPanel(props: ViewProps) {
           "items-center",
           "w-[70px]",
           "cursor-pointer",
-          "justify-between",
           "p-[4px]",
           styles.hover
         )}

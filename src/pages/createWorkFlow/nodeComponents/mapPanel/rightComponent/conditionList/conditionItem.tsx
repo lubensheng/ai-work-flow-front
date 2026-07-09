@@ -1,5 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import transformIcon from "../../../../../../assets/transform.svg";
 import moveIcon from "../../../../../../assets/moveIcon.svg";
 import deleteIcon from "../../../../../../assets/delete.svg";
 import ConditionEv from "../../../../../../assets/conditionEn.svg";
@@ -7,7 +8,7 @@ import styles from "./index.module.less";
 import { Button, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useNodeList from "../../../../../../store/nodeList";
 import {
   ConditionRelationType,
@@ -45,8 +46,13 @@ function ConditionItem(props: ViewProps) {
     isDragging,
   } = useSortable({ id });
   const [mouseIn, setMouseIn] = useState(false);
+  const [currentConditionType, setCurrentConditionType] = useState<
+    "and" | "or"
+  >("and");
   const [conditionList, setConditionList] = useState<ConditionListItem>();
   const [addCondition, setAddCondition] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [conditionTypeTop, setConditionTypeTop] = useState<string>("0px");
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -68,6 +74,7 @@ function ConditionItem(props: ViewProps) {
       );
       if (current) {
         setConditionList(current);
+        setCurrentConditionType(current.condition?.type || "and");
       }
     }
   }, [nodeId, nodeList, id]);
@@ -81,6 +88,24 @@ function ConditionItem(props: ViewProps) {
     setAddCondition(false);
   };
   console.log("conditionList-->", conditionList);
+
+  useEffect(() => {
+    const containerDom = containerRef.current;
+    if (!containerDom) {
+      return;
+    }
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      // 获取当前高度
+      const currentHeight = entry.contentRect.height;
+      setConditionTypeTop(currentHeight / 2 - 25 + "px");
+    });
+    resizeObserver.observe(containerDom);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
     <div
       ref={setNodeRef}
@@ -104,13 +129,34 @@ function ConditionItem(props: ViewProps) {
         <div className="text-[#354052] text-[13px] font-semibold">{label}</div>
         <div className="text-[10px] font-medium text-[#676f83]">Case {id}</div>
       </div>
-      <div className="ml-[16px] relative flex-1">
+      <div className="ml-[16px] relative flex-1 relative" ref={containerRef}>
         {conditionList && (
           <div>
             {(conditionList.condition?.conditions?.length || 0) > 1 && (
               <div>
                 <div></div>
-                <div>{conditionList.condition?.type}</div>
+                <div
+                  className="absolute"
+                  style={{ left: "-58px", top: conditionTypeTop }}
+                >
+                  <div
+                    className={classNames(
+                      styles.shadow,
+                      styles["switch-condition-type"]
+                    )}
+                    onClick={() => {
+                      setCurrentConditionType((pre) =>
+                        pre === "and" ? "or" : "and"
+                      );
+                    }}
+                  >
+                    <span>{currentConditionType}</span>
+                    <img
+                      src={transformIcon}
+                      className="w-[14px] h-[14px] ml-[3px]"
+                    />
+                  </div>
+                </div>
                 <div></div>
               </div>
             )}
@@ -128,13 +174,23 @@ function ConditionItem(props: ViewProps) {
                         justifyContent: "space-between",
                       }}
                     >
-                      <div>
-                        <span className="flex items-center justify-between">
+                      <div className="p-[4px]">
+                        <span
+                          className={classNames(
+                            "flex",
+                            "items-center",
+                            "justify-between",
+                            "bg-[#fff]",
+                            "p-[4px]",
+                            "rounded-[8px]",
+                            styles.shadow
+                          )}
+                        >
                           <img
                             src={ConditionEv}
                             className="w-[14px] h-[14px]"
                           />
-                          <span className="inline-block ml-[6px]">
+                          <span className="inline-block ml-[6px] text-xs text-[#7839ee]">
                             {item.conditionInfo.environmentInfo.key}
                           </span>
                         </span>

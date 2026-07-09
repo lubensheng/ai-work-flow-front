@@ -11,16 +11,19 @@ interface ViewProps {
 function CustomInput(props: ViewProps) {
   const { placeholder, initValue } = props;
   const [inputValue, setInputValue] = useState<string>("");
-  const [cursorLeft, setCursorLeft] = useState<string>("0px");
+  const [cursorLeft, setCursorLeft] = useState<{
+    left: string;
+    top: string;
+  }>({
+    left: "0px",
+    top: "2px",
+  });
+  const [isFocus, setIsFocus] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!isUndefined(initValue)) {
-      setInputValue(initValue);
-    }
-  }, [initValue]);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
+  const calcCursorLeft = () => {
     if (textRef.current && containerRef.current && inputValue) {
       const textNode = textRef.current.firstChild;
       if (!textNode) {
@@ -35,11 +38,29 @@ function CustomInput(props: ViewProps) {
       const containerRect = containerRef.current.getBoundingClientRect();
 
       // 转换成容器内相对坐标
+      const top = rect.top - containerRect.top - 2;
       const left = rect.left - containerRect.left - 4;
-      setCursorLeft(left + "px");
+      setCursorLeft({
+        left: left + "px",
+        top: top + "px",
+      });
     } else {
-      setCursorLeft("0px");
+      setCursorLeft({
+        left: "0px",
+        top: "2px",
+      });
     }
+  };
+
+  useEffect(() => {
+    if (!isUndefined(initValue)) {
+      setInputValue(initValue);
+    }
+  }, [initValue]);
+
+  useEffect(() => {
+    calcCursorLeft();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   return (
@@ -47,18 +68,29 @@ function CustomInput(props: ViewProps) {
       <div className={styles["show-text"]}>
         <p ref={textRef}>
           {inputValue}
-          <span className={styles["cursor"]} style={{ left: cursorLeft }}>
-            ｜
-          </span>
+          {isFocus && (
+            <span
+              className={styles["cursor"]}
+              style={{ left: cursorLeft.left, top: cursorLeft.top }}
+            >
+              ｜
+            </span>
+          )}
         </p>
       </div>
       {!inputValue && <div>{placeholder}</div>}
       <div>
-        <input
+        <textarea
+          ref={inputRef}
           className={styles.input}
           onChange={(e) => {
             setInputValue(e.target.value);
           }}
+          onFocus={() => {
+            setIsFocus(true);
+            calcCursorLeft();
+          }}
+          onBlur={() => setIsFocus(false)}
         />
       </div>
     </div>
