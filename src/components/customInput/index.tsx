@@ -90,6 +90,19 @@ function CustomInput(props: ViewProps) {
             setIsFocus(true);
             calcCursorLeft();
           }}
+          onClick={(e) => {
+            console.log(e.clientX);
+            if (textRef.current) {
+              const dom = textRef.current;
+              const { left, top } = dom.getBoundingClientRect();
+              const leftPx = e.clientX - left + "px";
+              const topPx = e.clientY - top - 10 + "px";
+              setCursorLeft({
+                left: leftPx,
+                top: topPx,
+              });
+            }
+          }}
           onBlur={() => setIsFocus(false)}
         />
       </div>
