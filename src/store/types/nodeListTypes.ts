@@ -153,4 +153,9 @@ export type Actions = {
       index?: number;
     }
   ) => void;
+  updateConditionType: (
+    id: string,
+    nodeId: string,
+    type: ConditionRelation
+  ) => void;
 };

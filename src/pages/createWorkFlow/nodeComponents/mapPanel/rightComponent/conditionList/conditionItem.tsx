@@ -33,10 +33,12 @@ interface ViewProps {
 
 function ConditionItem(props: ViewProps) {
   const { id, label, nodeId, nodeList } = props;
+  const [lineHeight, setLineHeight] = useState("138px");
   const environments = useNodeList((s) => s.environment);
   const setConditionNodeByCondition = useNodeList(
     (s) => s.setConditionNodeByCondition
   );
+  const updateConditionType = useNodeList((s) => s.updateConditionType);
   const {
     attributes,
     listeners,
@@ -87,7 +89,6 @@ function ConditionItem(props: ViewProps) {
     });
     setAddCondition(false);
   };
-  console.log("conditionList-->", conditionList);
 
   useEffect(() => {
     const containerDom = containerRef.current;
@@ -99,6 +100,7 @@ function ConditionItem(props: ViewProps) {
       // 获取当前高度
       const currentHeight = entry.contentRect.height;
       setConditionTypeTop(currentHeight / 2 - 25 + "px");
+      setLineHeight(currentHeight - 100 + "px");
     });
     resizeObserver.observe(containerDom);
     return () => {
@@ -134,7 +136,10 @@ function ConditionItem(props: ViewProps) {
           <div>
             {(conditionList.condition?.conditions?.length || 0) > 1 && (
               <div>
-                <div></div>
+                <div
+                  className={styles.line}
+                  style={{ height: lineHeight }}
+                ></div>
                 <div
                   className="absolute"
                   style={{ left: "-58px", top: conditionTypeTop }}
@@ -145,8 +150,10 @@ function ConditionItem(props: ViewProps) {
                       styles["switch-condition-type"]
                     )}
                     onClick={() => {
-                      setCurrentConditionType((pre) =>
-                        pre === "and" ? "or" : "and"
+                      updateConditionType(
+                        id,
+                        nodeId,
+                        currentConditionType === "and" ? "or" : "and"
                       );
                     }}
                   >
@@ -212,7 +219,8 @@ function ConditionItem(props: ViewProps) {
         <div className="flex justify-between mt-[10px]">
           <Button
             icon={<PlusOutlined />}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setAddCondition(true);
             }}
           >

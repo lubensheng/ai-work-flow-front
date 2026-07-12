@@ -470,9 +470,6 @@ const useNodeList = create<State & Actions>()(
         });
       },
       setConditionNodeByCondition(id, nodeId, conditionInfo) {
-        console.log(id);
-        console.log(nodeId);
-        console.log(conditionInfo);
         set((pre) => {
           const { index } = conditionInfo;
           const oldNodeList = [...pre.nodeList];
@@ -529,6 +526,24 @@ const useNodeList = create<State & Actions>()(
           return {
             ...pre,
             nodeList: [...oldNodeList],
+          };
+        });
+      },
+      updateConditionType(id, nodeId, type) {
+        set((state) => {
+          const newNodeList = [...state.nodeList];
+          newNodeList.forEach((item) => {
+            if (item.id === nodeId) {
+              item.data.nodeConfig?.conditions?.forEach((item) => {
+                if (item.id === id && item.condition) {
+                  item.condition.type = type;
+                }
+              });
+            }
+          });
+          return {
+            ...state,
+            nodeList: [...newNodeList],
           };
         });
       },

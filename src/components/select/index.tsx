@@ -13,6 +13,17 @@ function SelectPanel(props: ViewProps) {
   const { options, initValue, onSelect } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [currentSelectValue, setCurrentSelectValue] = useState<string>("");
+
+  useEffect(() => {
+    const closeSelect = () => {
+      setIsOpen(false);
+    };
+    window.addEventListener("click", closeSelect);
+    return () => {
+      window.removeEventListener("click", closeSelect);
+    };
+  }, []);
+
   useEffect(() => {
     setCurrentSelectValue(initValue);
   }, [initValue]);
@@ -27,7 +38,8 @@ function SelectPanel(props: ViewProps) {
           "p-[4px]",
           styles.hover
         )}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setIsOpen((pre) => !pre);
         }}
       >
