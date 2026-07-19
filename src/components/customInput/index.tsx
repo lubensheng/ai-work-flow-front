@@ -9,7 +9,7 @@ interface ViewProps {
 }
 
 function CustomInput(props: ViewProps) {
-  const { placeholder, initValue } = props;
+  const { placeholder, initValue, onChange } = props;
   const [inputValue, setInputValue] = useState<string>("");
   const [cursorLeft, setCursorLeft] = useState<{
     left: string;
@@ -85,6 +85,7 @@ function CustomInput(props: ViewProps) {
           className={styles.input}
           onChange={(e) => {
             setInputValue(e.target.value);
+            onChange?.(e.target.value);
           }}
           onFocus={() => {
             setIsFocus(true);

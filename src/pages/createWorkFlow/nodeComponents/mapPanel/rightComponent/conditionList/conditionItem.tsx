@@ -90,6 +90,34 @@ function ConditionItem(props: ViewProps) {
     setAddCondition(false);
   };
 
+  const handleOnSelectConditionType = (
+    currentInfo: EnvironmentItem,
+    value: string,
+    originValue: string,
+    index: number
+  ) => {
+    setConditionNodeByCondition(id, nodeId, {
+      condition: currentInfo,
+      type: value as ConditionRelationType,
+      value: originValue || "",
+      index,
+    });
+  };
+
+  const handleOnInputConditionValue = (
+    currentInfo: EnvironmentItem,
+    value: string,
+    originValue: string,
+    index: number
+  ) => {
+    setConditionNodeByCondition(id, nodeId, {
+      condition: currentInfo,
+      type: originValue as ConditionRelationType,
+      value: value || "",
+      index,
+    });
+  };
+
   useEffect(() => {
     const containerDom = containerRef.current;
     if (!containerDom) {
@@ -205,10 +233,28 @@ function ConditionItem(props: ViewProps) {
                       <SelectPanel
                         options={CONDITION_RELATION_OPTIONS}
                         initValue={CONDITION_RELATION_CN_MAP[item.relationType]}
+                        onSelect={(value) => {
+                          handleOnSelectConditionType(
+                            item.conditionInfo.environmentInfo,
+                            value,
+                            item.conditionInfo.conditionValue,
+                            index
+                          );
+                        }}
                       />
                     </div>
                     <div>
-                      <CustomInput placeholder="请输入" />
+                      <CustomInput
+                        placeholder="请输入"
+                        onChange={(value) => {
+                          handleOnInputConditionValue(
+                            item.conditionInfo.environmentInfo,
+                            value,
+                            item.relationType,
+                            index
+                          );
+                        }}
+                      />
                     </div>
                   </div>
                 );

@@ -496,7 +496,10 @@ const useNodeList = create<State & Actions>()(
                         ],
                       };
                     } else {
-                      if (index) {
+                      if (
+                        typeof index === "number" &&
+                        item.condition.conditions[index]
+                      ) {
                         item.condition.conditions[index] = {
                           conditionInfo: {
                             environmentInfo: conditionInfo.condition,
@@ -522,7 +525,7 @@ const useNodeList = create<State & Actions>()(
               }
             }
           });
-
+          console.log("oldNodeList--->", oldNodeList);
           return {
             ...pre,
             nodeList: [...oldNodeList],

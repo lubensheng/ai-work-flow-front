@@ -10,9 +10,11 @@ import { Handle, Position, useReactFlow } from "@xyflow/react";
 import { Tooltip } from "antd";
 import useClickAddPositionInfo from "../../../../store/clickAddPositionInfo";
 import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo";
+import { useState } from "react";
 
 function LlmNode(props: NodeItem) {
   const { data } = props;
+  const [isEnterNode, setIsEnterNode] = useState(false);
   const setSelectNode = useNodeList((state) => state.setSelectNode);
   const updateEdgeShowRelateNode = useNodeList(
     (state) => state.updateEdgeShowRelateNode
@@ -71,7 +73,14 @@ function LlmNode(props: NodeItem) {
   };
 
   return (
-    <>
+    <div
+      onMouseLeave={() => {
+        setIsEnterNode(false);
+      }}
+      onMouseEnter={() => {
+        setIsEnterNode(true);
+      }}
+    >
       <div
         className={classNames(
           commonStyles["common-node-container"],
@@ -132,48 +141,50 @@ function LlmNode(props: NodeItem) {
         }}
         onClick={handleAddNode}
       >
-        <Tooltip
-          arrow={false}
-          styles={{
-            root: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
-            container: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
-          }}
-          title={
-            <div>
-              <div>
-                <span className="text-[#000000] font-semibold">点击</span>
-                <span className="text-[#676f83]">添加节点</span>
-              </div>
-              <div>
-                <span className="text-[#000000] font-semibold">拖拽</span>
-                <span className="text-[#676f83]">连接节点</span>
-              </div>
-            </div>
-          }
-        >
-          <div
-            className={commonStyles["add-node-icon-container"]}
-            onMouseLeave={() => {
-              updateEdgeShowRelateNode();
+        {isEnterNode && (
+          <Tooltip
+            arrow={false}
+            styles={{
+              root: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
+              container: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
             }}
-            onMouseEnter={() => {
-              updateEdgeShowRelateNode(props.id);
-            }}
+            title={
+              <div>
+                <div>
+                  <span className="text-[#000000] font-semibold">点击</span>
+                  <span className="text-[#676f83]">添加节点</span>
+                </div>
+                <div>
+                  <span className="text-[#000000] font-semibold">拖拽</span>
+                  <span className="text-[#676f83]">连接节点</span>
+                </div>
+              </div>
+            }
           >
-            <img
-              src={addNodeSvg}
-              className={classNames(commonStyles["add-node-icon"])}
-            />
-          </div>
-        </Tooltip>
+            <div
+              className={commonStyles["add-node-icon-container"]}
+              onMouseLeave={() => {
+                updateEdgeShowRelateNode();
+              }}
+              onMouseEnter={() => {
+                updateEdgeShowRelateNode(props.id);
+              }}
+            >
+              <img
+                src={addNodeSvg}
+                className={classNames(commonStyles["add-node-icon"])}
+              />
+            </div>
+          </Tooltip>
+        )}
       </Handle>
-    </>
+    </div>
   );
 }
 
