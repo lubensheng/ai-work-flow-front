@@ -16,6 +16,7 @@ function LlmNode(props: NodeItem) {
   const { data } = props;
   const [isEnterNode, setIsEnterNode] = useState(false);
   const setSelectNode = useNodeList((state) => state.setSelectNode);
+  const currentMenuAddNode = useNodeList((state) => state.currentMenuAddNode);
   const updateEdgeShowRelateNode = useNodeList(
     (state) => state.updateEdgeShowRelateNode
   );
@@ -78,6 +79,9 @@ function LlmNode(props: NodeItem) {
         setIsEnterNode(false);
       }}
       onMouseEnter={() => {
+        if (currentMenuAddNode?.id === props.id) {
+          return;
+        }
         setIsEnterNode(true);
       }}
     >

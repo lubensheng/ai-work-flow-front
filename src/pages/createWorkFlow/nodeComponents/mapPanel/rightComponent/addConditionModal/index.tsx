@@ -48,7 +48,6 @@ function AddConditionModal(props: ViewProps) {
       setConditionStr("");
     }
   }, [isOpen, originCondition]);
-  console.log(conditionStr);
   return (
     <Modal
       open={isOpen}

@@ -18,13 +18,13 @@ function ConditionNode(props: NodeItem) {
   const { data } = props;
   const setSelectNode = useNodeList((state) => state.setSelectNode);
   const setCurrentNodeInfo = useClickAddPositionInfo(
-    (state) => state.setCurrentNodeInfo,
+    (state) => state.setCurrentNodeInfo
   );
   const setClickRightMenuNodeInfo = useClickRightMenuNodeInfo(
-    (s) => s.setStateInfo,
+    (s) => s.setStateInfo
   );
   const updateEdgeShowRelateNode = useNodeList(
-    (s) => s.updateEdgeShowRelateNode,
+    (s) => s.updateEdgeShowRelateNode
   );
   const { getNode, flowToScreenPosition, screenToFlowPosition } =
     useReactFlow();
@@ -82,12 +82,13 @@ function ConditionNode(props: NodeItem) {
           "min-w-[190px]",
           "min-h-[100px]",
           "p-[16px]",
-          "relative",
+          "relative"
         )}
         onClick={() => {
           setSelectNode(props.id);
         }}
-        onContextMenu={handleMenuClick}>
+        onContextMenu={handleMenuClick}
+      >
         <div className="p-[8px]">
           <img
             src={conditionNodeSvg}
@@ -101,6 +102,27 @@ function ConditionNode(props: NodeItem) {
         </div>
       </div>
       <Handle
+        type="target"
+        position={Position.Left}
+        style={{
+          background: "none",
+          border: "none",
+          height: "9px",
+        }}
+        isConnectableStart={false}
+        isConnectableEnd={true}
+      >
+        <div
+          style={{
+            width: "1px",
+            height: "9px",
+            backgroundColor: "#1296db",
+            position: "absolute",
+            left: "1px",
+          }}
+        ></div>
+      </Handle>
+      <Handle
         type="source"
         position={Position.Right}
         onClick={handleAddNode}
@@ -108,7 +130,8 @@ function ConditionNode(props: NodeItem) {
         style={{
           background: "none",
           border: "none",
-        }}>
+        }}
+      >
         <Tooltip
           arrow={false}
           styles={{
@@ -132,7 +155,8 @@ function ConditionNode(props: NodeItem) {
                 <span className="text-[#676f83]">连接节点</span>
               </div>
             </div>
-          }>
+          }
+        >
           <div
             className={commonStyle["add-node-icon-container"]}
             onMouseLeave={() => {
@@ -140,7 +164,8 @@ function ConditionNode(props: NodeItem) {
             }}
             onMouseEnter={() => {
               updateEdgeShowRelateNode(props.id);
-            }}>
+            }}
+          >
             <img
               src={addNodeSvg}
               className={classNames(commonStyle["add-node-icon"])}
@@ -156,7 +181,8 @@ function ConditionNode(props: NodeItem) {
           background: "none",
           border: "none",
         }}
-        onClick={handleAddNode}>
+        onClick={handleAddNode}
+      >
         <Tooltip
           arrow={false}
           styles={{
@@ -180,19 +206,21 @@ function ConditionNode(props: NodeItem) {
                 <span className="text-[#676f83]">连接节点</span>
               </div>
             </div>
-          }>
+          }
+        >
           <div
             className={classNames(
               styles["else-add-node"],
               "absolute",
-              "bottom-[-40px]",
+              "bottom-[-40px]"
             )}
             onMouseLeave={() => {
               updateEdgeShowRelateNode();
             }}
             onMouseEnter={() => {
               updateEdgeShowRelateNode(props.id);
-            }}>
+            }}
+          >
             <img
               src={addNodeSvg}
               className={classNames(styles["add-node-icon"])}

@@ -352,10 +352,26 @@ const useNodeList = create<State & Actions>()(
         }));
       },
       clearCurrentMenuAddNode() {
-        set((pre) => ({
-          ...pre,
-          currentMenuAddNode: undefined,
-        }));
+        set((pre) => {
+          const currentMenuAddNode = (pre as State).currentMenuAddNode;
+          let selectNodeInfo: NodeItem = pre.selectNodeInfo;
+          const nodeList = [...pre.nodeList];
+          if (currentMenuAddNode) {
+            const nodeInfo = nodeList.find(
+              (item) => item.id === currentMenuAddNode.id
+            );
+            if (nodeInfo) {
+              selectNodeInfo = { ...nodeInfo };
+              nodeInfo.data.select = true;
+            }
+          }
+          return {
+            ...pre,
+            nodeList,
+            currentMenuAddNode: undefined,
+            selectNodeInfo,
+          };
+        });
       },
       initState: () => {
         set({

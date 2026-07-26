@@ -5,6 +5,7 @@ import conditionNodeSvg from "../../../../../assets/conditionNode.svg";
 import { Tabs } from "antd";
 import ConditionList from "./conditionList";
 import type { NodeItem } from "../../../../../store/nodeList";
+import SetNextNodeByCondition from "./setNextNodeByCondition";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -13,7 +14,6 @@ interface ViewProps {
 
 function ConditionNodePanel(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
-  console.log(nodeList);
   const [nodeLabel] = useState("");
   return (
     <div>
@@ -55,7 +55,15 @@ function ConditionNodePanel(props: ViewProps) {
               key: "setting",
               children: (
                 <div>
-                  <ConditionList nodeInfo={nodeInfo} nodeList={nodeList} />
+                  <div>
+                    <ConditionList nodeInfo={nodeInfo} nodeList={nodeList} />
+                  </div>
+                  <div className="mt-[10px] border-t border-gray-200">
+                    <SetNextNodeByCondition
+                      nodeInfo={nodeInfo}
+                      nodeList={nodeList}
+                    />
+                  </div>
                 </div>
               ),
             },

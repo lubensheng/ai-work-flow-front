@@ -12,6 +12,8 @@ function GhostPanel() {
   const clearCurrentMenuAddNode = useNodeList(
     (state) => state.clearCurrentMenuAddNode
   );
+  const setSelectNode = useNodeList((state) => state.setSelectNode);
+
   const handleNodeMouseMove = (e: MouseEvent) => {
     if (!currentMenuAddNode?.id) {
       return;
@@ -49,7 +51,9 @@ function GhostPanel() {
       if (rectFlowNodeDom?.style.cursor === "pointer" && rectFlowNodeDom) {
         rectFlowNodeDom.style.cursor = "grab";
       }
+      setSelectNode(currentMenuAddNode?.id);
     }
+    //
     clearCurrentMenuAddNode();
   };
 

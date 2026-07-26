@@ -118,6 +118,10 @@ function ConditionItem(props: ViewProps) {
     });
   };
 
+  const windowCancelAddConditionPanel = () => {
+    setAddCondition(false);
+  };
+
   useEffect(() => {
     const containerDom = containerRef.current;
     if (!containerDom) {
@@ -131,8 +135,10 @@ function ConditionItem(props: ViewProps) {
       setLineHeight(currentHeight - 100 + "px");
     });
     resizeObserver.observe(containerDom);
+    window.addEventListener("click", windowCancelAddConditionPanel);
     return () => {
       resizeObserver.disconnect();
+      window.removeEventListener("click", windowCancelAddConditionPanel);
     };
   }, []);
 
@@ -307,7 +313,8 @@ function ConditionItem(props: ViewProps) {
                         "justify-between",
                         styles.hover
                       )}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         handleAddCondition(item);
                       }}
                     >
