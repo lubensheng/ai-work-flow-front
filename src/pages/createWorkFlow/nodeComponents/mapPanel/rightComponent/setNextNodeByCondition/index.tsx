@@ -5,6 +5,8 @@ import commonStyle from "../../../common.module.less";
 import styles from "./index.module.less";
 import type { ConditionItem as ConditionItemType } from "../../../../../../store/types/nodeListTypes";
 import { useEffect, useState } from "react";
+import MidRelationLine from "./midRelationLine";
+import { NEXT_NODE_CONTAINER_ID } from "./constant";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -47,12 +49,23 @@ function SetNextNodeByCondition(props: ViewProps) {
             />
           </div>
         </div>
-        <div className="w-[24px]"></div>
-        <div className="flex-1">
+        <MidRelationLine />
+        <div className="flex-1" id={NEXT_NODE_CONTAINER_ID}>
           {currentNodeConditions.map((item, index) => {
             return (
-              <div key={item.id + index}>
-                <div>Case {index}</div>
+              <div key={item.id + index} className={styles["node-container"]}>
+                <div className={styles["title-container"]}>Case {index}</div>
+                {item.handleNodeId?.map((item) => {
+                  return <div key={item}>{item}</div>;
+                })}
+                <div className={styles["add-node"]}>
+                  <div className={styles.add}>
+                    <span>+</span>
+                  </div>
+                  <div>
+                    <span>添加并行节点</span>
+                  </div>
+                </div>
               </div>
             );
           })}

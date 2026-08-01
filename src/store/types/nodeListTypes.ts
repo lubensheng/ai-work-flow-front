@@ -24,7 +24,7 @@ export type ConditionItem = {
   type: ConditionType;
   condition?: Condition;
   // 这里缓存一下， 其实可以通过edgeList 的 target source 去查找的，这里存储方便查找
-  handleNodeId?: string;
+  handleNodeId?: string[];
 };
 export type EdgeItem = {
   id: string;
