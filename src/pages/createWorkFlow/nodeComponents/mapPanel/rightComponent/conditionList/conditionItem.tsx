@@ -29,10 +29,11 @@ interface ViewProps {
   nodeId: string;
   nodeList: NodeItem[];
   handelAddCondition: (isOpen: boolean, conditionId: string) => void;
+  deleteCondition: (id: string) => void;
 }
 
 function ConditionItem(props: ViewProps) {
-  const { id, label, nodeId, nodeList } = props;
+  const { id, label, nodeId, nodeList, deleteCondition } = props;
   const [lineHeight, setLineHeight] = useState("138px");
   const environments = useNodeList((s) => s.environment);
   const setConditionNodeByCondition = useNodeList(
@@ -291,6 +292,7 @@ function ConditionItem(props: ViewProps) {
             )}
             onMouseEnter={() => setMouseIn(true)}
             onMouseLeave={() => setMouseIn(false)}
+            onClick={() => deleteCondition(id)}
           >
             <img src={deleteIcon} className="w-[14px] h-[14px]" />
             <span className="inline-block ml-[5px]">删除</span>

@@ -158,4 +158,5 @@ export type Actions = {
     nodeId: string,
     type: ConditionRelation
   ) => void;
+  deleteCondition: (nodeId: string, conditionId: string) => void;
 };

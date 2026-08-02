@@ -34,6 +34,7 @@ function ConditionList(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
   const [items, setItems] = useState<ConditionItemType[]>([]);
   const updateNodeData = useNodeList((s) => s.updateNodeData);
+  const deleteCondition = useNodeList((s) => s.deleteCondition);
   const [isOpenAddCondition, setIsOpenAddConditions] = useState<{
     isOpen: boolean;
     originValue: string;
@@ -53,6 +54,10 @@ function ConditionList(props: ViewProps) {
       "nodeConfig.conditions",
       nodeInfo.id
     );
+  };
+
+  const handleDelete = (id: string) => {
+    deleteCondition(nodeInfo.id, id);
   };
 
   useEffect(() => {
@@ -107,6 +112,7 @@ function ConditionList(props: ViewProps) {
             <ConditionItem
               key={item.id}
               id={item.id}
+              deleteCondition={handleDelete}
               label={item.type}
               nodeId={nodeInfo.id}
               handelAddCondition={handelAddCondition}

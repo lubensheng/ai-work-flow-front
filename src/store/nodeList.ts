@@ -566,6 +566,23 @@ const useNodeList = create<State & Actions>()(
           };
         });
       },
+      deleteCondition(nodeId, conditionId) {
+        set((state) => {
+          const nodeList = [...state.nodeList];
+          nodeList.forEach((item) => {
+            if (item.id === nodeId && item.data.nodeConfig?.conditions) {
+              item.data.nodeConfig.conditions =
+                item.data.nodeConfig.conditions.filter(
+                  (i) => i.id !== conditionId
+                );
+            }
+          });
+          return {
+            ...state,
+            nodeList,
+          };
+        });
+      },
     })
   )
 );

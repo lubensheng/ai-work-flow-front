@@ -54,7 +54,9 @@ function SetNextNodeByCondition(props: ViewProps) {
           {currentNodeConditions.map((item, index) => {
             return (
               <div key={item.id + index} className={styles["node-container"]}>
-                <div className={styles["title-container"]}>Case {index}</div>
+                <div className={styles["title-container"]}>
+                  Case {index + 1}
+                </div>
                 {item.handleNodeId?.map((item) => {
                   return <div key={item}>{item}</div>;
                 })}
