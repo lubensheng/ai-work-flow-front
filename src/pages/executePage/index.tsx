@@ -6,6 +6,8 @@ import { getUrlParams } from "../../utils";
 import { message, Spin } from "antd";
 import queryFlowInfo from "./services";
 import { SUCCESS_CODE } from "../../utils/constants";
+import type { ConversationItem } from "./type";
+import { CONVERSATION_ID_PREFIX } from "./constant";
 
 function ExecutePage() {
   const location = useLocation();
@@ -15,6 +17,15 @@ function ExecutePage() {
       flowId: "",
     }
   );
+  const [currentSelectConversationId, setCurrentSelectConversationId] =
+    useState<string>(CONVERSATION_ID_PREFIX + 1);
+  const [conversationList, setConversationList] = useState<ConversationItem[]>([
+    {
+      id: CONVERSATION_ID_PREFIX + 1,
+      contentList: [],
+      askList: [],
+    },
+  ]);
   const [loading, setLoading] = useState(false);
   const getFlowInfo = async (flowConfigId: string) => {
     setLoading(true);
@@ -37,13 +48,36 @@ function ExecutePage() {
     getFlowInfo(params["flowConfigId"] as string);
   }, [location.search]);
 
+  const handleAddConversation = () => {
+    setConversationList((pre) => [
+      ...pre,
+      {
+        id: CONVERSATION_ID_PREFIX + pre.length + 1,
+        contentList: [],
+        askList: [],
+      },
+    ]);
+  };
+
+  const updateCurrentSelectCurrentConversationId = (id: string) => {
+    setCurrentSelectConversationId(id);
+  };
+
   return (
     <Spin spinning={loading}>
       <div
         className="flex"
         style={{ height: "calc(100vh - 57px)", padding: "16px" }}
       >
-        <LeftConversationInfo appName={flowInfo.appName} />
+        <LeftConversationInfo
+          appName={flowInfo.appName}
+          conversationList={conversationList}
+          addConversationList={handleAddConversation}
+          selectConversationId={currentSelectConversationId}
+          updateCurrentSelectCurrentConversationId={
+            updateCurrentSelectCurrentConversationId
+          }
+        />
         <RightContent flowId={flowInfo.flowId} />
       </div>
     </Spin>

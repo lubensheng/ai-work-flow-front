@@ -5,6 +5,7 @@ import styles from "./index.module.less";
 import { useEffect, useRef, useState } from "react";
 import Content from "./content";
 import UserAskContent from "./userAskContent";
+import type { AskItem, ContentItem } from "../type";
 
 interface ViewProps {
   flowId: string;
@@ -15,12 +16,8 @@ function RightContent(props: ViewProps) {
   const [inputValue, setInputValue] = useState<string>();
   const eventSourceRef = useRef<EventSource | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [contentList, setContentList] = useState<
-    { conversationId: string; content: string; isFinish: boolean }[]
-  >([]);
-  const [userAskList, setUserAskList] = useState<
-    { askId: string; relateConversationId: string; content: string }[]
-  >([]);
+  const [contentList, setContentList] = useState<ContentItem[]>([]);
+  const [userAskList, setUserAskList] = useState<AskItem[]>([]);
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
@@ -113,7 +110,7 @@ function RightContent(props: ViewProps) {
       <div className={styles["content-container"]} ref={messagesEndRef}>
         {contentList.map((item) => {
           const userAskContent = userAskList.find(
-            (i) => i.relateConversationId === item.conversationId,
+            (i) => i.relateConversationId === item.conversationId
           );
           return (
             <>
@@ -150,12 +147,14 @@ function RightContent(props: ViewProps) {
               "flex",
               "items-center",
               "justify-end",
-              "p-[9px]",
-            )}>
+              "p-[9px]"
+            )}
+          >
             <Tooltip title="发送">
               <div
                 className={classNames("cursor-pointer")}
-                onClick={sendMsgData}>
+                onClick={sendMsgData}
+              >
                 <img
                   src={sendMsg}
                   className={classNames("w-[24px] h-[24px]")}
