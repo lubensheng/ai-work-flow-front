@@ -111,7 +111,11 @@ export type State = {
 };
 
 export type Actions = {
-  setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => void;
+  setNodeList: (
+    parentNodeId: string,
+    nodeInfo: NodeItem,
+    conditionId: string
+  ) => void;
   setEdgeList: (edge: EdgeItem) => void;
   getEdgeLastId: () => string;
   setNodeListByEdgesInfo: (

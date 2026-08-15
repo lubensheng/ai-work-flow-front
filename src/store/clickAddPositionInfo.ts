@@ -6,6 +6,7 @@ type State = {
     position?: { x: number; y: number };
     nodeInfo?: {
       id: string;
+      conditionId?: string;
     };
     edgeInfo?: {
       source: string;
@@ -27,8 +28,8 @@ const useClickAddPositionInfo = create<State & Action>(
         set(currentAddNodeInfo);
       },
       clearCurrentNodeInfo() {
-        set({currentAddNodeInfo: {}});
-      }
+        set({ currentAddNodeInfo: {} });
+      },
     };
   })
 );

@@ -52,7 +52,10 @@ function ConditionNode(props: NodeItem) {
       y: flowPosition.y + 15,
     };
   };
-  const handleAddNode = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleAddNode = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    conditionId: string
+  ) => {
     e.stopPropagation();
     const handleAbsolutePosition = getNodePosition(e.clientX, e.clientY);
     if (handleAbsolutePosition) {
@@ -64,6 +67,7 @@ function ConditionNode(props: NodeItem) {
           },
           nodeInfo: {
             id: props.id,
+            conditionId,
           },
           edgeInfo: undefined,
         },
@@ -122,112 +126,128 @@ function ConditionNode(props: NodeItem) {
           }}
         ></div>
       </Handle>
-      <Handle
-        type="source"
-        position={Position.Right}
-        onClick={handleAddNode}
-        id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if`}
-        style={{
-          background: "none",
-          border: "none",
-        }}
-      >
-        <Tooltip
-          arrow={false}
-          styles={{
-            root: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
-            container: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
+      <div style={{ position: "relative" }}>
+        <Handle
+          type="source"
+          position={Position.Right}
+          isConnectableStart={true}
+          isConnectableEnd={false}
+          onClick={(e) => {
+            handleAddNode(
+              e,
+              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if`
+            );
           }}
-          title={
-            <div>
-              <div>
-                <span className="text-[#000000] font-semibold">点击</span>
-                <span className="text-[#676f83]">添加节点</span>
-              </div>
-              <div>
-                <span className="text-[#000000] font-semibold">拖拽</span>
-                <span className="text-[#676f83]">连接节点</span>
-              </div>
-            </div>
-          }
-        >
-          <div
-            className={commonStyle["add-node-icon-container"]}
-            onMouseLeave={() => {
-              updateEdgeShowRelateNode();
-            }}
-            onMouseEnter={() => {
-              updateEdgeShowRelateNode(props.id);
-            }}
-          >
-            <img
-              src={addNodeSvg}
-              className={classNames(commonStyle["add-node-icon"])}
-            />
-          </div>
-        </Tooltip>
-      </Handle>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else`}
-        style={{
-          background: "none",
-          border: "none",
-        }}
-        onClick={handleAddNode}
-      >
-        <Tooltip
-          arrow={false}
-          styles={{
-            root: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
-            container: {
-              backgroundColor: "#fff",
-              color: "#000",
-            },
+          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if`}
+          style={{
+            background: "none",
+            border: "none",
+            position: "absolute",
+            top: "-50px",
           }}
-          title={
-            <div>
-              <div>
-                <span className="text-[#000000] font-semibold">点击</span>
-                <span className="text-[#676f83]">添加节点</span>
-              </div>
-              <div>
-                <span className="text-[#000000] font-semibold">拖拽</span>
-                <span className="text-[#676f83]">连接节点</span>
-              </div>
-            </div>
-          }
         >
-          <div
-            className={classNames(
-              styles["else-add-node"],
-              "absolute",
-              "bottom-[-40px]"
-            )}
-            onMouseLeave={() => {
-              updateEdgeShowRelateNode();
+          <Tooltip
+            arrow={false}
+            styles={{
+              root: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
+              container: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
             }}
-            onMouseEnter={() => {
-              updateEdgeShowRelateNode(props.id);
-            }}
+            title={
+              <div>
+                <div>
+                  <span className="text-[#000000] font-semibold">点击</span>
+                  <span className="text-[#676f83]">添加节点</span>
+                </div>
+                <div>
+                  <span className="text-[#000000] font-semibold">拖拽</span>
+                  <span className="text-[#676f83]">连接节点</span>
+                </div>
+              </div>
+            }
           >
-            <img
-              src={addNodeSvg}
-              className={classNames(styles["add-node-icon"])}
-            />
-          </div>
-        </Tooltip>
-      </Handle>
+            <div
+              className={commonStyle["add-node-icon-container"]}
+              onMouseLeave={() => {
+                updateEdgeShowRelateNode();
+              }}
+              onMouseEnter={() => {
+                updateEdgeShowRelateNode(props.id);
+              }}
+            >
+              <img
+                src={addNodeSvg}
+                className={classNames(commonStyle["add-node-icon"])}
+              />
+            </div>
+          </Tooltip>
+        </Handle>
+        <Handle
+          type="source"
+          position={Position.Right}
+          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else`}
+          style={{
+            background: "none",
+            border: "none",
+            position: "absolute",
+            top: "-18px",
+          }}
+          isConnectableStart={true}
+          isConnectableEnd={false}
+          onClick={(e) => {
+            handleAddNode(
+              e,
+              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else`
+            );
+          }}
+        >
+          <Tooltip
+            arrow={false}
+            styles={{
+              root: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
+              container: {
+                backgroundColor: "#fff",
+                color: "#000",
+              },
+            }}
+            title={
+              <div>
+                <div>
+                  <span className="text-[#000000] font-semibold">点击</span>
+                  <span className="text-[#676f83]">添加节点</span>
+                </div>
+                <div>
+                  <span className="text-[#000000] font-semibold">拖拽</span>
+                  <span className="text-[#676f83]">连接节点</span>
+                </div>
+              </div>
+            }
+          >
+            <div
+              className={classNames(styles["else-add-node"])}
+              onMouseLeave={() => {
+                updateEdgeShowRelateNode();
+              }}
+              onMouseEnter={() => {
+                updateEdgeShowRelateNode(props.id);
+              }}
+            >
+              <img
+                src={addNodeSvg}
+                className={classNames(styles["add-node-icon"])}
+              />
+            </div>
+          </Tooltip>
+        </Handle>
+      </div>
     </>
   );
 }

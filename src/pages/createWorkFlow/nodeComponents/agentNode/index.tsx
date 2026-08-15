@@ -14,7 +14,7 @@ import useClickRightMenuNodeInfo from "../../../../store/clickRightMenuNodeInfo"
 
 function AgentNode(props: NodeItem) {
   const { data } = props;
-  const [isEnterNode, setIsEnterNode] = useState(false);
+  const [, setIsEnterNode] = useState(false);
   const setCurrentNodeInfo = useClickAddPositionInfo(
     (state) => state.setCurrentNodeInfo
   );
@@ -142,48 +142,46 @@ function AgentNode(props: NodeItem) {
         }}
         onClick={handleAddNode}
       >
-        {isEnterNode && (
-          <Tooltip
-            arrow={false}
-            styles={{
-              root: {
-                backgroundColor: "#fff",
-                color: "#000",
-              },
-              container: {
-                backgroundColor: "#fff",
-                color: "#000",
-              },
-            }}
-            title={
+        <Tooltip
+          arrow={false}
+          styles={{
+            root: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+            container: {
+              backgroundColor: "#fff",
+              color: "#000",
+            },
+          }}
+          title={
+            <div>
               <div>
-                <div>
-                  <span className="text-[#000000] font-semibold">点击</span>
-                  <span className="text-[#676f83]">添加节点</span>
-                </div>
-                <div>
-                  <span className="text-[#000000] font-semibold">拖拽</span>
-                  <span className="text-[#676f83]">连接节点</span>
-                </div>
+                <span className="text-[#000000] font-semibold">点击</span>
+                <span className="text-[#676f83]">添加节点</span>
               </div>
-            }
-          >
-            <div
-              className={commonStyles["add-node-icon-container"]}
-              onMouseLeave={() => {
-                updateEdgeShowRelateNode();
-              }}
-              onMouseEnter={() => {
-                updateEdgeShowRelateNode(props.id);
-              }}
-            >
-              <img
-                src={addNodeSvg}
-                className={classNames(commonStyles["add-node-icon"])}
-              />
+              <div>
+                <span className="text-[#000000] font-semibold">拖拽</span>
+                <span className="text-[#676f83]">连接节点</span>
+              </div>
             </div>
-          </Tooltip>
-        )}
+          }
+        >
+          <div
+            className={commonStyles["add-node-icon-container"]}
+            onMouseLeave={() => {
+              updateEdgeShowRelateNode();
+            }}
+            onMouseEnter={() => {
+              updateEdgeShowRelateNode(props.id);
+            }}
+          >
+            <img
+              src={addNodeSvg}
+              className={classNames(commonStyles["add-node-icon"])}
+            />
+          </div>
+        </Tooltip>
       </Handle>
     </div>
   );

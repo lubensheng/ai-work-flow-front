@@ -1,6 +1,11 @@
 .input-container {
-  position: relative;
-  padding: 2px 8px;
+  :global {
+    .tiptap {
+      padding: 0 4px;
+      border: none !important;
+      outline: none !important;
+    }
+  }
 }
 
 .show-text {

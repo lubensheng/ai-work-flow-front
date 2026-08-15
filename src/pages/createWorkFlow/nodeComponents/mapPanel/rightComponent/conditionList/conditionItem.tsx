@@ -252,7 +252,6 @@ function ConditionItem(props: ViewProps) {
                     </div>
                     <div>
                       <CustomInput
-                        placeholder="请输入"
                         onChange={(value) => {
                           handleOnInputConditionValue(
                             item.conditionInfo.environmentInfo,

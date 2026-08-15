@@ -311,6 +311,7 @@ function CreateWorkFlow() {
             position={currentMenuInfo.position}
             nodeId={currentMenuInfo.nodeInfo?.id}
             edgesInfo={currentMenuInfo?.edgeInfo}
+            conditionId={currentMenuInfo?.nodeInfo?.conditionId}
           />
         )}
       </ReactFlow>

@@ -124,6 +124,7 @@ function ConditionList(props: ViewProps) {
       <div className="mt-[20px]">
         <Button
           className="w-full"
+          disabled={true}
           icon={<PlusOutlined />}
           onClick={handleAddCondition}
         >

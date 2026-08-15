@@ -107,7 +107,11 @@ const useNodeList = create<State & Actions>()(
       environment: initEnvironment,
     },
     (set, get) => ({
-      setNodeList: (parentNodeId: string, nodeInfo: NodeItem) => {
+      setNodeList: (
+        parentNodeId: string,
+        nodeInfo: NodeItem,
+        conditionId: string
+      ) => {
         set((state) => {
           const newNodeList = [...state.nodeList].map((item) => ({
             ...item,
@@ -135,6 +139,7 @@ const useNodeList = create<State & Actions>()(
             },
           };
           console.log(newEdgeItem);
+
           nodeInfo.data.select = true;
           if (parentIndex > -1) {
             const parentNode = newNodeList[parentIndex];
@@ -171,11 +176,14 @@ const useNodeList = create<State & Actions>()(
                 SOURCE_HANDLE_ID_MAP[parentNode.type]
               }-${parentNode.id}`;
             }
-
+            if (conditionId) {
+              newEdgeItem.sourceHandle = conditionId;
+            }
             newEdgeList.push({ ...newEdgeItem });
           } else {
             newNodeList.push({ ...nodeInfo });
           }
+
           return {
             nodeList: newNodeList,
             edgeList: newEdgeList,

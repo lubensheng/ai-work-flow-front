@@ -26,10 +26,11 @@ interface ViewProps {
     target: string;
     edgeId: string;
   };
+  conditionId?: string;
 }
 
 function MenuList(props: ViewProps) {
-  const { position, nodeId, edgesInfo, style = {} } = props;
+  const { position, nodeId, edgesInfo, style = {}, conditionId } = props;
   const { screenToFlowPosition } = useReactFlow();
   const setNodeList = useNodeList((state) => state.setNodeList);
   const setNodeListByEdgesInfo = useNodeList(
@@ -48,18 +49,22 @@ function MenuList(props: ViewProps) {
     if (nodeId) {
       const currentNodeId = allNodeIds[type];
       setNodeIdIndex(type);
-      setNodeList(nodeId, {
-        id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
-        position: { x: 400, y: 0 },
-        dragHandle: getDragHandle(type),
-        data: {
-          childrenIds: [],
-          label: currentNodeId,
-          select: false,
-          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+      setNodeList(
+        nodeId,
+        {
+          id: `${NODE_PREFIX_MAP[type]}-${currentNodeId}`,
+          position: { x: 400, y: 0 },
+          dragHandle: getDragHandle(type),
+          data: {
+            childrenIds: [],
+            label: currentNodeId,
+            select: false,
+            title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+          },
+          type: type,
         },
-        type: type,
-      });
+        conditionId || ""
+      );
       setCurrentNodeInfo({
         currentAddNodeInfo: {},
       });
