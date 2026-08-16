@@ -64,6 +64,7 @@ type NodeData = {
   childrenIds: string[];
   label: number;
   title: string;
+  desc?: string;
   notParent?: boolean;
   select: boolean;
   nodeConfig?: {
@@ -154,6 +155,21 @@ const useNodeList = create<State & Actions>()(
                 nodeInfo.id,
               ],
             };
+            if (conditionId) {
+              const cIdArr = conditionId.split("-");
+              const cId = cIdArr[cIdArr.length - 1];
+              newNodeList[parentIndex].data.nodeConfig?.conditions?.forEach(
+                (i) => {
+                  if (i.id === cId) {
+                    if (i.handleNodeId) {
+                      i.handleNodeId = [...i.handleNodeId, nodeInfo.id];
+                    } else {
+                      i.handleNodeId = [nodeInfo.id];
+                    }
+                  }
+                }
+              );
+            }
             if (lastSubNodeId) {
               const lastSubNode = newNodeList.find(
                 (item) => item.id === lastSubNodeId

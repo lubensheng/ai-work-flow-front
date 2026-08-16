@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import startNodeSvg from "../../../../../assets/startNode.svg";
 import EditSvg from "../../../../../assets/edit.svg";
 import DeleteSvg from "../../../../../assets/delete.svg";
-import commonStyles from "./styles/common.module.less";
 import styles from "./styles/startNode.module.less";
 import type { NodeItem } from "../../../../../store/nodeList";
 import classNames from "classnames";
@@ -11,6 +9,7 @@ import NextNodeList from "./nextNodeList";
 import type { Field } from "../../../type";
 import AddFieldModal from "./addFieldModal";
 import useNodeList from "../../../../../store/nodeList";
+import PublicNodeBaseSetHeader from "./publicNodeBaseSetHeader";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -19,7 +18,6 @@ interface ViewProps {
 
 function StartNodePanel(props: ViewProps) {
   const { nodeInfo, nodeList } = props;
-  const [nodeLabel, setNodeLabel] = useState("");
   const updateNodeData = useNodeList((s) => s.updateNodeData);
   const [fields, setFields] = useState<Field[]>([]);
   const [addFieldModalProps, setAddFieldModalProps] = useState<{
@@ -50,7 +48,6 @@ function StartNodePanel(props: ViewProps) {
   };
 
   useEffect(() => {
-    setNodeLabel(props.nodeInfo.data.title);
     setFields(props.nodeInfo.data.nodeConfig?.fields || []);
   }, [props.nodeInfo]);
 
@@ -66,33 +63,7 @@ function StartNodePanel(props: ViewProps) {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          padding: "16px 16px 4px 16px",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <img src={startNodeSvg} className={commonStyles["header-icon"]} />
-        </div>
-        <div style={{ marginBottom: "3px", marginLeft: "5px" }}>
-          <input
-            className={commonStyles["set_node_label_input"]}
-            placeholder="添加标题..."
-            value={nodeLabel}
-          />
-        </div>
-      </div>
-      <div style={{ padding: "4px 16px 4px 16px" }}>
-        <input
-          className={classNames(
-            commonStyles["set_node_label_input"],
-            commonStyles["set_node_desc_input"]
-          )}
-          placeholder="添加描述..."
-        />
-      </div>
+      <PublicNodeBaseSetHeader nodeInfo={nodeInfo} nodeList={nodeList} />
       <div style={{ padding: "0 16px" }}>
         <Tabs
           items={[

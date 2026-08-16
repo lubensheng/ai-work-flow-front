@@ -1,10 +1,7 @@
-import classNames from "classnames";
-import commonStyles from "./styles/common.module.less";
-import AgentNodeSvg from "../../../../../assets/agentIcon.svg";
 import type { NodeItem } from "../../../../../store/nodeList";
-import { useEffect, useState } from "react";
 import { ConfigProvider, Select, Tabs } from "antd";
 import zhCh from "antd/locale/zh_CN";
+import PublicNodeBaseSetHeader from "./publicNodeBaseSetHeader";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -12,39 +9,10 @@ interface ViewProps {
 }
 
 function AgentNodePanel(props: ViewProps) {
-  const [nodeLabel, setNodeLabel] = useState("");
-  useEffect(() => {
-    setNodeLabel(props.nodeInfo.data.title);
-  }, [props.nodeInfo]);
+  const { nodeInfo, nodeList } = props;
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          padding: "16px 16px 4px 16px",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <img src={AgentNodeSvg} className={commonStyles["header-icon"]} />
-        </div>
-        <div style={{ marginBottom: "3px", marginLeft: "5px" }}>
-          <input
-            className={commonStyles["set_node_label_input"]}
-            placeholder="添加标题..."
-            value={nodeLabel}
-          />
-        </div>
-      </div>
-      <div style={{ padding: "4px 16px 4px 16px" }}>
-        <input
-          className={classNames(
-            commonStyles["set_node_label_input"],
-            commonStyles["set_node_desc_input"]
-          )}
-          placeholder="添加描述..."
-        />
-      </div>
+      <PublicNodeBaseSetHeader nodeInfo={nodeInfo} nodeList={nodeList} />
       <div style={{ padding: "0 16px" }}>
         <ConfigProvider locale={zhCh}>
           <Tabs

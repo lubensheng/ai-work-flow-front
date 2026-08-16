@@ -7,6 +7,7 @@ import type { ConditionItem as ConditionItemType } from "../../../../../../store
 import { useEffect, useState } from "react";
 import MidRelationLine from "./midRelationLine";
 import { NEXT_NODE_CONTAINER_ID } from "./constant";
+import { NODE_TYPE, NODE_TYPE_ICON } from "../../../../constants";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -29,6 +30,59 @@ function SetNextNodeByCondition(props: ViewProps) {
       setCurrentNodeConditions(currentNodeInfo.data.nodeConfig.conditions);
     }
   }, [nodeList, nodeInfo]);
+
+  const getConditionRenderNode = (nodeId: string) => {
+    const currentNodeInfo = nodeList.find((item) => item.id === nodeId);
+    if (!currentNodeInfo) {
+      return null;
+    }
+    let icon: string;
+    switch (currentNodeInfo.type) {
+      case NODE_TYPE.START_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.START_NODE];
+        break;
+      }
+      case NODE_TYPE.AGENT_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.AGENT_NODE];
+        break;
+      }
+      case NODE_TYPE.END_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.END_NODE];
+        break;
+      }
+      case NODE_TYPE.CONDITION_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.ANNOTATION_NODE];
+        break;
+      }
+      case NODE_TYPE.ANNOTATION_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.ANNOTATION_NODE];
+        break;
+      }
+      case NODE_TYPE.LLM_NODE: {
+        icon = NODE_TYPE_ICON[NODE_TYPE.LLM_NODE];
+        break;
+      }
+      default: {
+        return null;
+      }
+    }
+
+    return (
+      <div
+        className={classNames(
+          "flex",
+          "align-middle",
+          "items-center",
+          "p-[4px]",
+          styles["condition-node-container"]
+        )}
+      >
+        {icon && <img src={icon} className="w-[16px] h-[16px] mr-[8px]" />}
+        <span className="inline-block">{currentNodeInfo.data.title}</span>
+      </div>
+    );
+  };
+
   return (
     <div className="mt-[10px]">
       <div>
@@ -58,9 +112,14 @@ function SetNextNodeByCondition(props: ViewProps) {
                   Case {index + 1}
                 </div>
                 {item.handleNodeId?.map((item) => {
-                  return <div key={item}>{item}</div>;
+                  return <div key={item}>{getConditionRenderNode(item)}</div>;
                 })}
-                <div className={styles["add-node"]}>
+                <div
+                  className={styles["add-node"]}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <div className={styles.add}>
                     <span>+</span>
                   </div>

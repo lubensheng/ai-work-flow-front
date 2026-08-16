@@ -59,7 +59,7 @@ function MenuList(props: ViewProps) {
             childrenIds: [],
             label: currentNodeId,
             select: false,
-            title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+            title: `${NODE_TITLE_PREFIX_MAP[type]}`,
           },
           type: type,
         },
@@ -80,7 +80,7 @@ function MenuList(props: ViewProps) {
           childrenIds: [],
           label: currentNodeId,
           select: false,
-          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+          title: `${NODE_TITLE_PREFIX_MAP[type]}`,
         },
         type: type,
       });
@@ -103,7 +103,7 @@ function MenuList(props: ViewProps) {
           childrenIds: [],
           label: currentNodeId,
           select: false,
-          title: `${NODE_TITLE_PREFIX_MAP[type]}-${currentNodeId}`,
+          title: `${NODE_TITLE_PREFIX_MAP[type]}`,
         },
         type: type,
       };

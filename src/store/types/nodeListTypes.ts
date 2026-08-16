@@ -46,6 +46,7 @@ export type EdgeItem = {
 export type NodeData = {
   childrenIds: string[];
   label: number;
+  desc?: string;
   title: string;
   notParent?: boolean;
   select: boolean;

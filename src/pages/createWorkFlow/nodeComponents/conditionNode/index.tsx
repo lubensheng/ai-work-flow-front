@@ -135,10 +135,10 @@ function ConditionNode(props: NodeItem) {
           onClick={(e) => {
             handleAddNode(
               e,
-              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if`
+              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if-${1}`
             );
           }}
-          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if`}
+          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-if-${1}`}
           style={{
             background: "none",
             border: "none",
@@ -190,7 +190,7 @@ function ConditionNode(props: NodeItem) {
         <Handle
           type="source"
           position={Position.Right}
-          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else`}
+          id={`${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else-${2}`}
           style={{
             background: "none",
             border: "none",
@@ -202,7 +202,7 @@ function ConditionNode(props: NodeItem) {
           onClick={(e) => {
             handleAddNode(
               e,
-              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else`
+              `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${props.id}-else-${2}`
             );
           }}
         >
