@@ -7,7 +7,13 @@ import type { ConditionItem as ConditionItemType } from "../../../../../../store
 import { useEffect, useState } from "react";
 import MidRelationLine from "./midRelationLine";
 import { NEXT_NODE_CONTAINER_ID } from "./constant";
-import { NODE_TYPE, NODE_TYPE_ICON } from "../../../../constants";
+import {
+  NODE_TYPE,
+  NODE_TYPE_ICON,
+  SOURCE_HANDLE_ID_MAP,
+} from "../../../../constants";
+import { useReactFlow } from "@xyflow/react";
+import useClickAddPositionInfo from "../../../../../../store/clickAddPositionInfo";
 
 interface ViewProps {
   nodeInfo: NodeItem;
@@ -21,6 +27,10 @@ function SetNextNodeByCondition(props: ViewProps) {
   >([]);
   console.log(nodeInfo);
   console.log(nodeList);
+  const setCurrentNodeInfo = useClickAddPositionInfo(
+    (state) => state.setCurrentNodeInfo
+  );
+  const { getNode } = useReactFlow();
   useEffect(() => {
     if (!Array.isArray(nodeList)) {
       return;
@@ -83,6 +93,57 @@ function SetNextNodeByCondition(props: ViewProps) {
     );
   };
 
+  const getConditionId = (conditionItem: ConditionItemType) => {
+    console.log(conditionItem);
+    const currentNodeInfo = nodeList.find((item) => item.id === nodeInfo.id);
+    const index = currentNodeInfo?.data.nodeConfig?.conditions?.findIndex(
+      (item) => item.id === conditionItem.id
+    );
+    if (typeof index === "undefined" || index === -1 || !currentNodeInfo) {
+      return "";
+    }
+    if (conditionItem.type === "IF") {
+      return `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${currentNodeInfo.id}-if-${
+        index + 1
+      }`;
+    } else if (conditionItem.type === "ELSE") {
+      return `${SOURCE_HANDLE_ID_MAP.CONDITION_NODE}-${
+        currentNodeInfo.id
+      }-else-${index + 1}`;
+    } else {
+      return "";
+    }
+  };
+
+  const handleAddNode = (conditionItem: ConditionItemType) => {
+    console.log(conditionItem);
+    const currentNodeInfo = nodeList.find((item) => item.id === nodeInfo.id);
+    if (currentNodeInfo) {
+      const node = getNode(currentNodeInfo.id);
+      if (!node) return null;
+      const nodeX = node.position.x;
+      const nodeY = node.position.y;
+
+      const position = {
+        x: nodeX + 180,
+        y: nodeY + 50,
+      };
+      setCurrentNodeInfo({
+        currentAddNodeInfo: {
+          position: {
+            x: position.x,
+            y: position.y,
+          },
+          nodeInfo: {
+            id: currentNodeInfo.id,
+            conditionId: getConditionId(conditionItem),
+          },
+          edgeInfo: undefined,
+        },
+      });
+    }
+  };
+
   return (
     <div className="mt-[10px]">
       <div>
@@ -118,6 +179,7 @@ function SetNextNodeByCondition(props: ViewProps) {
                   className={styles["add-node"]}
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleAddNode(item);
                   }}
                 >
                   <div className={styles.add}>
