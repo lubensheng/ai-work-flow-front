@@ -39,7 +39,10 @@ function LlmNodePannel(props: ViewProps) {
     const currentNodeInfo = nodeList.find((item) => item.id === nodeInfo.id);
     if (currentNodeInfo?.data.nodeConfig?.llmApiConfig) {
       setCurrentLLMConfigValue(currentNodeInfo.data.nodeConfig.llmApiConfig.id);
+    } else {
+      setCurrentLLMConfigValue(undefined);
     }
+    
   }, [nodeList, nodeInfo]);
 
   return (

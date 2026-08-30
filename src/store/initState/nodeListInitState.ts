@@ -98,7 +98,7 @@ export const initNodeList: NodeItem[] = [
       childrenIds: [`${NODE_PREFIX_MAP.END_NODE}-1`],
       label: 1,
       select: false,
-      title: "LLM",
+      title: "LLM-1",
     },
     dragHandle: `.${LLM_NODE_DARG_HANDLE}`,
     type: NODE_TYPE.LLM_NODE,

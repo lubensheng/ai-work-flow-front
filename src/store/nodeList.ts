@@ -201,6 +201,7 @@ const useNodeList = create<State & Actions>()(
           }
 
           return {
+            selectNodeInfo: { ...nodeInfo },
             nodeList: newNodeList,
             edgeList: newEdgeList,
             edgeId: state.edgeId + 1,

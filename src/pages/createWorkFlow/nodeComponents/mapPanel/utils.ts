@@ -1,7 +1,7 @@
 import type { NodeItem } from "../../../../store/nodeList";
 import { NODE_TYPE } from "../../constants";
 
-type ValidateType = "noNode" | "noEndNode" | "blankNode" | "LLMNodeNotSetApi";
+type ValidateType = "noNode" | "noEndNode" | "blankNode" | "LLMNodeNotSetApi" | "conditionNodeNotNode";
 
 const validateType: ValidateType[] = [
   "noNode",
@@ -12,7 +12,7 @@ const validateType: ValidateType[] = [
 
 const validateMethod: Record<
   ValidateType,
-  (nodeList: NodeItem[]) => string | void
+  (nodeList: NodeItem[]) => string | string[] | void
 > = {
   noNode: (nodeList: NodeItem[]) => {
     if (!nodeList.length) {
@@ -54,6 +54,26 @@ const validateMethod: Record<
       return `存在llm节点没有配置模型-${num}`;
     }
   },
+  conditionNodeNotNode: (nodeList: NodeItem[]) => {
+    const conditionNodeList = nodeList.filter(node => node.type === NODE_TYPE.CONDITION_NODE);
+    if (!conditionNodeList.length) {
+      return;
+    }
+    const msg: string[] = [];
+    conditionNodeList.forEach(item => {
+      const { data: { title, nodeConfig } } = item;
+      if (!nodeConfig?.conditions) {
+        msg.push(`${title}没有配置条件`);
+      }
+      if (!nodeConfig?.conditions?.some(it => !it.handleNodeId || it.handleNodeId?.length === 0)) {
+        msg.push(`${title}条件分支没有配置执行节点`);
+      }
+      if (!nodeConfig?.conditions?.some(it => it.condition?.conditions.find(i => !i.conditionInfo.conditionValue))) {
+        msg.push(`${title}条件分支没有配置条件值`);
+      }
+    })
+    return msg.length ? msg : undefined;
+  }
 };
 
 export const getCurrentFlowErrorInfos = (
@@ -62,8 +82,12 @@ export const getCurrentFlowErrorInfos = (
   const problemItem: { desc: string }[] = [];
   validateType.forEach((item) => {
     const s = validateMethod[item](nodeList);
-    if (s) {
+    if (typeof s === 'string') {
       problemItem.push({ desc: s });
+    } else if (Array.isArray(s)) {
+      s.forEach(item => {
+        problemItem.push({ desc: item });
+      });
     }
   });
   return problemItem;
