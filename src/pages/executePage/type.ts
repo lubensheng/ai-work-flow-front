@@ -13,4 +13,16 @@ export type ConversationItem = {
   id: string;
   contentList: ContentItem[];
   askList: AskItem[];
+  converStationId?: string;
 };
+
+export type CreateConversationReq = {
+  flowId: string;
+}
+
+export type HistoryConversationInfo = {
+  conversationId: string;
+  flowId: string;
+  userId: string;
+  userName: string;
+}

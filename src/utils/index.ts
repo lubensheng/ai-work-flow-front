@@ -8,7 +8,7 @@ import {
   LLM_NODE_DARG_HANDLE,
 } from "../pages/createWorkFlow/constants";
 
-const getUserInfo = () => {
+const getUserInfo = (): { account: string, password: string } | null => {
   const userInfo = localStorage.getItem("userInfo");
   return userInfo ? JSON.parse(userInfo) : null;
 };
@@ -18,9 +18,9 @@ const getAppInfo = () => {
   return appInfo ? JSON.parse(appInfo) : null;
 };
 
-const getUrlParams = (search: string): Record<string, unknown> => {
+const getUrlParams = (search: string): Record<string, string> => {
   const params = search.indexOf("?") === 0 ? search.slice(1) : search;
-  const ans: Record<string, unknown> = {};
+  const ans: Record<string, string> = {};
   params.split("&").forEach((item) => {
     const [key, value] = item.split("=");
     ans[key] = decodeURIComponent(value);

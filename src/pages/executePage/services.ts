@@ -1,9 +1,25 @@
-import axios from "axios";
+import type { CreateConversationReq, HistoryConversationInfo } from "./type";
+import request from "../../request";
 
 const queryFlowInfo = (flowConfigId: string) => {
-  return axios.post<{ code: number; message: string }>(
-    "/flow/queryFlowConfigInfo/" + flowConfigId
+  return request.post<{ code: number; message: string }>(
+    "/flow/queryFlowConfigInfo/" + flowConfigId,
   );
 };
 
-export default queryFlowInfo;
+const createConversation = (req: CreateConversationReq) => {
+  return request.post<{ code: number; message: string; data: string }>(
+    "/flowExecute/createConversationId",
+    req,
+  );
+};
+
+const getHistoryConversationInfByFlowId = (flowId: string) => {
+  return request.post<{
+    code: number;
+    message: string;
+    data: HistoryConversationInfo[];
+  }>("/flowExecute/getHistoryConversationInfByFlowId/" + flowId);
+};
+
+export { queryFlowInfo, createConversation, getHistoryConversationInfByFlowId };

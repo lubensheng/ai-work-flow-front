@@ -30,7 +30,7 @@ function FunctionPanel() {
     if (!s) {
       return;
     }
-    const useInfo = getUserInfo();
+    const useInfo = getUserInfo()!;
     const res = await saveFlow({
       appName: s.appName,
       appType: s.appType,
@@ -52,7 +52,7 @@ function FunctionPanel() {
     if (!s) {
       return;
     }
-    const useInfo = getUserInfo();
+    const useInfo = getUserInfo()!;
     const res = await saveFlow({
       appName: s.appName,
       appType: s.appType,

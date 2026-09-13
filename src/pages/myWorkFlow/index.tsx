@@ -16,7 +16,7 @@ function MyWorkFlow() {
   const [flowInfo, setFlowInfo] = useState<ResultFlowInfo[]>([]);
   const [total, setTotal] = useState(0);
   const queryList = async () => {
-    const userInfo = getUserInfo();
+    const userInfo = getUserInfo()!;
     setLoading(true);
     const res = await queryFlowInfo({
       pageIndex: queryPageInfo.pageIndex,
@@ -95,6 +95,27 @@ function MyWorkFlow() {
                       }}
                     >
                       执行
+                    </div>
+                     <div
+                      className={classNames(
+                        "w-[60px]",
+                        "text-center",
+                        "cursor-pointer",
+                        "p-[5px]",
+                        styles.hover
+                      )}
+                      onClick={() => {
+                        navigator(
+                          "/executePage?flowConfigId=" +
+                            item.flowConfigId +
+                            "&appName=" +
+                            item.appName +
+                            "&flowId=" +
+                            item.id + "&type=history"
+                        );
+                      }}
+                    >
+                      历史
                     </div>
                   </div>
                 </div>
