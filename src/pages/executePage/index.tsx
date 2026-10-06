@@ -4,7 +4,7 @@ import RightContent from "./rightContent";
 import { useEffect, useState } from "react";
 import { getUrlParams } from "../../utils";
 import { message, Spin } from "antd";
-import { createConversation, queryFlowInfo } from "./services";
+import { createConversation, queryFlowInfo, queryHistoryConversationList } from "./services";
 import { SUCCESS_CODE } from "../../utils/constants";
 import type { ConversationItem } from "./type";
 import { CONVERSATION_ID_PREFIX } from "./constant";
@@ -28,13 +28,13 @@ function ExecutePage() {
     [],
   );
   const [loading, setLoading] = useState(false);
-  const getFlowInfo = async (flowConfigId: string, type: PageOperationType) => {
+  const getFlowInfo = async (flowConfigId: string, type: PageOperationType, flowId: string) => {
     setLoading(true);
     const res = await queryFlowInfo(flowConfigId);
     console.log(res);
     if (type === "new") {
       const conversationId = await createConversation({
-        flowId: flowInfo.flowId,
+        flowId,
       });
       setLoading(false);
       setConversationList([
@@ -50,13 +50,11 @@ function ExecutePage() {
         return;
       }
     } else {
-      const conversationId = await createConversation({
-        flowId: flowInfo.flowId,
-      });
+      const conversationId = await queryHistoryConversationList(flowId);
       setLoading(false);
       setConversationList([
         {
-          converStationId: conversationId.data.data,
+          converStationId: '',
           id: CONVERSATION_ID_PREFIX + 1,
           contentList: [],
           askList: [],
@@ -80,6 +78,7 @@ function ExecutePage() {
     getFlowInfo(
       params["flowConfigId"] as string,
       (params["type"] as PageOperationType) || "new",
+      params["flowId"]
     );
   }, [location.search]);
 

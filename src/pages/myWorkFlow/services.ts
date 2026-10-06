@@ -1,4 +1,4 @@
-import axios from "axios"
+import request from '../../request';
 
 export type ResultFlowInfo = {
   "id": number,
@@ -14,7 +14,7 @@ export type ResultFlowInfo = {
 }
 
 export const queryFlowInfo = (params: { pageIndex: number, pageSize: number, userName: string }) => {
-  return axios.post<{ code: number, message: string, data: {
+  return request.post<{ code: number, message: string, data: {
     total: number,
     resultData: ResultFlowInfo[]
   } }>('/flow/queryFlowInfo', params)

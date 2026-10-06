@@ -71,6 +71,7 @@ function FunctionPanel() {
   };
 
   useEffect(() => {
+     debugger
     setProblemList(getCurrentFlowErrorInfos(nodeList));
   }, [nodeList]);
 

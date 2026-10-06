@@ -1,14 +1,14 @@
-import axios from "axios";
+import request from "../../request";
 
 const addLLMConfig = (params: { modalType: string; apiKey: string }) => {
-  return axios.post<{ message: string; code: string }>(
+  return request.post<{ message: string; code: string }>(
     "/llmConfig/addConfig",
     params
   );
 };
 
 const queryAllLLMConfig = () => {
-  return axios.get<{
+  return request.get<{
     message: string;
     code: string;
     data: {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import request from "../../request";
 import type { EdgeItem, NodeItem } from "../../store/nodeList";
 
 interface SaveParams {
@@ -12,5 +12,5 @@ interface SaveParams {
 }
 
 export const saveFlow = (params: SaveParams) => {
-  return axios.post<{ message: string; code: number }>("/flow/save", params);
+  return request.post<{ message: string; code: number }>("/flow/save", params);
 };

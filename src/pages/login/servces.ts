@@ -1,7 +1,7 @@
-import axios from "axios";
+import request from "../../request";
 
 const login = (params: { userName: string; password: string }) => {
-  return axios.post("/role/regiter", params);
+  return request.post("/role/regiter", params);
 };
 
 export { login };

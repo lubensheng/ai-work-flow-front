@@ -1,6 +1,6 @@
-import axios from "axios";
+import request from "../request";
 
 const updateUserInfo = (params: { userName: string; password: string }) => {
-  return axios.post("/role/updateUserInfo", params);
+  return request.post("/role/updateUserInfo", params);
 };
 export { updateUserInfo };

@@ -2,6 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
+// http://43.138.198.247:8080  http://localhost:8080
+const serverFlowBaseApi = 'http://localhost:8080';
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
@@ -22,7 +25,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/llmConfig/, ""),
       },
       "/flow/": {
-        target: "http://43.138.198.247:8080/flow/",
+        target: serverFlowBaseApi + "/flow/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/flow/, ""),
       },

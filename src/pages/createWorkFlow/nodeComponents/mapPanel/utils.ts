@@ -59,6 +59,7 @@ const validateMethod: Record<
     if (!conditionNodeList.length) {
       return;
     }
+   
     const msg: string[] = [];
     conditionNodeList.forEach(item => {
       const { data: { title, nodeConfig } } = item;
